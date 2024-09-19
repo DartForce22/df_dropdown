@@ -1,3 +1,5 @@
+import 'package:df_dropdown/constants/dropdown_enums.dart';
+import 'package:df_dropdown/widgets/searchable_widgets/single_select.dart';
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -8,15 +10,23 @@ class SearchableDropdownSelector extends StatelessWidget {
     required this.suggestionsExpanded,
     required this.dropdownData,
     required this.dropdownHeight,
-    required this.onSelectSuggestion,
+    this.onSelectSuggestion,
+    this.onAddSuggestion,
     required this.selectedValues,
+    required this.selectedValue,
+    required this.dropdownType,
+    required this.onClearSelection,
   });
 
   final bool suggestionsExpanded;
   final List<DropDownModel> dropdownData;
   final double dropdownHeight;
-  final Function(DropDownModel) onSelectSuggestion;
-  final List<DropDownModel<dynamic>> selectedValues;
+  final Function(DropDownModel)? onSelectSuggestion;
+  final Function(DropDownModel)? onAddSuggestion;
+  final List<DropDownModel> selectedValues;
+  final DropDownModel? selectedValue;
+  final DropdownType dropdownType;
+  final VoidCallback onClearSelection;
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
   final InputDecoration fieldInputDecoration = const InputDecoration(
@@ -60,17 +70,51 @@ class SearchableDropdownSelector extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          children: dropdownData
-                              .map(
-                                (suggestion) => _DropdownSuggestion(
-                                  text: suggestion.text,
-                                  selected: selectedValues.contains(suggestion),
-                                  onTap: () {
-                                    onSelectSuggestion(suggestion);
-                                  },
-                                ),
-                              )
-                              .toList(),
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 8,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  if (dropdownType ==
+                                      DropdownType
+                                          .searchableMultiSelectDropdown)
+                                    Text("Selected"),
+                                  InkWell(
+                                    onTap: onClearSelection,
+                                    child: Text(
+                                      "Clear selection",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.teal.shade400,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ...dropdownData.map(
+                              (suggestion) => SingleSelect(
+                                text: suggestion.text,
+                                selected: selectedValues.contains(suggestion) ||
+                                    suggestion == selectedValue,
+                                onTap: () {
+                                  if (dropdownType ==
+                                          DropdownType
+                                              .searchableMultiSelectDropdown &&
+                                      onAddSuggestion != null) {
+                                    onAddSuggestion!(suggestion);
+                                  } else if (onSelectSuggestion != null) {
+                                    onSelectSuggestion!(suggestion);
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -78,77 +122,6 @@ class SearchableDropdownSelector extends StatelessWidget {
                 ],
               )
             : const SizedBox(),
-      ),
-    );
-  }
-}
-
-/// A private stateless widget representing a single suggestion item in a dropdown list.
-///
-/// Parameters:
-/// - `text` (String): The text to be displayed for the suggestion.
-/// - `onTap` (VoidCallback): The callback function that is triggered when the
-///   suggestion item is tapped.
-class _DropdownSuggestion extends StatelessWidget {
-  const _DropdownSuggestion({
-    required this.text,
-    required this.onTap,
-    required this.selected,
-  });
-
-  final String text;
-  final VoidCallback onTap;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 10,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.transparent,
-          ),
-          width: double.infinity,
-          child: Row(
-            children: [
-              SizedBox(
-                height: 20,
-                width: 20,
-                child: Checkbox(
-                  visualDensity: VisualDensity.compact,
-                  value: selected,
-                  activeColor: Colors.teal.shade400,
-                  side: BorderSide(
-                    color: Colors.grey.shade400,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  onChanged: (_) {
-                    onTap();
-                  },
-                ),
-              ),
-              const SizedBox(
-                width: 4,
-              ),
-              Text(
-                text,
-                style: textTheme.labelMedium,
-                textAlign: TextAlign.start,
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

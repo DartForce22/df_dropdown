@@ -203,9 +203,23 @@ class DropDown extends StatelessWidget {
               builder: (_, provider, __) => SearchableDropdownSelector(
                 dropdownData: provider.dropdownData,
                 dropdownHeight: provider.dropdownHeight,
-                onSelectSuggestion: provider.onMultiSelectSuggestion,
+                selectedValue: provider.selectedValue,
+                onSelectSuggestion: (value) {
+                  if (dropdownProvider.dropdownType ==
+                      DropdownType.searchableSingleSelectDropdown) {
+                    provider.onSelectSuggestion(value);
+                  }
+                },
+                onAddSuggestion: (value) {
+                  if (dropdownProvider.dropdownType ==
+                      DropdownType.searchableMultiSelectDropdown) {
+                    provider.onMultiSelectSuggestion(value);
+                  }
+                },
                 suggestionsExpanded: provider.suggestionsExpanded,
                 selectedValues: provider.selectedValues,
+                dropdownType: provider.dropdownType,
+                onClearSelection: provider.onClearSelection,
               ),
             ),
         ],

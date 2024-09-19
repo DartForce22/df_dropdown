@@ -157,6 +157,20 @@ class DropdownProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void onClearSelection() {
+    selectedValues.clear();
+    selectedValue = null;
+    searchTextController.text = "";
+    if (onMultiItemSelect != null) {
+      onMultiItemSelect!(selectedValues);
+    }
+    if (onItemSelect != null) {
+      onItemSelect!(selectedValue);
+    }
+    setValidationError = null;
+    notifyListeners();
+  }
+
   /// Returns the color to be used for the border of a form field, based on validation state.
   /// By default, the border color is a shade of grey with reduced opacity. If there is a
   /// validation error, the border color changes to red, indicating an issue.
