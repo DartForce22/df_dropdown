@@ -1,8 +1,10 @@
+import 'package:df_dropdown/constants/dropdown_enums.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/icons.dart';
+import '/widgets/simple_dropdown_selector.dart';
 import 'provider/dropdown_provider.dart';
 
 class DropDown extends StatelessWidget {
@@ -38,11 +40,9 @@ class DropDown extends StatelessWidget {
         Provider.of<DropdownProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return TapRegion(
-      onTapOutside: dropdownProvider.enabledTextInput
-          ? null
-          : (pointerDownEvent) {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
+      onTapOutside: (pointerDownEvent) {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
       child: Column(
         children: [
           //Dropdown text input field and validation error text
@@ -52,7 +52,9 @@ class DropDown extends StatelessWidget {
               children: [
                 TapRegion(
                   onTapInside: (_) {
-                    dropdownProvider.toggleSuggestionsExpanded();
+                    if (!dropdownProvider.enabledTextInput) {
+                      dropdownProvider.toggleSuggestionsExpanded();
+                    }
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -64,6 +66,18 @@ class DropDown extends StatelessWidget {
                         color: dropdownProvider.fieldBorderColor,
                       ),
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        if (dropdownProvider.suggestionsExpanded)
+                          BoxShadow(
+                            color: Colors.teal[450] ?? Colors.teal,
+                            spreadRadius: 4,
+                          ),
+                        if (dropdownProvider.suggestionsExpanded)
+                          const BoxShadow(
+                            color: Colors.white,
+                            spreadRadius: 2,
+                          )
+                      ],
                     ),
                     height: 52,
                     width: double.infinity,
@@ -162,86 +176,23 @@ class DropDown extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(
+            height: 6,
+          ),
 
-          //Dropdown suggestions container
-          Material(
-            clipBehavior: Clip.hardEdge,
-            borderRadius: BorderRadius.circular(12),
-            elevation: 4,
-            child: Consumer<DropdownProvider>(
-              builder: (_, provider, __) => AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                ),
-                width: double.infinity,
-                height: dropdownProvider.dropdownHeight,
-                child: provider.suggestionsExpanded
-                    ? SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: provider.dropdownData
-                              .map(
-                                (suggestion) => _DropdownSuggestion(
-                                  text: suggestion.text,
-                                  onTap: () {
-                                    provider.onSelectSuggestion(suggestion);
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      )
-                    : const SizedBox(),
+          if (dropdownProvider.dropdownType ==
+                  DropdownType.searchableDropdown ||
+              dropdownProvider.dropdownType == DropdownType.simpleDropdown)
+            //Dropdown suggestions container
+            Consumer<DropdownProvider>(
+              builder: (_, provider, __) => SimpleDropdownSelector(
+                dropdownData: provider.dropdownData,
+                dropdownHeight: provider.dropdownHeight,
+                onSelectSuggestion: provider.onSelectSuggestion,
+                suggestionsExpanded: provider.suggestionsExpanded,
               ),
-            ),
-          )
+            )
         ],
-      ),
-    );
-  }
-}
-
-/// A private stateless widget representing a single suggestion item in a dropdown list.
-///
-/// Parameters:
-/// - `text` (String): The text to be displayed for the suggestion.
-/// - `onTap` (VoidCallback): The callback function that is triggered when the
-///   suggestion item is tapped.
-class _DropdownSuggestion extends StatelessWidget {
-  const _DropdownSuggestion({
-    required this.text,
-    required this.onTap,
-  });
-
-  final String text;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 10,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.transparent,
-          ),
-          width: double.infinity,
-          child: Text(
-            text,
-            style: textTheme.labelMedium,
-            textAlign: TextAlign.start,
-          ),
-        ),
       ),
     );
   }

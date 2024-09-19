@@ -42,6 +42,11 @@ class DropdownProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void expandSuggestions() {
+    suggestionsExpanded = true;
+    notifyListeners();
+  }
+
   void closeSuggestions() {
     suggestionsExpanded = false;
     notifyListeners();

@@ -1,3 +1,4 @@
+import 'package:df_dropdown/constants/dropdown_enums.dart';
 import 'package:df_dropdown/models/drop_down_model.dart';
 import 'package:df_dropdown/searchable_drop_down/searchable_drop_down.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
             SearchableDropDown(
               onItemSelect: (item) {},
               hint: "Select...",
+              dropdownType: DropdownType.simpleDropdown,
               // initialValue: DropDownModel<String>(
               //     id: "1", value: "option 1", text: "Option 1"),
               initialData: [
