@@ -28,7 +28,8 @@ class SearchableDropDown extends StatelessWidget {
 
   const SearchableDropDown({
     super.key,
-    required this.onItemSelect,
+    this.onItemSelect,
+    this.onMultiSelect,
     required this.initialData,
     this.searchFunction,
     this.label,
@@ -44,11 +45,12 @@ class SearchableDropDown extends StatelessWidget {
 
   final String? label;
   final String? hint;
-  final Function(DropDownModel?) onItemSelect;
+  final Function(DropDownModel?)? onItemSelect;
   final List<DropDownModel> initialData;
   final DropDownModel? initialValue;
   final String? Function(String?)? validator;
   final Future<List<DropDownModel>> Function(String)? searchFunction;
+  final Function(List<DropDownModel>)? onMultiSelect;
   final bool disabled;
   final EdgeInsets margin;
   final DropdownType dropdownType;
@@ -62,6 +64,7 @@ class SearchableDropDown extends StatelessWidget {
         selectedValue: initialValue,
         onItemSelect: onItemSelect,
         dropdownType: dropdownType,
+        onMultiItemSelect: onMultiSelect,
       ),
       child: Container(
         margin: margin,

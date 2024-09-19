@@ -8,8 +8,9 @@ import '../../models/drop_down_model.dart';
 class DropdownProvider with ChangeNotifier {
   DropdownProvider({
     this.searchFunction,
-    required this.onItemSelect,
+    this.onItemSelect,
     required this.dropdownType,
+    this.onMultiItemSelect,
     this.initData = const [],
     this.selectedValue,
   }) {
@@ -23,10 +24,12 @@ class DropdownProvider with ChangeNotifier {
   final List<DropDownModel> searchResults = [];
   final List<DropDownModel> initData;
   DropDownModel? selectedValue;
+  final List<DropDownModel> selectedValues = [];
   final TextEditingController searchTextController = TextEditingController();
   String? _validationError;
   FocusNode textFieldFocusNode = FocusNode();
-  final Function(DropDownModel?) onItemSelect;
+  final Function(DropDownModel?)? onItemSelect;
+  final Function(List<DropDownModel>)? onMultiItemSelect;
   Timer? _debounceTimer;
   final DropdownType dropdownType;
 
@@ -68,7 +71,9 @@ class DropdownProvider with ChangeNotifier {
   void onInputChanged(String text) {
     if (searchFunction == null) return;
     selectedValue = null;
-    onItemSelect(null);
+    if (onItemSelect != null) {
+      onItemSelect!(null);
+    }
     if (_debounceTimer?.isActive == true) {
       _debounceTimer?.cancel();
     }
@@ -124,7 +129,30 @@ class DropdownProvider with ChangeNotifier {
     selectedValue = value;
     searchTextController.text = value.text;
     suggestionsExpanded = false;
-    onItemSelect(value);
+    if (onItemSelect != null) {
+      onItemSelect!(value);
+    }
+    setValidationError = null;
+    notifyListeners();
+  }
+
+  void onMultiSelectSuggestion(DropDownModel value) {
+    if (selectedValues.contains(value)) {
+      selectedValues.remove(value);
+    } else {
+      selectedValues.add(value);
+    }
+    if (selectedValues.isNotEmpty) {
+      searchTextController.text = selectedValues.first.text;
+      if (selectedValues.length > 1) {
+        searchTextController.text += " (+${selectedValues.length - 1})";
+      }
+    } else {
+      searchTextController.text = "";
+    }
+    if (onMultiItemSelect != null) {
+      onMultiItemSelect!(selectedValues);
+    }
     setValidationError = null;
     notifyListeners();
   }

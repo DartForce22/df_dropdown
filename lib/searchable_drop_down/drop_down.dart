@@ -1,4 +1,5 @@
 import 'package:df_dropdown/constants/dropdown_enums.dart';
+import 'package:df_dropdown/widgets/searchable_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -191,7 +192,22 @@ class DropDown extends StatelessWidget {
                 onSelectSuggestion: provider.onSelectSuggestion,
                 suggestionsExpanded: provider.suggestionsExpanded,
               ),
-            )
+            ),
+
+          if (dropdownProvider.dropdownType ==
+                  DropdownType.searchableMultiSelectDropdown ||
+              dropdownProvider.dropdownType ==
+                  DropdownType.searchableSingleSelectDropdown)
+            //Dropdown suggestions container
+            Consumer<DropdownProvider>(
+              builder: (_, provider, __) => SearchableDropdownSelector(
+                dropdownData: provider.dropdownData,
+                dropdownHeight: provider.dropdownHeight,
+                onSelectSuggestion: provider.onMultiSelectSuggestion,
+                suggestionsExpanded: provider.suggestionsExpanded,
+                selectedValues: provider.selectedValues,
+              ),
+            ),
         ],
       ),
     );
