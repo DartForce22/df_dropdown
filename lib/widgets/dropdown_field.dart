@@ -131,7 +131,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
           ),
 
           //An error message [Text] widget displayed only when validation returns an error
-          if (provider.validationError != null)
+          if (provider.validationError != null && !provider.suggestionsExpanded)
             Padding(
               padding: const EdgeInsets.only(
                 top: 4,

@@ -41,11 +41,9 @@ class MyApp extends StatelessWidget {
                       },
                       initData: [
                         DropDownModel<String>(
-                            key: "1", value: "1", text: "Option 1"),
+                            key: "1", value: "1", text: "New York City"),
                         DropDownModel<String>(
-                            key: "2", value: "2", text: "Option 2"),
-                        DropDownModel<String>(
-                            key: "3", value: "3", text: "Option 3"),
+                            key: "2", value: "2", text: "Los Angeles"),
                       ],
                     ),
                     const SizedBox(
