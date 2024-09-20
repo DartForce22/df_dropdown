@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import '/models/drop_down_model.dart';
 import '/providers/base_dropdown_provider.dart';
 
-class SingleSelectSearchableDropdownProvider<T>
-    extends BaseDropdownProvider<T> {
-  SingleSelectSearchableDropdownProvider({
+class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
+  SearchableMultiSelectDropdownProvider({
     this.selectedValue,
     this.onOptionSelected,
     this.onSearch,

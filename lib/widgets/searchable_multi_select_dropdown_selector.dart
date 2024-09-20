@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/searchable_single_select_dropdown_provider.dart';
+import '/providers/searchable_multi_select_dropdown_provider.dart';
 import '/widgets/searchable_widgets/single_select.dart';
 
-class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
-  const SearchableSingleSelectDropdownSelector({
+class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
+  const SearchableMultiSelectDropdownSelector({
     super.key,
   });
 
@@ -20,7 +20,7 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchableSingleSelectDropdownProvider<T>>(
+    final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
       context,
       listen: false,
     );

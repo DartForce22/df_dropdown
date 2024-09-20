@@ -1,3 +1,4 @@
+import 'package:df_dropdown/widgets/searchable_multi_select_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -5,11 +6,10 @@ import 'package:provider/provider.dart';
 import '/constants/icons.dart';
 import '/models/drop_down_model.dart';
 import '/widgets/dropdown_field.dart';
-import '/widgets/searchable_single_select_dropdown_selector.dart';
-import 'providers/searchable_single_select_dropdown_provider.dart';
+import 'providers/searchable_multi_select_dropdown_provider.dart';
 
-class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
-  const DfSearchableSingleSelectDropdown({
+class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
+  const DfSearchableMultiSelectDropdown({
     super.key,
     this.initData = const [],
     this.selectedValue,
@@ -31,7 +31,7 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SearchableSingleSelectDropdownProvider<T>(
+      create: (_) => SearchableMultiSelectDropdownProvider<T>(
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
@@ -56,12 +56,12 @@ class _Dropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchableSingleSelectDropdownProvider<T>>(
+    final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
         context,
         listen: false);
     return Column(
       children: [
-        DropdownField<SearchableSingleSelectDropdownProvider<T>>(
+        DropdownField<SearchableMultiSelectDropdownProvider<T>>(
           hintText: hintText,
           labelText: labelText,
           disableInput: true,
@@ -76,7 +76,7 @@ class _Dropdown<T> extends StatelessWidget {
             height: 48,
             child: SvgPicture.asset(
               context
-                      .watch<SearchableSingleSelectDropdownProvider<T>>()
+                      .watch<SearchableMultiSelectDropdownProvider<T>>()
                       .suggestionsExpanded
                   ? Icons.upIcon
                   : Icons.downIcon,
@@ -86,9 +86,9 @@ class _Dropdown<T> extends StatelessWidget {
         const SizedBox(
           height: 4,
         ),
-        Consumer<SearchableSingleSelectDropdownProvider<T>>(
+        Consumer<SearchableMultiSelectDropdownProvider<T>>(
           builder: (_, provider, __) => provider.suggestionsExpanded
-              ? SearchableSingleSelectDropdownSelector<T>()
+              ? SearchableMultiSelectDropdownSelector<T>()
               : const SizedBox(),
         )
       ],

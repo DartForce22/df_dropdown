@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
+                clipBehavior: Clip.none,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -50,9 +51,12 @@ class MyApp extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
-                    DfSearchableDropdown(
+                    DfSearchableDropdown<String>(
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
+                      onOptionSelected: (value) {
+                        log("SELECTED VALUE ${value.value}");
+                      },
                       onSearch: (context) async {
                         return [
                           DropDownModel<String>(
@@ -87,7 +91,7 @@ class MyApp extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
-                    DfSearchableSingleSelectDropdown(
+                    DfSearchableSingleSelectDropdown<String>(
                       hintText: "Select...",
                       labelText: "Single Select",
                       onSearch: (context) async {
@@ -95,6 +99,9 @@ class MyApp extends StatelessWidget {
                           DropDownModel<String>(
                               key: "4", value: "4", text: "Houston")
                         ];
+                      },
+                      onOptionSelected: (value) {
+                        log("SELECTED VALUE ${value?.value}");
                       },
                       initData: [
                         DropDownModel<String>(
