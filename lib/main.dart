@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
                       selectorDecoration: SimpleSelectorDecoration(
                         selectorColor: Colors.yellow,
                         borderRadius: BorderRadius.circular(2),
+                        maxHeight: 40,
                       ),
                       hintText: "Select an option...",
                       labelText: "Simple Dropdown",

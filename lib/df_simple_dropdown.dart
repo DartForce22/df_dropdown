@@ -40,6 +40,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
         validator: validator,
+        maxHeight: selectorDecoration?.maxHeight,
       ),
       child: _Dropdown<T>(
         selectorDecoration: selectorDecoration,

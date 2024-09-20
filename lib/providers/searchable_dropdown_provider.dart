@@ -8,6 +8,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.selectedValue,
     this.onOptionSelected,
     this.onSearch,
+    this.selectorMaxHeight = 200,
     super.initData,
     super.validator,
   });
@@ -16,7 +17,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   final List<DropDownModel<T>> searchResults = [];
   final Function(DropDownModel<T>)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
-
+  final double? selectorMaxHeight;
   @override
   double get dropdownHeight {
     double height = 0;
@@ -30,7 +31,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
       if (dataLength < 5) {
         height = dataLength * 40;
       } else {
-        height = 200;
+        height = selectorMaxHeight!;
       }
     }
 
