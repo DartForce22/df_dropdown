@@ -95,12 +95,6 @@ class MyApp extends StatelessWidget {
                     DfSearchableSingleSelectDropdown<String>(
                       hintText: "Select...",
                       labelText: "Single Select",
-                      onSearch: (context) async {
-                        return [
-                          DropDownModel<String>(
-                              key: "4", value: "4", text: "Houston")
-                        ];
-                      },
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value?.value}");
                       },
@@ -162,17 +156,17 @@ class MyApp extends StatelessWidget {
                         DropDownModel<String>(
                             key: "5", value: "5", text: "Phoenix"),
                         DropDownModel<String>(
-                            key: "3", value: "3", text: "Philadelphia"),
+                            key: "6", value: "3", text: "Philadelphia"),
                         DropDownModel<String>(
-                            key: "4", value: "4", text: "San Antonio"),
+                            key: "7", value: "4", text: "San Antonio"),
                         DropDownModel<String>(
-                            key: "5", value: "5", text: "San Diego"),
+                            key: "8", value: "5", text: "San Diego"),
                         DropDownModel<String>(
-                            key: "3", value: "3", text: "Dallas"),
+                            key: "9", value: "3", text: "Dallas"),
                         DropDownModel<String>(
-                            key: "4", value: "4", text: "Austin"),
+                            key: "10", value: "4", text: "Austin"),
                         DropDownModel<String>(
-                            key: "5", value: "5", text: "Texas"),
+                            key: "11", value: "5", text: "Texas"),
                       ],
                     ),
                     ElevatedButton(

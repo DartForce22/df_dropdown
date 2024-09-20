@@ -78,6 +78,11 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            if (provider.selectedValues.isNotEmpty)
+                              Text("Selected",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  )),
                             InkWell(
                               onTap: provider.clearSelection,
                               child: Text(
@@ -91,6 +96,28 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                           ],
                         ),
                       ),
+                      if (provider.selectedValues.isNotEmpty)
+                        Column(
+                          children: [
+                            ...provider.selectedValues.map(
+                              (suggestion) {
+                                return MultiSelect(
+                                  text: suggestion.text,
+                                  selected: true,
+                                  onTap: () {
+                                    provider.onSelectSuggestion(suggestion);
+                                  },
+                                );
+                              },
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Divider(
+                                height: 1,
+                              ),
+                            )
+                          ],
+                        ),
                       Column(
                         children: provider.getDropdownData.map(
                           (suggestion) {
