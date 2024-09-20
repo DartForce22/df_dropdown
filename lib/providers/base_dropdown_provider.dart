@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
 
-class BaseDropdownProvider with ChangeNotifier {
+class BaseDropdownProvider<T> with ChangeNotifier {
   BaseDropdownProvider({
     this.selectedValues = const [],
     this.initData = const [],
   });
 
   bool suggestionsExpanded = false;
-  final List<DropDownModel> initData;
-  final List<DropDownModel> selectedValues;
+  final List<DropDownModel<T>> initData;
+  final List<DropDownModel<T>> selectedValues;
   final TextEditingController searchTextController = TextEditingController();
   String? _validationError;
   FocusNode textFieldFocusNode = FocusNode();
@@ -41,10 +41,6 @@ class BaseDropdownProvider with ChangeNotifier {
 
   double get dropdownHeight {
     return 200;
-  }
-
-  void onSelectSuggestion(DropDownModel value) {
-    notifyListeners();
   }
 
   void onClearSelection() {

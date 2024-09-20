@@ -1,9 +1,9 @@
 class DropDownModel<T> {
-  final String id;
+  final String key;
   final T value;
   final String text;
   DropDownModel({
-    required this.id,
+    required this.key,
     required this.value,
     required this.text,
   });
@@ -18,9 +18,9 @@ class DropDownModel<T> {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is DropDownModel && id == other.id;
+    return other is DropDownModel && key == other.key;
   }
 
   @override
-  int get hashCode => Object.hash(id, id);
+  int get hashCode => Object.hash(key, key);
 }

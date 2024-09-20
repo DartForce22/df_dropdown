@@ -190,7 +190,6 @@ class DropDown extends StatelessWidget {
                 dropdownData: provider.dropdownData,
                 dropdownHeight: provider.dropdownHeight,
                 onSelectSuggestion: provider.onSelectSuggestion,
-                suggestionsExpanded: provider.suggestionsExpanded,
               ),
             ),
 

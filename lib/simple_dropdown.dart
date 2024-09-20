@@ -1,33 +1,86 @@
-import 'package:df_dropdown/providers/simple_dropdown_provider.dart';
-import 'package:df_dropdown/widgets/dropdown_field.dart';
-import 'package:df_dropdown/widgets/simple_dropdown_selector.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Icons;
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class SimpleDropdown extends StatelessWidget {
-  const SimpleDropdown({super.key});
+import '/constants/icons.dart';
+import '/models/drop_down_model.dart';
+import '/providers/simple_dropdown_provider.dart';
+import '/widgets/dropdown_field.dart';
+import '/widgets/simple_dropdown_selector.dart';
+
+class SimpleDropdown<T> extends StatelessWidget {
+  const SimpleDropdown({
+    super.key,
+    this.initData = const [],
+    this.selectedValue,
+    this.labelText,
+    this.hintText,
+    this.onOptionSelected,
+  });
+
+  final List<DropDownModel<T>> initData;
+  final DropDownModel<T>? selectedValue;
+  final String? labelText;
+  final String? hintText;
+  final Function(DropDownModel<T>)? onOptionSelected;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SimpleDropdownProvider(),
-      builder: (_, __) => Column(
-        children: [
-          DropdownField(
-            onTapInside: context
-                .read<SimpleDropdownProvider>()
-                .toggleSuggestionsExpanded,
-          ),
-          Consumer<SimpleDropdownProvider>(
-            builder: (_, provider, __) => SimpleDropdownSelector(
-              dropdownData: provider.initData,
-              dropdownHeight: provider.dropdownHeight,
-              onSelectSuggestion: provider.onSelectSuggestion,
-              suggestionsExpanded: provider.suggestionsExpanded,
-            ),
-          )
-        ],
+      create: (_) => SimpleDropdownProvider<T>(
+        initData: initData,
+        selectedValue: selectedValue,
+        onOptionSelected: onOptionSelected,
       ),
+      child: _Dropdown<T>(
+        hintText: hintText,
+        labelText: labelText,
+      ),
+    );
+  }
+}
+
+class _Dropdown<T> extends StatelessWidget {
+  const _Dropdown({
+    this.labelText,
+    this.hintText,
+  });
+  final String? labelText;
+  final String? hintText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        DropdownField<SimpleDropdownProvider<T>>(
+          hintText: hintText,
+          labelText: labelText,
+          disableInput: true,
+          onTapInside: context
+              .read<SimpleDropdownProvider<T>>()
+              .toggleSuggestionsExpanded,
+          suffixWidget: SizedBox(
+            height: 48,
+            child: SvgPicture.asset(
+              context.watch<SimpleDropdownProvider<T>>().suggestionsExpanded
+                  ? Icons.upIcon
+                  : Icons.downIcon,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        Consumer<SimpleDropdownProvider<T>>(
+          builder: (_, provider, __) => provider.suggestionsExpanded
+              ? SimpleDropdownSelector<T>(
+                  dropdownData: provider.initData,
+                  dropdownHeight: provider.dropdownHeight,
+                  onSelectSuggestion: provider.onSelectSuggestion,
+                )
+              : const SizedBox(),
+        )
+      ],
     );
   }
 }

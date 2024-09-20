@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
 
-class SimpleDropdownSelector extends StatelessWidget {
+class SimpleDropdownSelector<T> extends StatelessWidget {
   const SimpleDropdownSelector({
     super.key,
-    required this.suggestionsExpanded,
     required this.dropdownData,
     required this.dropdownHeight,
     required this.onSelectSuggestion,
   });
 
-  final bool suggestionsExpanded;
-  final List<DropDownModel> dropdownData;
+  final List<DropDownModel<T>> dropdownData;
   final double dropdownHeight;
-  final Function(DropDownModel) onSelectSuggestion;
+  final Function(DropDownModel<T>) onSelectSuggestion;
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +28,21 @@ class SimpleDropdownSelector extends StatelessWidget {
         ),
         width: double.infinity,
         height: dropdownHeight,
-        child: suggestionsExpanded
-            ? SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: dropdownData
-                      .map(
-                        (suggestion) => _DropdownSuggestion(
-                          text: suggestion.text,
-                          onTap: () {
-                            onSelectSuggestion(suggestion);
-                          },
-                        ),
-                      )
-                      .toList(),
-                ),
-              )
-            : const SizedBox(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: dropdownData
+                .map(
+                  (suggestion) => _DropdownSuggestion(
+                    text: suggestion.text,
+                    onTap: () {
+                      onSelectSuggestion(suggestion);
+                    },
+                  ),
+                )
+                .toList(),
+          ),
+        ),
       ),
     );
   }

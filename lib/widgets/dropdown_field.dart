@@ -3,13 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../providers/base_dropdown_provider.dart';
 
-class DropdownField extends StatelessWidget {
+class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   const DropdownField({
     super.key,
     required this.onTapInside,
-    this.labelVisible = true,
     this.labelText,
-    this.hintVisible = true,
     this.hintText,
     this.disableInput = false,
     this.outlineBorderVisible = true,
@@ -20,9 +18,7 @@ class DropdownField extends StatelessWidget {
 
   final VoidCallback onTapInside;
   final bool outlineBorderVisible;
-  final bool labelVisible;
   final String? labelText;
-  final bool hintVisible;
   final String? hintText;
   final bool disableInput;
   final String? Function(String?)? validator;
@@ -47,7 +43,7 @@ class DropdownField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Consumer<BaseDropdownProvider>(
+    return Consumer<T>(
       builder: (_, provider, child) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -88,7 +84,8 @@ class DropdownField extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (labelVisible && labelText != null)
+                        if (labelText != null &&
+                            provider.searchTextController.text.isNotEmpty)
                           Flexible(
                             child: FittedBox(
                               child: Text(
@@ -109,9 +106,7 @@ class DropdownField extends StatelessWidget {
                           ),
                           onChanged: provider.onInputChanged,
                           decoration: fieldInputDecoration.copyWith(
-                            hintText: hintText != null && hintVisible
-                                ? hintText
-                                : null,
+                            hintText: hintText,
                             hintStyle: TextStyle(
                               color: Colors.grey.shade600,
                               fontSize: 14,
