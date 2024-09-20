@@ -5,19 +5,22 @@ import '/providers/base_dropdown_provider.dart';
 
 class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   SearchableMultiSelectDropdownProvider({
-    this.selectedValue,
+    List<DropDownModel<T>>? selectedValues,
     this.onOptionSelected,
     this.onSearch,
     super.initData,
-    super.validator,
-  });
+    this.multiSelectValidator,
+  }) {
+    this.selectedValues.addAll(selectedValues ?? []);
+  }
 
-  DropDownModel<T>? selectedValue;
+  final List<DropDownModel<T>> selectedValues = [];
   final List<DropDownModel<T>> searchResults = [];
-  final Function(DropDownModel<T>?)? onOptionSelected;
+  final Function(List<DropDownModel<T>>)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final TextEditingController selectorTextEditingController =
       TextEditingController();
+  final String? Function(List<DropDownModel<T>>)? multiSelectValidator;
 
   @override
   double get dropdownHeight {
@@ -40,11 +43,24 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   void onSelectSuggestion(DropDownModel<T> value) {
-    selectedValue = value;
+    if (selectedValues.map((el) => el.key).contains(value.key)) {
+      selectedValues.removeWhere((el) => el.key == value.key);
+    } else {
+      selectedValues.add(value);
+    }
+
+    if (selectedValues.isNotEmpty) {
+      searchTextController.text = selectedValues.first.text;
+      if (selectedValues.length > 1) {
+        searchTextController.text += " (+${selectedValues.length - 1})";
+      }
+    } else {
+      searchTextController.text = "";
+    }
+
     validationError = null;
-    searchTextController.text = value.text;
     if (onOptionSelected != null) {
-      onOptionSelected!(value);
+      onOptionSelected!(selectedValues);
     }
     notifyListeners();
   }
@@ -52,7 +68,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   @override
   String? onValidateField(text) {
     if (validator != null) {
-      validationError = validator!(selectedValue);
+      validationError = multiSelectValidator!(selectedValues);
     }
     notifyListeners();
     return super.onValidateField(text);
@@ -81,11 +97,11 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   void clearSelection() {
-    selectedValue = null;
+    selectedValues.clear();
     searchTextController.text = "";
     selectorTextEditingController.text = "";
     if (onOptionSelected != null) {
-      onOptionSelected!(null);
+      onOptionSelected!(selectedValues);
     }
     notifyListeners();
   }

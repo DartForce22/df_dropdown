@@ -1,8 +1,8 @@
+import '/widgets/searchable_widgets/multi_select.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/providers/searchable_multi_select_dropdown_provider.dart';
-import '/widgets/searchable_widgets/single_select.dart';
 
 class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
   const SearchableMultiSelectDropdownSelector({
@@ -94,9 +94,13 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                       Column(
                         children: provider.getDropdownData.map(
                           (suggestion) {
-                            return SingleSelect(
+                            return MultiSelect(
                               text: suggestion.text,
-                              selected: suggestion == provider.selectedValue,
+                              selected: provider.selectedValues
+                                  .map((el) => el.key)
+                                  .contains(
+                                    suggestion.key,
+                                  ),
                               onTap: () {
                                 provider.onSelectSuggestion(suggestion);
                               },

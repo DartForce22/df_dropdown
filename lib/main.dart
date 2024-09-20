@@ -142,8 +142,14 @@ class MyApp extends StatelessWidget {
                         ];
                       },
                       onOptionSelected: (value) {
-                        log("SELECTED VALUE ${value?.value}");
+                        log("SELECTED VALUE ${value.length}");
                       },
+                      selectedValues: [
+                        DropDownModel<String>(
+                            key: "1", value: "1", text: "New York City"),
+                        DropDownModel<String>(
+                            key: "2", value: "2", text: "Los Angeles"),
+                      ],
                       initData: [
                         DropDownModel<String>(
                             key: "1", value: "1", text: "New York City"),
@@ -172,7 +178,6 @@ class MyApp extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         var isValidForm = formKey.currentState?.validate();
-
                         log("isValidForm $isValidForm");
                       },
                       child: const Text("Submit"),

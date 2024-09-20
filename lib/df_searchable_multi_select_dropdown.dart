@@ -12,7 +12,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   const DfSearchableMultiSelectDropdown({
     super.key,
     this.initData = const [],
-    this.selectedValue,
+    this.selectedValues,
     this.labelText,
     this.hintText,
     this.onOptionSelected,
@@ -21,11 +21,11 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   });
 
   final List<DropDownModel<T>> initData;
-  final DropDownModel<T>? selectedValue;
+  final List<DropDownModel<T>>? selectedValues;
   final String? labelText;
   final String? hintText;
-  final Function(DropDownModel<T>?)? onOptionSelected;
-  final String? Function(DropDownModel<T>?)? validator;
+  final Function(List<DropDownModel<T>>)? onOptionSelected;
+  final String? Function(List<DropDownModel<T>>?)? validator;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
 
   @override
@@ -33,9 +33,9 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => SearchableMultiSelectDropdownProvider<T>(
         initData: initData,
-        selectedValue: selectedValue,
+        selectedValues: selectedValues,
         onOptionSelected: onOptionSelected,
-        validator: validator,
+        multiSelectValidator: validator,
         onSearch: onSearch,
       ),
       child: _Dropdown<T>(
