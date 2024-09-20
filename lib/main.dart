@@ -107,8 +107,8 @@ class MyApp extends StatelessWidget {
                     DfSearchableSingleSelectDropdown<String>(
                       hintText: "Select...",
                       labelText: "Single Select",
-                      selectorDecoration: SingleSelectorDecoration(
-                        selectedItemIconVisible: false,
+                      selectorDecoration: const SingleSelectorDecoration(
+                        selectedItemIcon: Icon(Icons.circle),
                       ),
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value?.value}");

@@ -79,7 +79,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
                   )
               ],
             ),
-            height: decoration?.fieldHeight,
+            height: decoration?.fieldHeight ?? 54,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
