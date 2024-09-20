@@ -51,7 +51,7 @@ class MultiSelect extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                width: 4,
+                width: 8,
               ),
               Text(
                 text,

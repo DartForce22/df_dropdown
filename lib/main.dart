@@ -109,18 +109,6 @@ class MyApp extends StatelessWidget {
                             key: "4", value: "4", text: "Houston"),
                         DropDownModel<String>(
                             key: "5", value: "5", text: "Phoenix"),
-                        DropDownModel<String>(
-                            key: "3", value: "3", text: "Philadelphia"),
-                        DropDownModel<String>(
-                            key: "4", value: "4", text: "San Antonio"),
-                        DropDownModel<String>(
-                            key: "5", value: "5", text: "San Diego"),
-                        DropDownModel<String>(
-                            key: "3", value: "3", text: "Dallas"),
-                        DropDownModel<String>(
-                            key: "4", value: "4", text: "Austin"),
-                        DropDownModel<String>(
-                            key: "5", value: "5", text: "Texas"),
                       ],
                     ),
                     const SizedBox(
@@ -128,7 +116,6 @@ class MyApp extends StatelessWidget {
                     ),
                     DfSearchableMultiSelectDropdown<String>(
                       hintText: "Select options...",
-                      labelText: "Multi Select",
                       onSearch: (context) async {
                         return [
                           DropDownModel<String>(

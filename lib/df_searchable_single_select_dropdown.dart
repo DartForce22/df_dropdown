@@ -84,7 +84,7 @@ class _Dropdown<T> extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 4,
+          height:  8,
         ),
         Consumer<SearchableSingleSelectDropdownProvider<T>>(
           builder: (_, provider, __) => provider.suggestionsExpanded
