@@ -66,8 +66,9 @@ class _Dropdown<T> extends StatelessWidget {
           onTapOutside: () {
             provider.onTapOutside(context);
           },
+          suffixTapEnabled: false,
           suffixWidget: GestureDetector(
-            onTap: provider.closeSuggestions,
+            onTap: provider.toggleSuggestionsExpanded,
             child: SizedBox(
               height: 48,
               child: SvgPicture.asset(

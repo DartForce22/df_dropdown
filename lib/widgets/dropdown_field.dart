@@ -12,6 +12,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.hintText,
     this.disableInput = false,
     this.outlineBorderVisible = true,
+    this.suffixTapEnabled = true,
     this.suffixWidget,
   });
 
@@ -22,6 +23,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   final String? hintText;
   final bool disableInput;
   final Widget? suffixWidget;
+  final bool suffixTapEnabled;
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
   final InputDecoration fieldInputDecoration = const InputDecoration(
@@ -45,42 +47,42 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
       builder: (_, provider, child) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TapRegion(
-            onTapOutside: (_) {
-              if (onTapOutside != null) onTapOutside!();
-            },
-            onTapInside: (_) {
-              if (onTapInside != null) onTapInside!();
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 6,
-                horizontal: 12,
+          Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 6,
+              horizontal: 12,
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: provider.fieldBorderColor,
               ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: provider.fieldBorderColor,
-                ),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  if (outlineBorderVisible)
-                    BoxShadow(
-                      color: Colors.teal[450] ?? Colors.teal,
-                      spreadRadius: 4,
-                    ),
-                  if (outlineBorderVisible)
-                    const BoxShadow(
-                      color: Colors.white,
-                      spreadRadius: 2,
-                    )
-                ],
-              ),
-              height: 52,
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                if (outlineBorderVisible)
+                  BoxShadow(
+                    color: Colors.teal[450] ?? Colors.teal,
+                    spreadRadius: 4,
+                  ),
+                if (outlineBorderVisible)
+                  const BoxShadow(
+                    color: Colors.white,
+                    spreadRadius: 2,
+                  )
+              ],
+            ),
+            height: 52,
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TapRegion(
+                    onTapOutside: (_) {
+                      if (onTapOutside != null) onTapOutside!();
+                    },
+                    onTapInside: (_) {
+                      if (onTapInside != null) onTapInside!();
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -118,9 +120,13 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (suffixWidget != null) suffixWidget!,
-                ],
-              ),
+                ),
+                if (suffixWidget != null)
+                  GestureDetector(
+                    onTap: onTapInside,
+                    child: suffixWidget,
+                  ),
+              ],
             ),
           ),
 
