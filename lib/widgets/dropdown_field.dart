@@ -118,7 +118,12 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
                           onChanged: provider.onInputChanged,
                           decoration: fieldInputDecoration.copyWith(
                             hintText: hintText,
-                            hintStyle: decoration?.hintTextStyle ?? hintStyle,
+                            hintStyle: decoration?.hintTextStyle ??
+                                TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                           ),
                         ),
                       ],
