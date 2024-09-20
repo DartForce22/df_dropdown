@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:df_dropdown/constants/dropdown_enums.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ class DropdownProvider with ChangeNotifier {
   DropDownModel? selectedValue;
   final List<DropDownModel> selectedValues = [];
   final TextEditingController searchTextController = TextEditingController();
+  final TextEditingController selectorSearchTextController =
+      TextEditingController();
   String? _validationError;
   FocusNode textFieldFocusNode = FocusNode();
   final Function(DropDownModel?)? onItemSelect;
@@ -42,15 +45,18 @@ class DropdownProvider with ChangeNotifier {
 
   void toggleSuggestionsExpanded() {
     suggestionsExpanded = !suggestionsExpanded;
+    selectorSearchTextController.text = "";
     notifyListeners();
   }
 
   void expandSuggestions() {
+    selectorSearchTextController.text = "";
     suggestionsExpanded = true;
     notifyListeners();
   }
 
   void closeSuggestions() {
+    selectorSearchTextController.text = "";
     suggestionsExpanded = false;
     notifyListeners();
   }
@@ -93,10 +99,22 @@ class DropdownProvider with ChangeNotifier {
     );
   }
 
+  void onSelectorInputChanged(String text) {
+    if (text.isNotEmpty) {
+      searchResults.addAll(initData);
+      searchResults.removeWhere(
+        (el) => !el.text.contains(selectorSearchTextController.text),
+      );
+    }
+    notifyListeners();
+  }
+
   List<DropDownModel> get dropdownData {
+    log("dropdownData");
     final List<DropDownModel> data = [];
-    if (searchTextController.text.isEmpty ||
-        dropdownType != DropdownType.searchableDropdown) {
+    if ((searchTextController.text.isEmpty ||
+            dropdownType != DropdownType.searchableDropdown) &&
+        selectorSearchTextController.text.isEmpty) {
       data.addAll(initData);
     } else {
       data.addAll(searchResults);

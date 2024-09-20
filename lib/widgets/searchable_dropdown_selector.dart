@@ -1,6 +1,8 @@
 import 'package:df_dropdown/constants/dropdown_enums.dart';
+import 'package:df_dropdown/searchable_drop_down/provider/dropdown_provider.dart';
 import 'package:df_dropdown/widgets/searchable_widgets/single_select.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '/models/drop_down_model.dart';
 
@@ -8,7 +10,6 @@ class SearchableDropdownSelector extends StatelessWidget {
   const SearchableDropdownSelector({
     super.key,
     required this.suggestionsExpanded,
-    required this.dropdownData,
     required this.dropdownHeight,
     this.onSelectSuggestion,
     this.onAddSuggestion,
@@ -19,7 +20,6 @@ class SearchableDropdownSelector extends StatelessWidget {
   });
 
   final bool suggestionsExpanded;
-  final List<DropDownModel> dropdownData;
   final double dropdownHeight;
   final Function(DropDownModel)? onSelectSuggestion;
   final Function(DropDownModel)? onAddSuggestion;
@@ -39,6 +39,8 @@ class SearchableDropdownSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dropdownProvider =
+        Provider.of<DropdownProvider>(context, listen: false);
     return Material(
       clipBehavior: Clip.hardEdge,
       borderRadius: BorderRadius.circular(12),
@@ -55,6 +57,8 @@ class SearchableDropdownSelector extends StatelessWidget {
             ? Column(
                 children: [
                   TextField(
+                    controller: dropdownProvider.selectorSearchTextController,
+                    onChanged: dropdownProvider.onSelectorInputChanged,
                     decoration: fieldInputDecoration.copyWith(
                       prefixIcon: Icon(
                         Icons.search,
@@ -97,23 +101,32 @@ class SearchableDropdownSelector extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            ...dropdownData.map(
-                              (suggestion) => SingleSelect(
-                                text: suggestion.text,
-                                selected: selectedValues.contains(suggestion) ||
-                                    suggestion == selectedValue,
-                                onTap: () {
-                                  if (dropdownType ==
+                            Selector<DropdownProvider, String>(
+                              builder: (_, value, __) => Column(
+                                children: [
+                                  ...dropdownProvider.dropdownData.map(
+                                    (suggestion) {
+                                      if (dropdownType ==
                                           DropdownType
-                                              .searchableMultiSelectDropdown &&
-                                      onAddSuggestion != null) {
-                                    onAddSuggestion!(suggestion);
-                                  } else if (onSelectSuggestion != null) {
-                                    onSelectSuggestion!(suggestion);
-                                  }
-                                },
+                                              .searchableSingleSelectDropdown) {
+                                        return SingleSelect(
+                                          text: suggestion.text,
+                                          selected: suggestion == selectedValue,
+                                          onTap: () {
+                                            if (onSelectSuggestion != null) {
+                                              onSelectSuggestion!(suggestion);
+                                            }
+                                          },
+                                        );
+                                      }
+                                      return SizedBox();
+                                    },
+                                  ),
+                                ],
                               ),
-                            ),
+                              selector: (_, provider) =>
+                                  provider.selectorSearchTextController.text,
+                            )
                           ],
                         ),
                       ),

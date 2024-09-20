@@ -45,6 +45,9 @@ class MyApp extends StatelessWidget {
                 searchFunction: (text) async {
                   return [];
                 },
+                onItemSelect: (text) async {
+                  log("item $text");
+                },
               ),
             )
           ],

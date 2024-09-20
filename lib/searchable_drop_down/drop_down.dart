@@ -1,4 +1,5 @@
 import 'package:df_dropdown/constants/dropdown_enums.dart';
+import 'package:df_dropdown/widgets/dropdown_field.dart';
 import 'package:df_dropdown/widgets/searchable_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,7 +40,6 @@ class DropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     final dropdownProvider =
         Provider.of<DropdownProvider>(context, listen: false);
-    final textTheme = Theme.of(context).textTheme;
     return TapRegion(
       onTapOutside: (pointerDownEvent) {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -48,15 +48,18 @@ class DropDown extends StatelessWidget {
         children: [
           //Dropdown text input field and validation error text
           Consumer<DropdownProvider>(
-            builder: (_, provider, __) => Column(
+            builder: (_, provider, __) => DropdownField(
+              onTapInside: () {
+                if (!dropdownProvider.enabledTextInput) {
+                  dropdownProvider.toggleSuggestionsExpanded();
+                }
+              },
+              borderColor: dropdownProvider.fieldBorderColor,
+            ),
+            /*  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TapRegion(
-                  onTapInside: (_) {
-                    if (!dropdownProvider.enabledTextInput) {
-                      dropdownProvider.toggleSuggestionsExpanded();
-                    }
-                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: 6,
@@ -175,7 +178,7 @@ class DropDown extends StatelessWidget {
                     ),
                   )
               ],
-            ),
+            ),*/
           ),
           const SizedBox(
             height: 6,
@@ -201,7 +204,6 @@ class DropDown extends StatelessWidget {
             //Dropdown suggestions container
             Consumer<DropdownProvider>(
               builder: (_, provider, __) => SearchableDropdownSelector(
-                dropdownData: provider.dropdownData,
                 dropdownHeight: provider.dropdownHeight,
                 selectedValue: provider.selectedValue,
                 onSelectSuggestion: (value) {
