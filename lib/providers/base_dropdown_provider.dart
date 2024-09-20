@@ -54,14 +54,17 @@ class BaseDropdownProvider<T> with ChangeNotifier {
   ///
   /// Returns:
   /// - `Color`: The color to be applied to the field's border.
-  Color get fieldBorderColor {
-    Color borderColor =
-        (Colors.grey[950] ?? Colors.grey.shade900).withOpacity(0.12);
+  Color fieldBorderColor({
+    Color? borderColor,
+    Color? errorBorderColor,
+  }) {
+    Color color = (borderColor ?? Colors.grey[950] ?? Colors.grey.shade900)
+        .withOpacity(0.12);
 
     if (_validationError != null) {
-      borderColor = Colors.red.shade500;
+      borderColor = errorBorderColor ?? Colors.red.shade500;
     }
 
-    return borderColor;
+    return color;
   }
 }

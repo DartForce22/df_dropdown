@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/models/dropdown_decoration.dart';
 import '../providers/base_dropdown_provider.dart';
 
 class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
@@ -14,6 +15,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.outlineBorderVisible = true,
     this.suffixTapEnabled = true,
     this.suffixWidget,
+    this.decoration,
   });
 
   final VoidCallback? onTapInside;
@@ -24,6 +26,8 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   final bool disableInput;
   final Widget? suffixWidget;
   final bool suffixTapEnabled;
+
+  final DropdownDecoration? decoration;
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
   final InputDecoration fieldInputDecoration = const InputDecoration(
@@ -54,23 +58,28 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               border: Border.all(
-                color: provider.fieldBorderColor,
+                color: provider.fieldBorderColor(
+                  borderColor: decoration?.borderColor,
+                  errorBorderColor: decoration?.errorBorderColor,
+                ),
               ),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius:
+                  decoration?.borderRadius ?? BorderRadius.circular(12),
               boxShadow: [
-                if (outlineBorderVisible)
+                if (outlineBorderVisible && provider.validationError == null)
                   BoxShadow(
-                    color: Colors.teal[450] ?? Colors.teal,
+                    color: (decoration?.outlineBorderColor ??
+                        (Colors.teal[450] ?? Colors.teal)),
                     spreadRadius: 4,
                   ),
-                if (outlineBorderVisible)
+                if (outlineBorderVisible && provider.validationError == null)
                   const BoxShadow(
                     color: Colors.white,
                     spreadRadius: 2,
                   )
               ],
             ),
-            height: 52,
+            height: decoration?.fieldHeight,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,9 +102,10 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
                             child: FittedBox(
                               child: Text(
                                 labelText!,
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                ),
+                                style: decoration?.labelTextStyle ??
+                                    TextStyle(
+                                      color: Colors.grey.shade600,
+                                    ),
                               ),
                             ),
                           ),
@@ -104,17 +114,11 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
                           ignorePointers: disableInput,
                           validator: provider.onValidateField,
                           controller: provider.searchTextController,
-                          style: const TextStyle(
-                            fontSize: 14,
-                          ),
+                          style: decoration?.dropdownTextStyle,
                           onChanged: provider.onInputChanged,
                           decoration: fieldInputDecoration.copyWith(
                             hintText: hintText,
-                            hintStyle: TextStyle(
-                              color: Colors.grey.shade600,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            hintStyle: decoration?.hintTextStyle ?? hintStyle,
                           ),
                         ),
                       ],
@@ -138,9 +142,10 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
               ),
               child: Text(
                 provider.validationError!,
-                style: textTheme.bodySmall?.copyWith(
-                  color: Colors.red.shade500,
-                ),
+                style: decoration?.errorMessageTextStyle ??
+                    textTheme.bodySmall?.copyWith(
+                      color: Colors.red.shade500,
+                    ),
               ),
             )
         ],

@@ -1,3 +1,5 @@
+import 'package:df_dropdown/models/dropdown_decoration.dart';
+
 import '/widgets/searchable_multi_select_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,6 +20,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.onOptionSelected,
     this.validator,
     this.onSearch,
+    this.decoration,
   });
 
   final List<DropDownModel<T>> initData;
@@ -27,7 +30,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   final Function(List<DropDownModel<T>>)? onOptionSelected;
   final String? Function(List<DropDownModel<T>>?)? validator;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
-
+  final DropdownDecoration? decoration;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -50,7 +53,9 @@ class _Dropdown<T> extends StatelessWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
+    this.decoration,
   });
+  final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
 
@@ -62,6 +67,7 @@ class _Dropdown<T> extends StatelessWidget {
     return Column(
       children: [
         DropdownField<SearchableMultiSelectDropdownProvider<T>>(
+          decoration: decoration,
           hintText: hintText,
           labelText: labelText,
           disableInput: true,
