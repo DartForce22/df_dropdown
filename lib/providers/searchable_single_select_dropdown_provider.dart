@@ -9,7 +9,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectedValue,
     this.onOptionSelected,
     this.onSearch,
-    this.selectorMaxHeight = 200,
+    this.selectorMaxHeight,
     super.initData,
     super.validator,
   });
@@ -35,7 +35,7 @@ class SearchableSingleSelectDropdownProvider<T>
       if (dataLength < 5) {
         height = (dataLength * 40) + 40;
       } else {
-        height = selectorMaxHeight!;
+        height = selectorMaxHeight ?? 200;
       }
     }
 

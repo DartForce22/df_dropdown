@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:df_dropdown/models/dropdown_decoration.dart';
 import 'package:df_dropdown/models/simple_selector_decoration.dart';
+import 'package:df_dropdown/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 import '/df_searchable_dropdown.dart';
@@ -106,6 +107,9 @@ class MyApp extends StatelessWidget {
                     DfSearchableSingleSelectDropdown<String>(
                       hintText: "Select...",
                       labelText: "Single Select",
+                      selectorDecoration: SingleSelectorDecoration(
+                        selectedItemIconVisible: false,
+                      ),
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value?.value}");
                       },

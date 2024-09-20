@@ -1,5 +1,5 @@
 import 'package:df_dropdown/models/dropdown_decoration.dart';
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
+import 'package:df_dropdown/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
   final String? Function(DropDownModel<T>?)? validator;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final DropdownDecoration? decoration;
-  final MultiSelectorDecoration? selectorDecoration;
+  final SingleSelectorDecoration? selectorDecoration;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -62,7 +62,7 @@ class _Dropdown<T> extends StatelessWidget {
     required this.selectorDecoration,
   });
   final DropdownDecoration? decoration;
-  final MultiSelectorDecoration? selectorDecoration;
+  final SingleSelectorDecoration? selectorDecoration;
   final String? labelText;
   final String? hintText;
 

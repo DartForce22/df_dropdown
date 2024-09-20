@@ -5,7 +5,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
   SimpleDropdownProvider({
     this.selectedValue,
     this.onOptionSelected,
-    this.maxHeight = 200.0,
+    this.maxHeight,
     super.initData,
     super.validator,
   });
@@ -22,7 +22,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
       if (initData.length < 5) {
         height = initData.length * 40;
       } else {
-        height = maxHeight!;
+        height = maxHeight ?? 200;
       }
     }
 

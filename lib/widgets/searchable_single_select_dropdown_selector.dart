@@ -1,4 +1,4 @@
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
+import 'package:df_dropdown/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +20,7 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
     disabledBorder: InputBorder.none,
   );
 
-  final MultiSelectorDecoration? selectorDecoration;
+  final SingleSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
+import 'package:df_dropdown/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 class SingleSelect extends StatelessWidget {
@@ -13,7 +13,7 @@ class SingleSelect extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   final bool selected;
-  final MultiSelectorDecoration? selectorDecoration;
+  final SingleSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {

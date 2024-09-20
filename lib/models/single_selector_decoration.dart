@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MultiSelectorDecoration {
+class SingleSelectorDecoration {
   final BorderRadius? borderRadius;
   final double? elevation;
   final double? maxHeight;
@@ -17,7 +17,7 @@ class MultiSelectorDecoration {
   final Widget? selectedItemIcon;
   final bool? selectedItemIconVisible;
 
-  const MultiSelectorDecoration({
+  const SingleSelectorDecoration({
     this.borderRadius,
     this.elevation,
     this.maxHeight,
