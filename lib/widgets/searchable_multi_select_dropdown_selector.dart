@@ -115,7 +115,8 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (provider.selectedValues.isNotEmpty)
+                      if (provider.selectedValues.isNotEmpty &&
+                          selectorDecoration?.showSelectedItems != false)
                         Column(
                           children: [
                             ...provider.selectedValues.map(

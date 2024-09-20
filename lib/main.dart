@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:df_dropdown/models/dropdown_decoration.dart';
+import 'package:df_dropdown/models/multi_selector_decoration.dart';
 import 'package:df_dropdown/models/simple_selector_decoration.dart';
 import 'package:df_dropdown/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart';
@@ -131,6 +132,10 @@ class MyApp extends StatelessWidget {
                     ),
                     DfSearchableMultiSelectDropdown<String>(
                       hintText: "Select options...",
+                      decoration: DropdownDecoration(borderColor: Colors.amber),
+                      selectorDecoration: MultiSelectorDecoration(
+                        showSelectedItems: false,
+                      ),
                       onSearch: (context) async {
                         return [
                           DropDownModel<String>(
