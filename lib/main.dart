@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import '/models/drop_down_model.dart';
-import '/simple_dropdown.dart';
+import 'df_simple_dropdown.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: SimpleDropdown<String>(
+                  child: DfSimpleDropdown<String>(
                     hintText: "Select an option...",
                     labelText: "Option",
                     onOptionSelected: (value) {
