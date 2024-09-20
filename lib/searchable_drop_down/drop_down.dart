@@ -1,13 +1,11 @@
-import 'package:df_dropdown/constants/dropdown_enums.dart';
-import 'package:df_dropdown/widgets/dropdown_field.dart';
-import 'package:df_dropdown/widgets/searchable_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/icons.dart';
+import '/constants/dropdown_enums.dart';
+import '/widgets/dropdown_field.dart';
+import '/widgets/searchable_dropdown_selector.dart';
 import '/widgets/simple_dropdown_selector.dart';
-import 'provider/dropdown_provider.dart';
+import 'providers/dropdown_provider.dart';
 
 class DropDown extends StatelessWidget {
   final String? labelText;
@@ -54,7 +52,6 @@ class DropDown extends StatelessWidget {
                   dropdownProvider.toggleSuggestionsExpanded();
                 }
               },
-              borderColor: dropdownProvider.fieldBorderColor,
             ),
             /*  Column(
               crossAxisAlignment: CrossAxisAlignment.start,

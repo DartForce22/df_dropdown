@@ -1,21 +1,16 @@
-import 'package:df_dropdown/models/drop_down_model.dart';
 import 'package:flutter/material.dart';
+
+import '/models/drop_down_model.dart';
 
 class BaseDropdownProvider with ChangeNotifier {
   BaseDropdownProvider({
-    this.selectedValue,
+    this.selectedValues = const [],
     this.initData = const [],
-  }) {
-    if (selectedValue != null) {
-      searchTextController.text = selectedValue!.text;
-    }
-  }
+  });
 
   bool suggestionsExpanded = false;
-  final List<DropDownModel> searchResults = [];
   final List<DropDownModel> initData;
-  DropDownModel? selectedValue;
-  final List<DropDownModel> selectedValues = [];
+  final List<DropDownModel> selectedValues;
   final TextEditingController searchTextController = TextEditingController();
   String? _validationError;
   FocusNode textFieldFocusNode = FocusNode();

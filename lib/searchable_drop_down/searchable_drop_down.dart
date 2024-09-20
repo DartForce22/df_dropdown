@@ -1,5 +1,5 @@
 import 'package:df_dropdown/constants/dropdown_enums.dart';
-import 'package:df_dropdown/searchable_drop_down/provider/dropdown_provider.dart';
+import 'package:df_dropdown/searchable_drop_down/providers/dropdown_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
