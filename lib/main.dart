@@ -90,12 +90,12 @@ class MyApp extends StatelessWidget {
                     DfSearchableSingleSelectDropdown(
                       hintText: "Select...",
                       labelText: "Single Select",
-                      // onSearch: (context) async {
-                      //   return [
-                      //     DropDownModel<String>(
-                      //         key: "4", value: "4", text: "Houston")
-                      //   ];
-                      // },
+                      onSearch: (context) async {
+                        return [
+                          DropDownModel<String>(
+                              key: "4", value: "4", text: "Houston")
+                        ];
+                      },
                       initData: [
                         DropDownModel<String>(
                             key: "1", value: "1", text: "New York City"),

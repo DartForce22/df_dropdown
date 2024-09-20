@@ -63,7 +63,7 @@ class SingleSelectSearchableDropdownProvider<T>
 
   @override
   void onInputChanged(String text) {
-    if (onSearch != null) {
+    if (onSearch != null && text.isNotEmpty) {
       onSearch!(text).then((values) {
         searchResults.clear();
         searchResults.addAll(values);
