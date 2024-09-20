@@ -1,10 +1,9 @@
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
-
-import '/widgets/searchable_widgets/multi_select.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/models/multi_selector_decoration.dart';
 import '/providers/searchable_multi_select_dropdown_provider.dart';
+import '/widgets/searchable_widgets/multi_select.dart';
 
 class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
   const SearchableMultiSelectDropdownSelector({

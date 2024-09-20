@@ -1,4 +1,4 @@
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
+import '/models/multi_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 class MultiSelect extends StatelessWidget {

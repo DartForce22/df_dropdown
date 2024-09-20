@@ -1,5 +1,5 @@
-import 'package:df_dropdown/models/drop_down_model.dart';
-import 'package:df_dropdown/providers/base_dropdown_provider.dart';
+import '/models/drop_down_model.dart';
+import '/providers/base_dropdown_provider.dart';
 
 class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
   SimpleDropdownProvider({

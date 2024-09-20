@@ -1,9 +1,9 @@
-import 'package:df_dropdown/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/searchable_single_select_dropdown_provider.dart';
+import '/models/single_selector_decoration.dart';
 import '/widgets/searchable_widgets/single_select.dart';
+import '../providers/searchable_single_select_dropdown_provider.dart';
 
 class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
   const SearchableSingleSelectDropdownSelector({

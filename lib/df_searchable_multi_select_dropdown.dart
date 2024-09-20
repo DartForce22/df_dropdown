@@ -1,14 +1,13 @@
-import 'package:df_dropdown/models/dropdown_decoration.dart';
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
-
-import '/widgets/searchable_multi_select_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/icons.dart';
 import '/models/drop_down_model.dart';
+import '/models/dropdown_decoration.dart';
+import '/models/multi_selector_decoration.dart';
 import '/widgets/dropdown_field.dart';
+import '/widgets/searchable_multi_select_dropdown_selector.dart';
 import 'providers/searchable_multi_select_dropdown_provider.dart';
 
 class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {

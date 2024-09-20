@@ -1,4 +1,4 @@
-import 'package:df_dropdown/models/single_selector_decoration.dart';
+import '/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 class SingleSelect extends StatelessWidget {

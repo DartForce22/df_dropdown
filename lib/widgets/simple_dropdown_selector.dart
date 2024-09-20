@@ -1,7 +1,7 @@
-import 'package:df_dropdown/models/simple_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
+import '/models/simple_selector_decoration.dart';
 
 class SimpleDropdownSelector<T> extends StatelessWidget {
   const SimpleDropdownSelector({

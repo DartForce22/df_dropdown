@@ -1,15 +1,15 @@
 import 'dart:developer';
 
-import 'package:df_dropdown/models/dropdown_decoration.dart';
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
-import 'package:df_dropdown/models/simple_selector_decoration.dart';
-import 'package:df_dropdown/models/single_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 import '/df_searchable_dropdown.dart';
 import '/df_searchable_multi_select_dropdown.dart';
 import '/df_searchable_single_select_dropdown.dart';
 import '/models/drop_down_model.dart';
+import '/models/dropdown_decoration.dart';
+import '/models/multi_selector_decoration.dart';
+import '/models/simple_selector_decoration.dart';
+import '/models/single_selector_decoration.dart';
 import 'df_simple_dropdown.dart';
 
 void main() {
@@ -73,8 +73,6 @@ class MyApp extends StatelessWidget {
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value.value}");
                       },
-                      selectedValue: DropDownModel<String>(
-                          key: "3", value: "3", text: "Houston"),
                       onSearch: (context) async {
                         return [
                           DropDownModel<String>(
