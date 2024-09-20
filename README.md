@@ -1,16 +1,23 @@
-# df_dropdown
+#df_dropdown
 
-A new Flutter project.
+`df_dropdown` is a Flutter package providing versatile and customizable dropdown components with different selection modes and search functionality.
 
-## Getting Started
+# Features:
 
-This project is a starting point for a Flutter application.
+- Simple dropdown
+- Searchable dropdown
+- Single select with search
+- Multi select with search
 
-A few resources to get you started if this is your first Flutter project:
+# Installation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Add the package to your `pubspec.yaml` file
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```dart
+dependencies:
+  df_dropdown: latest_version
+```
+
+Then, run: `flutter pub get`
+
+
