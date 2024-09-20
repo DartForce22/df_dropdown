@@ -4,14 +4,12 @@ import '/models/drop_down_model.dart';
 
 class BaseDropdownProvider<T> with ChangeNotifier {
   BaseDropdownProvider({
-    this.selectedValues = const [],
     this.initData = const [],
     this.validator,
   });
 
   bool suggestionsExpanded = false;
   final List<DropDownModel<T>> initData;
-  final List<DropDownModel<T>> selectedValues;
   final TextEditingController searchTextController = TextEditingController();
   String? _validationError;
   FocusNode textFieldFocusNode = FocusNode();

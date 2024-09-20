@@ -10,9 +10,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.onSearch,
     super.initData,
     super.validator,
-  }) : super(
-          selectedValues: selectedValue != null ? [selectedValue] : [],
-        );
+  });
 
   DropDownModel<T>? selectedValue;
   final List<DropDownModel<T>> searchResults = [];

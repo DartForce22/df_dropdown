@@ -7,9 +7,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.onOptionSelected,
     super.initData,
     super.validator,
-  }) : super(
-          selectedValues: selectedValue != null ? [selectedValue] : [],
-        );
+  });
 
   DropDownModel<T>? selectedValue;
   final Function(DropDownModel<T>)? onOptionSelected;

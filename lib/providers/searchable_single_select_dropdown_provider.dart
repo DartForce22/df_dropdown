@@ -11,9 +11,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.onSearch,
     super.initData,
     super.validator,
-  }) : super(
-          selectedValues: selectedValue != null ? [selectedValue] : [],
-        );
+  });
 
   DropDownModel<T>? selectedValue;
   final List<DropDownModel<T>> searchResults = [];
@@ -43,11 +41,16 @@ class SearchableSingleSelectDropdownProvider<T>
   }
 
   void onSelectSuggestion(DropDownModel<T> value) {
-    selectedValue = value;
+    if (value == selectedValue) {
+      selectedValue = null;
+      searchTextController.text = "";
+    } else {
+      selectedValue = value;
+      searchTextController.text = value.text;
+    }
     validationError = null;
-    searchTextController.text = value.text;
     if (onOptionSelected != null) {
-      onOptionSelected!(value);
+      onOptionSelected!(selectedValue);
     }
     notifyListeners();
   }
