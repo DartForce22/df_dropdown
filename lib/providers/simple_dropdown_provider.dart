@@ -8,7 +8,11 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.maxHeight,
     super.initData,
     super.validator,
-  });
+  }) {
+    if (selectedValue != null) {
+      searchTextController.text = selectedValue!.text;
+    }
+  }
 
   DropDownModel<T>? selectedValue;
   final Function(DropDownModel<T>)? onOptionSelected;

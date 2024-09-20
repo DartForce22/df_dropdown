@@ -11,7 +11,11 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.selectorMaxHeight,
     super.initData,
     super.validator,
-  });
+  }) {
+    if (selectedValue != null) {
+      searchTextController.text = selectedValue!.text;
+    }
+  }
 
   DropDownModel<T>? selectedValue;
   final List<DropDownModel<T>> searchResults = [];

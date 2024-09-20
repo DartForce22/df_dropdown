@@ -52,6 +52,8 @@ class MyApp extends StatelessWidget {
                       ),
                       hintText: "Select an option...",
                       labelText: "Simple Dropdown",
+                      selectedValue: DropDownModel<String>(
+                          key: "2", value: "2", text: "Los Angeles"),
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value.value}");
                       },
@@ -71,6 +73,8 @@ class MyApp extends StatelessWidget {
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value.value}");
                       },
+                      selectedValue: DropDownModel<String>(
+                          key: "3", value: "3", text: "Houston"),
                       onSearch: (context) async {
                         return [
                           DropDownModel<String>(
@@ -114,6 +118,8 @@ class MyApp extends StatelessWidget {
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value?.value}");
                       },
+                      selectedValue: DropDownModel<String>(
+                          key: "3", value: "3", text: "Chicago"),
                       initData: [
                         DropDownModel<String>(
                             key: "1", value: "1", text: "New York City"),
@@ -132,8 +138,9 @@ class MyApp extends StatelessWidget {
                     ),
                     DfSearchableMultiSelectDropdown<String>(
                       hintText: "Select options...",
-                      decoration: DropdownDecoration(borderColor: Colors.amber),
-                      selectorDecoration: MultiSelectorDecoration(
+                      decoration:
+                          const DropdownDecoration(borderColor: Colors.amber),
+                      selectorDecoration: const MultiSelectorDecoration(
                         showSelectedItems: false,
                       ),
                       onSearch: (context) async {

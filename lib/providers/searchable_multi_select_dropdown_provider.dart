@@ -13,6 +13,12 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.selectorMaxHeight,
   }) {
     this.selectedValues.addAll(selectedValues ?? []);
+    if (selectedValues != null && selectedValues.isNotEmpty) {
+      searchTextController.text = selectedValues.first.text;
+      if (selectedValues.length > 1) {
+        searchTextController.text += " (+${selectedValues.length - 1})";
+      }
+    }
   }
 
   final List<DropDownModel<T>> selectedValues = [];
