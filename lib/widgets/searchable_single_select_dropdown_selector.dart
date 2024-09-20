@@ -1,3 +1,4 @@
+import 'package:df_dropdown/models/multi_selector_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ import '/widgets/searchable_widgets/single_select.dart';
 class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
   const SearchableSingleSelectDropdownSelector({
     super.key,
+    required this.selectorDecoration,
   });
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
@@ -18,6 +20,8 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
     disabledBorder: InputBorder.none,
   );
 
+  final MultiSelectorDecoration? selectorDecoration;
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SearchableSingleSelectDropdownProvider<T>>(
@@ -26,12 +30,14 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
     );
     return Material(
       clipBehavior: Clip.hardEdge,
-      borderRadius: BorderRadius.circular(12),
-      elevation: 4,
+      borderRadius:
+          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+      elevation: selectorDecoration?.elevation ?? 4,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          borderRadius:
+              selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+          color: selectorDecoration?.selectorColor ?? Colors.white,
         ),
         child: Column(
           children: [
@@ -41,10 +47,12 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.search,
-                    color: Colors.grey.shade400,
-                  ),
+                  if (selectorDecoration?.showSearchIcon != false)
+                    selectorDecoration?.searchIcon ??
+                        Icon(
+                          Icons.search,
+                          color: Colors.grey.shade400,
+                        ),
                   const SizedBox(
                     width: 4,
                   ),
@@ -53,13 +61,15 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                       controller: provider.selectorTextEditingController,
                       onChanged: provider.onInputChanged,
                       decoration: fieldInputDecoration,
+                      style: selectorDecoration?.searchTextStyle,
                     ),
                   ),
                 ],
               ),
             ),
-            const Divider(
+            Divider(
               height: 1,
+              color: selectorDecoration?.dividerColor,
             ),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
@@ -81,11 +91,13 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                             InkWell(
                               onTap: provider.clearSelection,
                               child: Text(
-                                "Clear selection",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.teal.shade400,
-                                ),
+                                selectorDecoration?.clearSelectionText ??
+                                    "Clear selection",
+                                style: selectorDecoration?.searchTextStyle ??
+                                    TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.teal.shade400,
+                                    ),
                               ),
                             ),
                           ],
@@ -95,6 +107,7 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                         children: provider.getDropdownData.map(
                           (suggestion) {
                             return SingleSelect(
+                              selectorDecoration: selectorDecoration,
                               text: suggestion.text,
                               selected: suggestion == provider.selectedValue,
                               onTap: () {

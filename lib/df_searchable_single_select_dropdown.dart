@@ -1,4 +1,5 @@
 import 'package:df_dropdown/models/dropdown_decoration.dart';
+import 'package:df_dropdown/models/multi_selector_decoration.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
     this.validator,
     this.onSearch,
     this.decoration,
+    this.selectorDecoration,
   });
 
   final List<DropDownModel<T>> initData;
@@ -30,6 +32,7 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
   final String? Function(DropDownModel<T>?)? validator;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final DropdownDecoration? decoration;
+  final MultiSelectorDecoration? selectorDecoration;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -39,8 +42,10 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
         onOptionSelected: onOptionSelected,
         validator: validator,
         onSearch: onSearch,
+        selectorMaxHeight: selectorDecoration?.maxHeight,
       ),
       child: _Dropdown<T>(
+        selectorDecoration: selectorDecoration,
         decoration: decoration,
         hintText: hintText,
         labelText: labelText,
@@ -53,9 +58,11 @@ class _Dropdown<T> extends StatelessWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
-    this.decoration,
+    required this.decoration,
+    required this.selectorDecoration,
   });
   final DropdownDecoration? decoration;
+  final MultiSelectorDecoration? selectorDecoration;
   final String? labelText;
   final String? hintText;
 
@@ -94,7 +101,9 @@ class _Dropdown<T> extends StatelessWidget {
         ),
         Consumer<SearchableSingleSelectDropdownProvider<T>>(
           builder: (_, provider, __) => provider.suggestionsExpanded
-              ? SearchableSingleSelectDropdownSelector<T>()
+              ? SearchableSingleSelectDropdownSelector<T>(
+                  selectorDecoration: selectorDecoration,
+                )
               : const SizedBox(),
         )
       ],

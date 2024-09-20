@@ -9,6 +9,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectedValue,
     this.onOptionSelected,
     this.onSearch,
+    this.selectorMaxHeight = 200,
     super.initData,
     super.validator,
   });
@@ -19,6 +20,7 @@ class SearchableSingleSelectDropdownProvider<T>
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final TextEditingController selectorTextEditingController =
       TextEditingController();
+  final double? selectorMaxHeight;
 
   @override
   double get dropdownHeight {
@@ -33,7 +35,7 @@ class SearchableSingleSelectDropdownProvider<T>
       if (dataLength < 5) {
         height = (dataLength * 40) + 40;
       } else {
-        height = 200;
+        height = selectorMaxHeight!;
       }
     }
 

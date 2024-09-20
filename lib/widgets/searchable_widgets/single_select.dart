@@ -1,3 +1,4 @@
+import 'package:df_dropdown/models/multi_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 class SingleSelect extends StatelessWidget {
@@ -6,11 +7,13 @@ class SingleSelect extends StatelessWidget {
     required this.text,
     required this.onTap,
     required this.selected,
+    required this.selectorDecoration,
   });
 
   final String text;
   final VoidCallback onTap;
   final bool selected;
+  final MultiSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,8 @@ class SingleSelect extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: selected
-                ? Colors.teal[400]?.withOpacity(0.04)
+                ? (selectorDecoration?.selectedItemColor ?? Colors.teal[400])
+                    ?.withOpacity(0.04)
                 : Colors.transparent,
           ),
           width: double.infinity,
@@ -37,17 +41,24 @@ class SingleSelect extends StatelessWidget {
             children: [
               Text(
                 text,
-                style: textTheme.labelMedium?.copyWith(
-                  color: selected ? Colors.teal[400] : null,
+                style: (selectorDecoration?.optionTextStyle ??
+                        textTheme.labelMedium)
+                    ?.copyWith(
+                  color: selected
+                      ? (selectorDecoration?.selectedItemColor ??
+                          Colors.teal[400])
+                      : null,
                 ),
                 textAlign: TextAlign.start,
               ),
-              if (selected)
-                Icon(
-                  Icons.check,
-                  size: 15,
-                  color: Colors.teal[400],
-                )
+              if (selected &&
+                  selectorDecoration?.selectedItemIconVisible != false)
+                selectorDecoration?.selectedItemIcon ??
+                    Icon(
+                      Icons.check,
+                      size: 15,
+                      color: Colors.teal[400],
+                    )
             ],
           ),
         ),
