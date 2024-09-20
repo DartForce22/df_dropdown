@@ -39,6 +39,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
         validator: validator,
       ),
       child: _Dropdown<T>(
+        decoration: decoration,
         hintText: hintText,
         labelText: labelText,
       ),

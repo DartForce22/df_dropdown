@@ -42,6 +42,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         onSearch: onSearch,
       ),
       child: _Dropdown<T>(
+        decoration: decoration,
         hintText: hintText,
         labelText: labelText,
       ),

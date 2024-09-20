@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:df_dropdown/models/dropdown_decoration.dart';
 import 'package:flutter/material.dart';
 
 import '/df_searchable_dropdown.dart';
@@ -37,6 +38,10 @@ class MyApp extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     DfSimpleDropdown<String>(
+                      decoration: DropdownDecoration(
+                        borderRadius: BorderRadius.circular(999),
+                        borderColor: Colors.blue,
+                      ),
                       hintText: "Select an option...",
                       labelText: "Simple Dropdown",
                       onOptionSelected: (value) {
