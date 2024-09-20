@@ -41,7 +41,9 @@ class BaseDropdownProvider<T> with ChangeNotifier {
     notifyListeners();
   }
 
-  void onInputChanged(String text) {}
+  void onInputChanged(String text) {
+    notifyListeners();
+  }
 
   double get dropdownHeight {
     return 200;

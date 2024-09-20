@@ -7,6 +7,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   SearchableDropdownProvider({
     this.selectedValue,
     this.onOptionSelected,
+    this.onSearch,
     super.initData,
     super.validator,
   }) : super(
@@ -14,15 +15,22 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
         );
 
   DropDownModel<T>? selectedValue;
+  final List<DropDownModel<T>> searchResults = [];
   final Function(DropDownModel<T>)? onOptionSelected;
+  final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
 
   @override
   double get dropdownHeight {
     double height = 0;
 
+    int dataLength =
+        searchResults.isNotEmpty || searchTextController.text.isNotEmpty
+            ? searchResults.length
+            : initData.length;
+
     if (suggestionsExpanded) {
-      if (initData.length < 5) {
-        height = initData.length * 40;
+      if (dataLength < 5) {
+        height = dataLength * 40;
       } else {
         height = 200;
       }
@@ -51,8 +59,37 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     return super.onValidateField(text);
   }
 
+  @override
+  void onInputChanged(String text) {
+    if (onSearch != null) {
+      onSearch!(text).then((values) {
+        searchResults.clear();
+        searchResults.addAll(values);
+        notifyListeners();
+      });
+    } else {
+      searchResults.clear();
+
+      searchResults.addAll(
+        initData.where(
+          (el) => el.text.toLowerCase().startsWith(
+                text.toLowerCase(),
+              ),
+        ),
+      );
+      super.onInputChanged(text);
+    }
+  }
+
   void onTapOutside(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
     notifyListeners();
+  }
+
+  List<DropDownModel<T>> get getDropdownData {
+    if (searchTextController.text.isNotEmpty || searchResults.isNotEmpty) {
+      return searchResults;
+    }
+    return initData;
   }
 }

@@ -54,32 +54,35 @@ class MyApp extends StatelessWidget {
                     DfSearchableDropdown(
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
-                      onOptionSelected: (value) {
-                        log("SELECTED VALUE ${value.value}");
+                      onSearch: (context) async {
+                        return [
+                          DropDownModel<String>(
+                              key: "4", value: "4", text: "Houston")
+                        ];
                       },
                       initData: [
                         DropDownModel<String>(
-                            key: "1", value: "1", text: "Option 1"),
+                            key: "1", value: "1", text: "New York City"),
                         DropDownModel<String>(
-                            key: "2", value: "2", text: "Option 2"),
+                            key: "2", value: "2", text: "Los Angeles"),
                         DropDownModel<String>(
-                            key: "3", value: "3", text: "Option 3"),
+                            key: "3", value: "3", text: "Chicago"),
                         DropDownModel<String>(
-                            key: "4", value: "4", text: "Option 4"),
+                            key: "4", value: "4", text: "Houston"),
                         DropDownModel<String>(
-                            key: "5", value: "5", text: "Option 5"),
+                            key: "5", value: "5", text: "Phoenix"),
                         DropDownModel<String>(
-                            key: "3", value: "3", text: "Option 3"),
+                            key: "3", value: "3", text: "Philadelphia"),
                         DropDownModel<String>(
-                            key: "4", value: "4", text: "Option 4"),
+                            key: "4", value: "4", text: "San Antonio"),
                         DropDownModel<String>(
-                            key: "5", value: "5", text: "Option 5"),
+                            key: "5", value: "5", text: "San Diego"),
                         DropDownModel<String>(
-                            key: "3", value: "3", text: "Option 3"),
+                            key: "3", value: "3", text: "Dallas"),
                         DropDownModel<String>(
-                            key: "4", value: "4", text: "Option 4"),
+                            key: "4", value: "4", text: "Austin"),
                         DropDownModel<String>(
-                            key: "5", value: "5", text: "Option 5"),
+                            key: "5", value: "5", text: "Texas"),
                       ],
                     ),
                     ElevatedButton(

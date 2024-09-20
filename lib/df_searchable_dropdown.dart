@@ -17,6 +17,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.hintText,
     this.onOptionSelected,
     this.validator,
+    this.onSearch,
   });
 
   final List<DropDownModel<T>> initData;
@@ -25,6 +26,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
   final String? hintText;
   final Function(DropDownModel<T>)? onOptionSelected;
   final String? Function(DropDownModel<T>?)? validator;
+  final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
         validator: validator,
+        onSearch: onSearch,
       ),
       child: _Dropdown<T>(
         hintText: hintText,
@@ -87,7 +90,7 @@ class _Dropdown<T> extends StatelessWidget {
         Consumer<SearchableDropdownProvider<T>>(
           builder: (_, provider, __) => provider.suggestionsExpanded
               ? SimpleDropdownSelector<T>(
-                  dropdownData: provider.initData,
+                  dropdownData: provider.getDropdownData,
                   dropdownHeight: provider.dropdownHeight,
                   onSelectSuggestion: provider.onSelectSuggestion,
                 )
