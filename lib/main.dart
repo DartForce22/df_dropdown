@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:df_dropdown/df_searchable_dropdown.dart';
+import 'package:df_dropdown/df_searchable_single_select_dropdown.dart';
 
 import '/models/drop_down_model.dart';
 import 'df_simple_dropdown.dart';
@@ -58,6 +59,43 @@ class MyApp extends StatelessWidget {
                               key: "4", value: "4", text: "Houston")
                         ];
                       },
+                      initData: [
+                        DropDownModel<String>(
+                            key: "1", value: "1", text: "New York City"),
+                        DropDownModel<String>(
+                            key: "2", value: "2", text: "Los Angeles"),
+                        DropDownModel<String>(
+                            key: "3", value: "3", text: "Chicago"),
+                        DropDownModel<String>(
+                            key: "4", value: "4", text: "Houston"),
+                        DropDownModel<String>(
+                            key: "5", value: "5", text: "Phoenix"),
+                        DropDownModel<String>(
+                            key: "3", value: "3", text: "Philadelphia"),
+                        DropDownModel<String>(
+                            key: "4", value: "4", text: "San Antonio"),
+                        DropDownModel<String>(
+                            key: "5", value: "5", text: "San Diego"),
+                        DropDownModel<String>(
+                            key: "3", value: "3", text: "Dallas"),
+                        DropDownModel<String>(
+                            key: "4", value: "4", text: "Austin"),
+                        DropDownModel<String>(
+                            key: "5", value: "5", text: "Texas"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    DfSearchableSingleSelectDropdown(
+                      hintText: "Select...",
+                      labelText: "Single Select",
+                      // onSearch: (context) async {
+                      //   return [
+                      //     DropDownModel<String>(
+                      //         key: "4", value: "4", text: "Houston")
+                      //   ];
+                      // },
                       initData: [
                         DropDownModel<String>(
                             key: "1", value: "1", text: "New York City"),
