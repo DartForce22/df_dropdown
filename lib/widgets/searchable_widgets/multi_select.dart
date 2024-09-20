@@ -1,3 +1,4 @@
+import 'package:df_dropdown/models/multi_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 class MultiSelect extends StatelessWidget {
@@ -6,17 +7,19 @@ class MultiSelect extends StatelessWidget {
     required this.text,
     required this.onTap,
     required this.selected,
+    required this.selectorDecoration,
   });
 
   final String text;
   final VoidCallback onTap;
   final bool selected;
+  final MultiSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Material(
-      color: Colors.transparent,
+      color: selectorDecoration?.itemColor ?? Colors.transparent,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
@@ -26,7 +29,8 @@ class MultiSelect extends StatelessWidget {
             vertical: 10,
           ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius:
+                selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
             color: Colors.transparent,
           ),
           width: double.infinity,
@@ -38,7 +42,8 @@ class MultiSelect extends StatelessWidget {
                 child: Checkbox(
                   visualDensity: VisualDensity.compact,
                   value: selected,
-                  activeColor: Colors.teal.shade400,
+                  activeColor: selectorDecoration?.selectedItemColor ??
+                      Colors.teal.shade400,
                   side: BorderSide(
                     color: Colors.grey.shade400,
                   ),
@@ -55,7 +60,8 @@ class MultiSelect extends StatelessWidget {
               ),
               Text(
                 text,
-                style: textTheme.labelMedium,
+                style: selectorDecoration?.optionTextStyle ??
+                    textTheme.labelMedium,
                 textAlign: TextAlign.start,
               ),
             ],

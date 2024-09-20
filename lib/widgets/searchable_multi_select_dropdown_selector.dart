@@ -1,3 +1,5 @@
+import 'package:df_dropdown/models/multi_selector_decoration.dart';
+
 import '/widgets/searchable_widgets/multi_select.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,7 @@ import '/providers/searchable_multi_select_dropdown_provider.dart';
 class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
   const SearchableMultiSelectDropdownSelector({
     super.key,
+    required this.selectorDecoration,
   });
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
@@ -17,6 +20,7 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
     enabledBorder: InputBorder.none,
     disabledBorder: InputBorder.none,
   );
+  final MultiSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +30,14 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
     );
     return Material(
       clipBehavior: Clip.hardEdge,
-      borderRadius: BorderRadius.circular(12),
-      elevation: 4,
+      borderRadius:
+          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+      elevation: selectorDecoration?.elevation ?? 4,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          borderRadius:
+              selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+          color: selectorDecoration?.selectorColor ?? Colors.white,
         ),
         child: Column(
           children: [
@@ -41,10 +47,12 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.search,
-                    color: Colors.grey.shade400,
-                  ),
+                  if (selectorDecoration?.showSearchIcon != false)
+                    selectorDecoration?.searchIcon ??
+                        Icon(
+                          Icons.search,
+                          color: Colors.grey.shade400,
+                        ),
                   const SizedBox(
                     width: 4,
                   ),
@@ -53,13 +61,15 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                       controller: provider.selectorTextEditingController,
                       onChanged: provider.onInputChanged,
                       decoration: fieldInputDecoration,
+                      style: selectorDecoration?.searchTextStyle,
                     ),
                   ),
                 ],
               ),
             ),
-            const Divider(
+            Divider(
               height: 1,
+              color: selectorDecoration?.dividerColor,
             ),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
@@ -78,19 +88,28 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            if (provider.selectedValues.isNotEmpty)
-                              Text("Selected",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  )),
+                            if (provider.selectedValues.isNotEmpty &&
+                                selectorDecoration?.showSelectedItems != false)
+                              Text(
+                                selectorDecoration?.selectedItemsTitle ??
+                                    "Selected",
+                                style: selectorDecoration
+                                        ?.selectedItemsTitleStyle ??
+                                    const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
                             InkWell(
                               onTap: provider.clearSelection,
                               child: Text(
-                                "Clear selection",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.teal.shade400,
-                                ),
+                                selectorDecoration?.clearSelectionText ??
+                                    "Clear selection",
+                                style: selectorDecoration
+                                        ?.clearSelectionTextStyle ??
+                                    TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.teal.shade400,
+                                    ),
                               ),
                             ),
                           ],
@@ -102,6 +121,7 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                             ...provider.selectedValues.map(
                               (suggestion) {
                                 return MultiSelect(
+                                  selectorDecoration: selectorDecoration,
                                   text: suggestion.text,
                                   selected: true,
                                   onTap: () {
@@ -110,10 +130,12 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                                 );
                               },
                             ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Divider(
                                 height: 1,
+                                color: selectorDecoration?.dividerColor,
                               ),
                             )
                           ],
@@ -122,6 +144,7 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                         children: provider.getDropdownData.map(
                           (suggestion) {
                             return MultiSelect(
+                              selectorDecoration: selectorDecoration,
                               text: suggestion.text,
                               selected: provider.selectedValues
                                   .map((el) => el.key)

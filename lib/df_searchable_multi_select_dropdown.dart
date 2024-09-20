@@ -1,4 +1,5 @@
 import 'package:df_dropdown/models/dropdown_decoration.dart';
+import 'package:df_dropdown/models/multi_selector_decoration.dart';
 
 import '/widgets/searchable_multi_select_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
@@ -21,6 +22,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.validator,
     this.onSearch,
     this.decoration,
+    this.selectorDecoration,
   });
 
   final List<DropDownModel<T>> initData;
@@ -31,6 +33,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   final String? Function(List<DropDownModel<T>>?)? validator;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final DropdownDecoration? decoration;
+  final MultiSelectorDecoration? selectorDecoration;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -40,11 +43,13 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         onOptionSelected: onOptionSelected,
         multiSelectValidator: validator,
         onSearch: onSearch,
+        selectorMaxHeight: selectorDecoration?.maxHeight,
       ),
       child: _Dropdown<T>(
         decoration: decoration,
         hintText: hintText,
         labelText: labelText,
+        selectorDecoration: selectorDecoration,
       ),
     );
   }
@@ -54,11 +59,13 @@ class _Dropdown<T> extends StatelessWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
-    this.decoration,
+    required this.decoration,
+    required this.selectorDecoration,
   });
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
+  final MultiSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +102,9 @@ class _Dropdown<T> extends StatelessWidget {
         ),
         Consumer<SearchableMultiSelectDropdownProvider<T>>(
           builder: (_, provider, __) => provider.suggestionsExpanded
-              ? SearchableMultiSelectDropdownSelector<T>()
+              ? SearchableMultiSelectDropdownSelector<T>(
+                  selectorDecoration: selectorDecoration,
+                )
               : const SizedBox(),
         )
       ],

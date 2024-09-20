@@ -10,6 +10,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.onSearch,
     super.initData,
     this.multiSelectValidator,
+    this.selectorMaxHeight,
   }) {
     this.selectedValues.addAll(selectedValues ?? []);
   }
@@ -21,7 +22,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   final TextEditingController selectorTextEditingController =
       TextEditingController();
   final String? Function(List<DropDownModel<T>>)? multiSelectValidator;
-
+  final double? selectorMaxHeight;
   @override
   double get dropdownHeight {
     double height = 0;
@@ -35,7 +36,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
       if (dataLength < 5) {
         height = (dataLength * 40) + 40;
       } else {
-        height = 200;
+        height = selectorMaxHeight ?? 200;
       }
     }
 
