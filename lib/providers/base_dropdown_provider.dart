@@ -6,6 +6,7 @@ class BaseDropdownProvider<T> with ChangeNotifier {
   BaseDropdownProvider({
     this.selectedValues = const [],
     this.initData = const [],
+    this.validator,
   });
 
   bool suggestionsExpanded = false;
@@ -14,13 +15,13 @@ class BaseDropdownProvider<T> with ChangeNotifier {
   final TextEditingController searchTextController = TextEditingController();
   String? _validationError;
   FocusNode textFieldFocusNode = FocusNode();
+  final String? Function(DropDownModel<T>?)? validator;
+  String? validationError;
 
   set setValidationError(String? error) {
     _validationError = error;
     notifyListeners();
   }
-
-  String? get validationError => _validationError;
 
   void toggleSuggestionsExpanded() {
     suggestionsExpanded = !suggestionsExpanded;
@@ -45,6 +46,10 @@ class BaseDropdownProvider<T> with ChangeNotifier {
 
   void onClearSelection() {
     notifyListeners();
+  }
+
+  String? onValidateField(text) {
+    return validationError;
   }
 
   /// Returns the color to be used for the border of a form field, based on validation state.

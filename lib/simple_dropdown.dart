@@ -16,6 +16,7 @@ class SimpleDropdown<T> extends StatelessWidget {
     this.labelText,
     this.hintText,
     this.onOptionSelected,
+    this.validator,
   });
 
   final List<DropDownModel<T>> initData;
@@ -23,6 +24,7 @@ class SimpleDropdown<T> extends StatelessWidget {
   final String? labelText;
   final String? hintText;
   final Function(DropDownModel<T>)? onOptionSelected;
+  final String? Function(DropDownModel<T>?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class SimpleDropdown<T> extends StatelessWidget {
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
+        validator: validator,
       ),
       child: _Dropdown<T>(
         hintText: hintText,
@@ -56,6 +59,8 @@ class _Dropdown<T> extends StatelessWidget {
           hintText: hintText,
           labelText: labelText,
           disableInput: true,
+          outlineBorderVisible:
+              context.read<SimpleDropdownProvider<T>>().suggestionsExpanded,
           onTapInside: context
               .read<SimpleDropdownProvider<T>>()
               .toggleSuggestionsExpanded,

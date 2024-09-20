@@ -11,9 +11,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.hintText,
     this.disableInput = false,
     this.outlineBorderVisible = true,
-    this.validator,
     this.suffixWidget,
-    this.validationError,
   });
 
   final VoidCallback onTapInside;
@@ -21,9 +19,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   final String? labelText;
   final String? hintText;
   final bool disableInput;
-  final String? Function(String?)? validator;
   final Widget? suffixWidget;
-  final String? validationError;
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
   final InputDecoration fieldInputDecoration = const InputDecoration(
@@ -99,7 +95,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
                         TextFormField(
                           focusNode: provider.textFieldFocusNode,
                           ignorePointers: disableInput,
-                          validator: validator,
+                          validator: provider.onValidateField,
                           controller: provider.searchTextController,
                           style: const TextStyle(
                             fontSize: 14,
@@ -124,13 +120,13 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
           ),
 
           //An error message [Text] widget displayed only when validation returns an error
-          if (validationError != null)
+          if (provider.validationError != null)
             Padding(
               padding: const EdgeInsets.only(
                 top: 4,
               ),
               child: Text(
-                validationError!,
+                provider.validationError!,
                 style: textTheme.bodySmall?.copyWith(
                   color: Colors.red.shade500,
                 ),

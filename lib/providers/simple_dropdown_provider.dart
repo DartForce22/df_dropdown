@@ -6,6 +6,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.selectedValue,
     this.onOptionSelected,
     super.initData,
+    super.validator,
   }) : super(
           selectedValues: selectedValue != null ? [selectedValue] : [],
         );
@@ -30,11 +31,21 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
 
   void onSelectSuggestion(DropDownModel<T> value) {
     selectedValue = value;
+    validationError = null;
     closeSuggestions();
     searchTextController.text = value.text;
     if (onOptionSelected != null) {
       onOptionSelected!(value);
     }
     notifyListeners();
+  }
+
+  @override
+  String? onValidateField(text) {
+    if (validator != null) {
+      validationError = validator!(selectedValue);
+    }
+    notifyListeners();
+    return super.onValidateField(text);
   }
 }
