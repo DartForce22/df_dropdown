@@ -1,4 +1,4 @@
-import 'package:df_dropdown/widgets/searchable_multi_select_dropdown_selector.dart';
+import '/widgets/searchable_multi_select_dropdown_selector.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
