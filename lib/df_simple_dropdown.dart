@@ -1,4 +1,5 @@
 import 'package:df_dropdown/models/dropdown_decoration.dart';
+import 'package:df_dropdown/models/simple_selector_decoration.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,6 +20,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
     this.onOptionSelected,
     this.validator,
     this.decoration,
+    this.selectorDecoration,
   });
 
   final List<DropDownModel<T>> initData;
@@ -28,6 +30,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
   final Function(DropDownModel<T>)? onOptionSelected;
   final String? Function(DropDownModel<T>?)? validator;
   final DropdownDecoration? decoration;
+  final SimpleSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +42,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
         validator: validator,
       ),
       child: _Dropdown<T>(
+        selectorDecoration: selectorDecoration,
         decoration: decoration,
         hintText: hintText,
         labelText: labelText,
@@ -51,8 +55,10 @@ class _Dropdown<T> extends StatelessWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
-    this.decoration,
+    required this.decoration,
+    required this.selectorDecoration,
   });
+  final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
@@ -86,6 +92,7 @@ class _Dropdown<T> extends StatelessWidget {
         Consumer<SimpleDropdownProvider<T>>(
           builder: (_, provider, __) => provider.suggestionsExpanded
               ? SimpleDropdownSelector<T>(
+                  selectorDecoration: selectorDecoration,
                   dropdownData: provider.initData,
                   dropdownHeight: provider.dropdownHeight,
                   onSelectSuggestion: provider.onSelectSuggestion,

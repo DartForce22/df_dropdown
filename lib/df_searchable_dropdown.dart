@@ -1,4 +1,5 @@
 import 'package:df_dropdown/models/dropdown_decoration.dart';
+import 'package:df_dropdown/models/simple_selector_decoration.dart';
 import 'package:flutter/material.dart' hide Icons;
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,9 +21,11 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.validator,
     this.onSearch,
     this.decoration,
+    this.selectorDecoration,
   });
 
   final List<DropDownModel<T>> initData;
+  final SimpleSelectorDecoration? selectorDecoration;
   final DropDownModel<T>? selectedValue;
   final String? labelText;
   final String? hintText;
@@ -45,6 +48,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         decoration: decoration,
         hintText: hintText,
         labelText: labelText,
+        selectorDecoration: selectorDecoration,
       ),
     );
   }
@@ -54,8 +58,10 @@ class _Dropdown<T> extends StatelessWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
-    this.decoration,
+    required this.decoration,
+    required this.selectorDecoration,
   });
+  final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
@@ -97,6 +103,7 @@ class _Dropdown<T> extends StatelessWidget {
         Consumer<SearchableDropdownProvider<T>>(
           builder: (_, provider, __) => provider.suggestionsExpanded
               ? SimpleDropdownSelector<T>(
+                  selectorDecoration: selectorDecoration,
                   dropdownData: provider.getDropdownData,
                   dropdownHeight: provider.dropdownHeight,
                   onSelectSuggestion: provider.onSelectSuggestion,

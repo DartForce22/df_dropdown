@@ -1,3 +1,4 @@
+import 'package:df_dropdown/models/simple_selector_decoration.dart';
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -8,23 +9,27 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
     required this.dropdownData,
     required this.dropdownHeight,
     required this.onSelectSuggestion,
+    this.selectorDecoration,
   });
 
   final List<DropDownModel<T>> dropdownData;
   final double dropdownHeight;
+  final SimpleSelectorDecoration? selectorDecoration;
   final Function(DropDownModel<T>) onSelectSuggestion;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       clipBehavior: Clip.hardEdge,
-      borderRadius: BorderRadius.circular(12),
-      elevation: 4,
+      borderRadius:
+          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+      elevation: selectorDecoration?.elevation ?? 4,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          borderRadius:
+              selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+          color: selectorDecoration?.selectorColor ?? Colors.white,
         ),
         width: double.infinity,
         height: dropdownHeight,
@@ -34,6 +39,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
             children: dropdownData
                 .map(
                   (suggestion) => _DropdownSuggestion(
+                    selectorDecoration: selectorDecoration,
                     text: suggestion.text,
                     onTap: () {
                       onSelectSuggestion(suggestion);
@@ -58,17 +64,20 @@ class _DropdownSuggestion extends StatelessWidget {
   const _DropdownSuggestion({
     required this.text,
     required this.onTap,
+    required this.selectorDecoration,
   });
 
   final String text;
   final VoidCallback onTap;
+  final SimpleSelectorDecoration? selectorDecoration;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Material(
       color: Colors.transparent,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius:
+          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
         child: Container(
@@ -77,13 +86,14 @@ class _DropdownSuggestion extends StatelessWidget {
             vertical: 10,
           ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.transparent,
+            borderRadius:
+                selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+            color: selectorDecoration?.itemColor ?? Colors.transparent,
           ),
           width: double.infinity,
           child: Text(
             text,
-            style: textTheme.labelMedium,
+            style: selectorDecoration?.optionTextStyle ?? textTheme.labelMedium,
             textAlign: TextAlign.start,
           ),
         ),
