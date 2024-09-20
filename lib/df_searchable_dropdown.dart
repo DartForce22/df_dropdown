@@ -53,22 +53,30 @@ class _Dropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider =
+        Provider.of<SearchableDropdownProvider<T>>(context, listen: false);
     return Column(
       children: [
         DropdownField<SearchableDropdownProvider<T>>(
           hintText: hintText,
           labelText: labelText,
-          outlineBorderVisible:
-              context.read<SearchableDropdownProvider<T>>().suggestionsExpanded,
-          onTapInside: context
-              .read<SearchableDropdownProvider<T>>()
-              .toggleSuggestionsExpanded,
-          suffixWidget: SizedBox(
-            height: 48,
-            child: SvgPicture.asset(
-              context.watch<SearchableDropdownProvider<T>>().suggestionsExpanded
-                  ? Icons.upIcon
-                  : Icons.downIcon,
+          outlineBorderVisible: provider.suggestionsExpanded ||
+              provider.textFieldFocusNode.hasFocus,
+          onTapInside: provider.expandSuggestions,
+          onTapOutside: () {
+            provider.onTapOutside(context);
+          },
+          suffixWidget: GestureDetector(
+            onTap: provider.closeSuggestions,
+            child: SizedBox(
+              height: 48,
+              child: SvgPicture.asset(
+                context
+                        .watch<SearchableDropdownProvider<T>>()
+                        .suggestionsExpanded
+                    ? Icons.upIcon
+                    : Icons.downIcon,
+              ),
             ),
           ),
         ),

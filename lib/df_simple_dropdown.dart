@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '/constants/icons.dart';
 import '/models/drop_down_model.dart';
-import 'providers/simple_dropdown_provider copy.dart';
+import 'providers/simple_dropdown_provider.dart';
 import '/widgets/dropdown_field.dart';
 import '/widgets/simple_dropdown_selector.dart';
 

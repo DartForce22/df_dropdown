@@ -6,7 +6,8 @@ import '../providers/base_dropdown_provider.dart';
 class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   const DropdownField({
     super.key,
-    required this.onTapInside,
+    this.onTapInside,
+    this.onTapOutside,
     this.labelText,
     this.hintText,
     this.disableInput = false,
@@ -14,7 +15,8 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.suffixWidget,
   });
 
-  final VoidCallback onTapInside;
+  final VoidCallback? onTapInside;
+  final VoidCallback? onTapOutside;
   final bool outlineBorderVisible;
   final String? labelText;
   final String? hintText;
@@ -44,8 +46,11 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TapRegion(
+            onTapOutside: (_) {
+              if (onTapOutside != null) onTapOutside!();
+            },
             onTapInside: (_) {
-              onTapInside();
+              if (onTapInside != null) onTapInside!();
             },
             child: Container(
               padding: const EdgeInsets.symmetric(

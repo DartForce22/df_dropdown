@@ -1,5 +1,6 @@
 import 'package:df_dropdown/models/drop_down_model.dart';
 import 'package:df_dropdown/providers/base_dropdown_provider.dart';
+import 'package:flutter/material.dart';
 
 class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   SearchableDropdownProvider({
@@ -47,5 +48,10 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     }
     notifyListeners();
     return super.onValidateField(text);
+  }
+
+  void onTapOutside(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
+    notifyListeners();
   }
 }

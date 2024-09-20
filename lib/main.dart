@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:df_dropdown/df_searchable_dropdown.dart';
+
 import '/models/drop_down_model.dart';
 import 'df_simple_dropdown.dart';
 import 'package:flutter/material.dart';
@@ -25,52 +27,72 @@ class MyApp extends StatelessWidget {
         child: Scaffold(
           body: Form(
             key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: DfSimpleDropdown<String>(
-                    hintText: "Select an option...",
-                    labelText: "Option",
-                    onOptionSelected: (value) {
-                      log("SELECTED VALUE ${value.value}");
-                    },
-                    initData: [
-                      DropDownModel<String>(
-                          key: "1", value: "1", text: "Option 1"),
-                      DropDownModel<String>(
-                          key: "2", value: "2", text: "Option 2"),
-                      DropDownModel<String>(
-                          key: "3", value: "3", text: "Option 3"),
-                      DropDownModel<String>(
-                          key: "4", value: "4", text: "Option 4"),
-                      DropDownModel<String>(
-                          key: "5", value: "5", text: "Option 5"),
-                      DropDownModel<String>(
-                          key: "3", value: "3", text: "Option 3"),
-                      DropDownModel<String>(
-                          key: "4", value: "4", text: "Option 4"),
-                      DropDownModel<String>(
-                          key: "5", value: "5", text: "Option 5"),
-                      DropDownModel<String>(
-                          key: "3", value: "3", text: "Option 3"),
-                      DropDownModel<String>(
-                          key: "4", value: "4", text: "Option 4"),
-                      DropDownModel<String>(
-                          key: "5", value: "5", text: "Option 5"),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    var isValidForm = formKey.currentState?.validate();
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    DfSimpleDropdown<String>(
+                      hintText: "Select an option...",
+                      labelText: "Simple Dropdown",
+                      onOptionSelected: (value) {
+                        log("SELECTED VALUE ${value.value}");
+                      },
+                      initData: [
+                        DropDownModel<String>(
+                            key: "1", value: "1", text: "Option 1"),
+                        DropDownModel<String>(
+                            key: "2", value: "2", text: "Option 2"),
+                        DropDownModel<String>(
+                            key: "3", value: "3", text: "Option 3"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    DfSearchableDropdown(
+                      hintText: "Start typing..",
+                      labelText: "Searchable Dropdown",
+                      onOptionSelected: (value) {
+                        log("SELECTED VALUE ${value.value}");
+                      },
+                      initData: [
+                        DropDownModel<String>(
+                            key: "1", value: "1", text: "Option 1"),
+                        DropDownModel<String>(
+                            key: "2", value: "2", text: "Option 2"),
+                        DropDownModel<String>(
+                            key: "3", value: "3", text: "Option 3"),
+                        DropDownModel<String>(
+                            key: "4", value: "4", text: "Option 4"),
+                        DropDownModel<String>(
+                            key: "5", value: "5", text: "Option 5"),
+                        DropDownModel<String>(
+                            key: "3", value: "3", text: "Option 3"),
+                        DropDownModel<String>(
+                            key: "4", value: "4", text: "Option 4"),
+                        DropDownModel<String>(
+                            key: "5", value: "5", text: "Option 5"),
+                        DropDownModel<String>(
+                            key: "3", value: "3", text: "Option 3"),
+                        DropDownModel<String>(
+                            key: "4", value: "4", text: "Option 4"),
+                        DropDownModel<String>(
+                            key: "5", value: "5", text: "Option 5"),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        var isValidForm = formKey.currentState?.validate();
 
-                    log("isValidForm $isValidForm");
-                  },
-                  child: const Text("Submit"),
-                )
-              ],
+                        log("isValidForm $isValidForm");
+                      },
+                      child: const Text("Submit"),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),
