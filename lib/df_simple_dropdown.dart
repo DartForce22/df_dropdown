@@ -9,6 +9,17 @@ import '/widgets/simple_dropdown_selector.dart';
 import 'providers/simple_dropdown_provider.dart';
 
 class DfSimpleDropdown<T> extends StatelessWidget {
+  /// Constructor for [DfSimpleDropdown].
+  ///
+  /// - [initData]: Initial list of data for the dropdown.
+  /// - [selectedValue]: Currently selected dropdown value.
+  /// - [labelText]: Text for the label of the dropdown.
+  /// - [hintText]: Placeholder text shown when no value is selected.
+  /// - [onOptionSelected]: Callback function triggered when an option is selected.
+  /// - [validator]: Optional validation function for dropdown selection.
+  /// - [decoration]: Custom styling for the dropdown field.
+  /// - [selectorDecoration]: Additional custom styling for the dropdown selector.
+  /// - [arrowWidget]: Widget for the arrow icon displayed in the dropdown.
   const DfSimpleDropdown({
     super.key,
     this.initData = const [],
@@ -22,14 +33,31 @@ class DfSimpleDropdown<T> extends StatelessWidget {
     this.arrowWidget,
   });
 
+  /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
+
+  /// The currently selected dropdown value.
   final DropDownModel<T>? selectedValue;
+
+  /// The label text for the dropdown field.
   final String? labelText;
+
+  /// Placeholder text displayed when no value is selected.
   final String? hintText;
+
+  /// Callback triggered when an option from the dropdown is selected.
   final Function(DropDownModel<T>)? onOptionSelected;
+
+  /// Validator function for validating dropdown selection.
   final String? Function(DropDownModel<T>?)? validator;
+
+  /// Decoration for customizing the dropdown's appearance (e.g., border, padding, etc.).
   final DropdownDecoration? decoration;
+
+  /// Decoration for customizing the dropdown selector (e.g., background color, height, etc.).
   final SimpleSelectorDecoration? selectorDecoration;
+
+  /// Widget displayed for the dropdown arrow icon.
   final Widget? arrowWidget;
 
   @override

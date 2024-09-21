@@ -9,6 +9,18 @@ import '/widgets/simple_dropdown_selector.dart';
 import 'providers/searchable_dropdown_provider.dart';
 
 class DfSearchableDropdown<T> extends StatelessWidget {
+  /// Constructor for [DfSearchableDropdown].
+  ///
+  /// - [initData]: Initial list of data for the dropdown.
+  /// - [selectedValue]: Currently selected value.
+  /// - [labelText]: Text for the label of the dropdown.
+  /// - [hintText]: Placeholder text shown when no value is selected.
+  /// - [onOptionSelected]: Callback function triggered when an option is selected.
+  /// - [validator]: Optional validation function for the dropdown selection.
+  /// - [onSearch]: Function to perform a search based on user input, returning a filtered list of dropdown options.
+  /// - [decoration]: Custom styling for the dropdown field.
+  /// - [selectorDecoration]: Additional custom styling for the dropdown selector.
+  /// - [arrowWidget]: Widget for the arrow icon displayed in the dropdown.
   const DfSearchableDropdown({
     super.key,
     this.initData = const [],
@@ -23,15 +35,34 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.arrowWidget,
   });
 
+  /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
+
+  /// Decoration for customizing the simple dropdown selector (e.g., background color, height, etc.).
   final SimpleSelectorDecoration? selectorDecoration;
+
+  /// The currently selected dropdown value.
   final DropDownModel<T>? selectedValue;
+
+  /// The label text for the dropdown field.
   final String? labelText;
+
+  /// Placeholder text displayed when no value is selected.
   final String? hintText;
+
+  /// Callback triggered when an option from the dropdown is selected.
   final Function(DropDownModel<T>)? onOptionSelected;
+
+  /// Validator function for validating the selected dropdown option.
   final String? Function(DropDownModel<T>?)? validator;
+
+  /// Function that performs the search operation based on the user's input. It returns a list of filtered options.
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
+
+  /// Decoration for customizing the dropdown's appearance (e.g., border, padding, etc.).
   final DropdownDecoration? decoration;
+
+  /// Widget displayed for the dropdown arrow icon.
   final Widget? arrowWidget;
 
   @override
