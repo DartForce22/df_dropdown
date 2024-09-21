@@ -120,7 +120,7 @@ Then, run: `flutter pub get`
     ### Screenshot
    
     
-    ![Multi Select Dropdown](//assets/multi-select-dd.jpg)
+    ![Multi Select Dropdown](./assets/multi-select-dd.jpg)
     
 
     
