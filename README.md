@@ -118,7 +118,10 @@ Then, run: `flutter pub get`
     ```
 
     ### Screenshot
-    <img width="497" alt="n1" src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/main/assets/multi-select-dd.jpg"> 
+   
+    
+    ![Multi Select Dropdown](//assets/multi-select-dd.jpg)
+    
 
     
 
