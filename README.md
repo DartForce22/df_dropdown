@@ -24,6 +24,8 @@ Then, run: `flutter pub get`
 
 ## 1. Simple Dropdown
   This provides a basic dropdown menu with customizable styles such as rounded borders, border color, and more.
+  
+  <img src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/main/assets/simple-dd.jpg" alt="drawing" width="200"/>
 
   ### Example
   ```dart
@@ -47,7 +49,9 @@ Then, run: `flutter pub get`
   
   ## 2. Simple Searchable Dropdown
   This dropdown includes a search option for filtering through a large set of options, helping users quickly find what they’re looking for.
-
+  
+  <img src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/main/assets/searchable-dd.jpg" alt="drawing" width="200"/>
+  
   ### Example
   ```dart
     DfSearchableDropdown<String>(
@@ -69,7 +73,9 @@ Then, run: `flutter pub get`
   ## 3. Searchable Single Select Dropdown
   A dropdown that allows users to search for and select only one option from the list, ideal for forms where only one selection is required.
   Similar to the `DfSearchableDropdown`, but with several UI differences.
-
+  
+  <img src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/main/assets/single-select-dd.jpg" alt="drawing" width="200"/>
+  
   ### Example
   ```dart
     DfSearchableSingleSelectDropdown<int>(
@@ -90,7 +96,9 @@ Then, run: `flutter pub get`
   ```
   ## 4. Searchable Multi Select Dropdown
   This allows users to search and select multiple options from the list, perfect for scenarios where more than one selection is necessary.
-
+  
+  <img src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/main/assets/multi-select-dd.jpg" alt="drawing" width="200"/>
+  
   ### Example
   ```dart
     DfSearchableMultiSelectDropdown<String>(
@@ -114,13 +122,9 @@ Then, run: `flutter pub get`
         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
         DropDownModel<String>(key: "3", value: "3", text: "Chicago"),
       ],
-    )
-    ```
-
-    ### Screenshot
+    ) ```
    
-    
-    ![Multi Select Dropdown](./assets/multi-select-dd.jpg)
+
     
 
     
