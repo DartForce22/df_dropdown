@@ -22,10 +22,10 @@ Then, run: `flutter pub get`
 
 # Usage
 
-1. Simple Dropdown
+## 1. Simple Dropdown
   This provides a basic dropdown menu with customizable styles such as rounded borders, border color, and more.
 
-  ## Example
+  ### Example
   ```dart
     DfSimpleDropdown<String>(
     decoration: DropdownDecoration(
@@ -43,11 +43,12 @@ Then, run: `flutter pub get`
       DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
     ],
   )
+  ```
   
-  2. Simple Searchable Dropdown
+  ## 2. Simple Searchable Dropdown
   This dropdown includes a search option for filtering through a large set of options, helping users quickly find what they’re looking for.
 
-  ## Example
+  ### Example
   ```dart
     DfSearchableDropdown<String>(
       hintText: "Start typing..",
@@ -65,11 +66,11 @@ Then, run: `flutter pub get`
       ],
     )
   ```
-  3. Searchable Single Select Dropdown
+  ## 3. Searchable Single Select Dropdown
   A dropdown that allows users to search for and select only one option from the list, ideal for forms where only one selection is required.
   Similar to the `DfSearchableDropdown`, but with several UI differences.
 
-  ## Example
+  ### Example
   ```dart
     DfSearchableSingleSelectDropdown<int>(
       hintText: "Select...",
@@ -87,10 +88,10 @@ Then, run: `flutter pub get`
       ],
     )
   ```
-  4. Searchable Multi Select Dropdown
+  ## 4. Searchable Multi Select Dropdown
   This allows users to search and select multiple options from the list, perfect for scenarios where more than one selection is necessary.
 
-  ## Example
+  ### Example
   ```dart
     DfSearchableMultiSelectDropdown<String>(
       hintText: "Select options...",
