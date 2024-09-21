@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart' hide Icons;
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/icons.dart';
 import '/models/drop_down_model.dart';
 import '/models/dropdown_decoration.dart';
 import '/models/multi_selector_decoration.dart';
@@ -22,6 +20,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.onSearch,
     this.decoration,
     this.selectorDecoration,
+    this.arrowWidget,
   });
 
   final List<DropDownModel<T>> initData;
@@ -33,6 +32,8 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final DropdownDecoration? decoration;
   final MultiSelectorDecoration? selectorDecoration;
+  final Widget? arrowWidget;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -49,6 +50,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         hintText: hintText,
         labelText: labelText,
         selectorDecoration: selectorDecoration,
+        arrowWidget: arrowWidget,
       ),
     );
   }
@@ -60,11 +62,13 @@ class _Dropdown<T> extends StatelessWidget {
     this.hintText,
     required this.decoration,
     required this.selectorDecoration,
+    required this.arrowWidget,
   });
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
   final MultiSelectorDecoration? selectorDecoration;
+  final Widget? arrowWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +91,14 @@ class _Dropdown<T> extends StatelessWidget {
           suffixTapEnabled: false,
           suffixWidget: SizedBox(
             height: 48,
-            child: SvgPicture.asset(
-              context
-                      .watch<SearchableMultiSelectDropdownProvider<T>>()
-                      .suggestionsExpanded
-                  ? Icons.upIcon
-                  : Icons.downIcon,
-            ),
+            child: arrowWidget ??
+                Icon(
+                  context
+                          .watch<SearchableMultiSelectDropdownProvider<T>>()
+                          .suggestionsExpanded
+                      ? Icons.keyboard_arrow_up_outlined
+                      : Icons.keyboard_arrow_down_outlined,
+                ),
           ),
         ),
         const SizedBox(

@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart' hide Icons;
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/icons.dart';
 import '/models/drop_down_model.dart';
 import '/models/dropdown_decoration.dart';
 import '/models/simple_selector_decoration.dart';
@@ -21,6 +19,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
     this.validator,
     this.decoration,
     this.selectorDecoration,
+    this.arrowWidget,
   });
 
   final List<DropDownModel<T>> initData;
@@ -31,6 +30,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
   final String? Function(DropDownModel<T>?)? validator;
   final DropdownDecoration? decoration;
   final SimpleSelectorDecoration? selectorDecoration;
+  final Widget? arrowWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +43,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
         maxHeight: selectorDecoration?.maxHeight,
       ),
       child: _Dropdown<T>(
+        arrowWidget: arrowWidget,
         selectorDecoration: selectorDecoration,
         decoration: decoration,
         hintText: hintText,
@@ -58,11 +59,13 @@ class _Dropdown<T> extends StatelessWidget {
     this.hintText,
     required this.decoration,
     required this.selectorDecoration,
+    required this.arrowWidget,
   });
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
+  final Widget? arrowWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +83,12 @@ class _Dropdown<T> extends StatelessWidget {
               .toggleSuggestionsExpanded,
           suffixWidget: SizedBox(
             height: 48,
-            child: SvgPicture.asset(
-              context.watch<SimpleDropdownProvider<T>>().suggestionsExpanded
-                  ? Icons.upIcon
-                  : Icons.downIcon,
-            ),
+            child: arrowWidget ??
+                Icon(
+                  context.watch<SimpleDropdownProvider<T>>().suggestionsExpanded
+                      ? Icons.keyboard_arrow_up_outlined
+                      : Icons.keyboard_arrow_down_outlined,
+                ),
           ),
         ),
         const SizedBox(

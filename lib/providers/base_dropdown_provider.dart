@@ -2,55 +2,100 @@ import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
 
-class BaseDropdownProvider<T> with ChangeNotifier {
+/// Abstract base class to manage the state and behavior of a dropdown widget.
+///
+/// This class defines an interface for handling suggestions visibility, input validation,
+/// and dropdown UI behavior. Concrete implementations should extend this class and provide
+/// the necessary functionality.
+abstract class BaseDropdownProvider<T> with ChangeNotifier {
+  /// Creates a new [BaseDropdownProvider] instance.
+  ///
+  /// - [initData]: The initial list of data for the dropdown. Defaults to an empty list.
+  /// - [validator]: An optional validation function to validate the selected dropdown item.
   BaseDropdownProvider({
     this.initData = const [],
     this.validator,
   });
 
+  /// Whether the suggestions list is expanded or collapsed.
   bool suggestionsExpanded = false;
+
+  /// The initial data set for the dropdown.
   final List<DropDownModel<T>> initData;
+
+  /// A controller to manage the search input text for filtering the dropdown.
   final TextEditingController searchTextController = TextEditingController();
+
+  /// Stores any validation error that might occur.
   String? _validationError;
+
+  /// FocusNode for managing the text field's focus state.
   FocusNode textFieldFocusNode = FocusNode();
+
+  /// Validator function that checks if a dropdown selection is valid.
   final String? Function(DropDownModel<T>?)? validator;
+
+  /// Public variable for tracking any validation error.
   String? validationError;
 
+  /// Sets the validation error message and triggers a UI update.
+  ///
+  /// - [error]: The validation error message to set.
   set setValidationError(String? error) {
     _validationError = error;
     notifyListeners();
   }
 
+  /// Toggles the state of the suggestions list between expanded and collapsed.
+  ///
+  /// Expands the dropdown if it's collapsed, and collapses it if it's already expanded.
   void toggleSuggestionsExpanded() {
     suggestionsExpanded = !suggestionsExpanded;
     notifyListeners();
   }
 
+  /// Expands the suggestions list in the dropdown.
   void expandSuggestions() {
     suggestionsExpanded = true;
     notifyListeners();
   }
 
+  /// Collapses the suggestions list in the dropdown.
   void closeSuggestions() {
     suggestionsExpanded = false;
     notifyListeners();
   }
 
+  /// Triggers an update when the input text is changed.
+  ///
+  /// - [text]: The new input text.
   void onInputChanged(String text) {
     notifyListeners();
   }
 
+  /// Gets the height of the dropdown suggestions list.
+  ///
+  /// Currently set to a fixed height of 200 pixels.
   double get dropdownHeight {
     return 200;
   }
 
+  /// Validates the input field for the dropdown based on its current state.
+  ///
+  /// Returns the current validation error if any, otherwise returns `null`.
+  ///
+  /// - [text]: The text to validate.
   String? onValidateField(text) {
     return validationError;
   }
 
   /// Returns the color to be used for the border of a form field, based on validation state.
-  /// By default, the border color is a shade of grey with reduced opacity. If there is a
-  /// validation error, the border color changes to red, indicating an issue.
+  ///
+  /// If there is no validation error, it returns a default shade of grey with reduced opacity.
+  /// If there is a validation error, the border color changes to red to indicate the issue.
+  ///
+  /// - [borderColor]: Optional custom color for the normal border state.
+  /// - [errorBorderColor]: Optional custom color for the error state.
   ///
   /// Returns:
   /// - `Color`: The color to be applied to the field's border.
@@ -62,7 +107,7 @@ class BaseDropdownProvider<T> with ChangeNotifier {
         (Colors.grey[950] ?? Colors.grey.shade900).withOpacity(0.12);
 
     if (_validationError != null) {
-      borderColor = errorBorderColor ?? Colors.red.shade500;
+      color = errorBorderColor ?? Colors.red.shade500;
     }
 
     return color;
