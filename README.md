@@ -122,7 +122,8 @@ Then, run: `flutter pub get`
         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
         DropDownModel<String>(key: "3", value: "3", text: "Chicago"),
       ],
-    ) ```
+    )
+```
    
 
     
