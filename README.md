@@ -115,6 +115,11 @@ Then, run: `flutter pub get`
         DropDownModel<String>(key: "3", value: "3", text: "Chicago"),
       ],
     )
-  ```
+    ```
+
+    ### Screenshot
+    <img width="497" alt="n1" src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/main/assets/multi-select-dd.jpg"> 
+
+    
 
 

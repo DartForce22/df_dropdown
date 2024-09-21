@@ -4,7 +4,7 @@ description: "This Flutter package providing versatile and customizable dropdown
 version: 1.0.1
 
 homepage: https://dartforce.dev/
-repository: https://github.com/DartForce22/df_dropdown
+repository: https://github.com/DartForce22/df_dropdown.git
 license: MIT
 
 environment:
@@ -15,7 +15,6 @@ dependencies:
     sdk: flutter
 
   provider: ^6.1.2
-  flutter_svg: ^2.0.10+1
 
 screenshots:
   - description: "Simple Dropdown"
