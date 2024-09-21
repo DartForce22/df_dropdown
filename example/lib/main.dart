@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
                         borderColor: Colors.blue,
                       ),
                       selectorDecoration: SimpleSelectorDecoration(
-                        selectorColor: Colors.yellow,
+                        selectorColor: Colors.amber.shade300,
                         borderRadius: BorderRadius.circular(2),
                         maxHeight: 40,
                       ),
@@ -71,12 +71,6 @@ class MyApp extends StatelessWidget {
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value.value}");
-                      },
-                      onSearch: (context) async {
-                        return [
-                          DropDownModel<String>(
-                              key: "4", value: "4", text: "Houston")
-                        ];
                       },
                       initData: [
                         DropDownModel<String>(
@@ -135,11 +129,12 @@ class MyApp extends StatelessWidget {
                     ),
                     DfSearchableMultiSelectDropdown<String>(
                       hintText: "Select options...",
-                      decoration:
-                          const DropdownDecoration(borderColor: Colors.amber),
-                      selectorDecoration: const MultiSelectorDecoration(
-                        showSelectedItems: false,
+                      decoration: const DropdownDecoration(
+                        borderColor: Colors.amber,
+                        outlineBorderColor: Colors.blue,
                       ),
+                      selectorDecoration: const MultiSelectorDecoration(
+                          selectedItemColor: Colors.orange),
                       onSearch: (context) async {
                         return [
                           DropDownModel<String>(

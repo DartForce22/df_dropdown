@@ -17,6 +17,16 @@ dependencies:
   provider: ^6.1.2
   flutter_svg: ^2.0.10+1
 
+screenshots:
+  - description: "Simple Dropdown"
+    path: assets/simple-dd.jpg
+  - description: "Searchable Dropdown"
+    path: assets/searchable-dd.jpg
+  - description: "Single-Select Searchable Selector Dropdown"
+    path: assets/single-select-dd.jpg
+  - description: "Multi-Select Searchable Selector Dropdown"
+    path: assets/multi-select-dd.jpg
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
