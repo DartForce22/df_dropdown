@@ -6,3 +6,4 @@
 
 - Updated code documentation
 - Removed unused code
+- Added customizable arrow icon
