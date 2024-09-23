@@ -1,7 +1,7 @@
 name: df_dropdown
 description: "This Flutter package providing versatile and customizable dropdown components with different selection modes and search functionality."
 
-version: 1.0.2
+version: 1.0.3
 
 homepage: https://dartforce.dev/
 repository: https://github.com/DartForce22/df_dropdown.git

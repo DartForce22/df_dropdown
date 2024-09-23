@@ -10,5 +10,9 @@
 
 ## 1.0.2
 
+- Updated documentation
+
+## 1.0.3
+
 - Added the "Overlay" selector appearance
 - When the `dropdownType` is set to `DropdownType.overlay` the options will be added on the top of the existing visible widgets
