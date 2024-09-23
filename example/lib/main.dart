@@ -4,6 +4,7 @@ import 'package:df_dropdown/df_searchable_dropdown.dart';
 import 'package:df_dropdown/df_searchable_multi_select_dropdown.dart';
 import 'package:df_dropdown/df_searchable_single_select_dropdown.dart';
 import 'package:df_dropdown/df_simple_dropdown.dart';
+import 'package:df_dropdown/enums/dropdown_type.dart';
 import 'package:df_dropdown/models/drop_down_model.dart';
 import 'package:df_dropdown/models/dropdown_decoration.dart';
 import 'package:df_dropdown/models/multi_selector_decoration.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     DfSimpleDropdown<String>(
+                      dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
@@ -47,7 +49,6 @@ class MyApp extends StatelessWidget {
                       selectorDecoration: SimpleSelectorDecoration(
                         selectorColor: Colors.amber.shade300,
                         borderRadius: BorderRadius.circular(2),
-                        maxHeight: 40,
                       ),
                       hintText: "Select an option...",
                       labelText: "Simple Dropdown",
@@ -174,6 +175,7 @@ class MyApp extends StatelessWidget {
                         DropDownModel<String>(
                             key: "11", value: "5", text: "Texas"),
                       ],
+                      dropdownType: DropdownType.overlay,
                     ),
                     ElevatedButton(
                       onPressed: () {

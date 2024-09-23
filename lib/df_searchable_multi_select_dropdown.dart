@@ -1,3 +1,4 @@
+import 'package:df_dropdown/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,10 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.decoration,
     this.selectorDecoration,
     this.arrowWidget,
+    this.dropdownType = DropdownType.expandable,
   });
+
+  final DropdownType dropdownType;
 
   /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
@@ -75,6 +79,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         multiSelectValidator: validator,
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
+        context: context,
       ),
       child: _Dropdown<T>(
         decoration: decoration,
@@ -82,6 +87,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         labelText: labelText,
         selectorDecoration: selectorDecoration,
         arrowWidget: arrowWidget,
+        dropdownType: dropdownType,
       ),
     );
   }
@@ -94,7 +100,9 @@ class _Dropdown<T> extends StatelessWidget {
     required this.decoration,
     required this.selectorDecoration,
     required this.arrowWidget,
+    required this.dropdownType,
   });
+  final DropdownType dropdownType;
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
@@ -109,13 +117,27 @@ class _Dropdown<T> extends StatelessWidget {
     return Column(
       children: [
         DropdownField<SearchableMultiSelectDropdownProvider<T>>(
+          key: context
+              .read<SearchableMultiSelectDropdownProvider<T>>()
+              .dropdownKey,
           decoration: decoration,
           hintText: hintText,
           labelText: labelText,
           disableInput: true,
           outlineBorderVisible: provider.suggestionsExpanded ||
               provider.textFieldFocusNode.hasFocus,
-          onTapInside: provider.toggleSuggestionsExpanded,
+          onTapInside: () => context
+              .read<SearchableMultiSelectDropdownProvider<T>>()
+              .toggleSuggestionsExpanded(
+                selectorWidget: dropdownType == DropdownType.expandable
+                    ? null
+                    : ChangeNotifierProvider.value(
+                        value: provider,
+                        child: SearchableMultiSelectDropdownSelector<T>(
+                          selectorDecoration: selectorDecoration,
+                        ),
+                      ),
+              ),
           onTapOutside: () {
             provider.onTapOutside(context);
           },
@@ -132,16 +154,18 @@ class _Dropdown<T> extends StatelessWidget {
                 ),
           ),
         ),
-        const SizedBox(
-          height: 8,
-        ),
-        Consumer<SearchableMultiSelectDropdownProvider<T>>(
-          builder: (_, provider, __) => provider.suggestionsExpanded
-              ? SearchableMultiSelectDropdownSelector<T>(
-                  selectorDecoration: selectorDecoration,
-                )
-              : const SizedBox(),
-        )
+        if (dropdownType == DropdownType.expandable) ...[
+          const SizedBox(
+            height: 8,
+          ),
+          Consumer<SearchableMultiSelectDropdownProvider<T>>(
+            builder: (_, provider, __) => provider.suggestionsExpanded
+                ? SearchableMultiSelectDropdownSelector<T>(
+                    selectorDecoration: selectorDecoration,
+                  )
+                : const SizedBox(),
+          )
+        ]
       ],
     );
   }

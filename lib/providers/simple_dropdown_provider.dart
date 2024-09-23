@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '/models/drop_down_model.dart';
 import '/providers/base_dropdown_provider.dart';
 
@@ -8,6 +10,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.maxHeight,
     super.initData,
     super.validator,
+    super.context,
   }) {
     if (selectedValue != null) {
       searchTextController.text = selectedValue!.text;
@@ -28,6 +31,17 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
       } else {
         height = maxHeight ?? 200;
       }
+    }
+    return height;
+  }
+
+  double get dropdownMaxHeight {
+    double height = 0;
+
+    if (initData.length < 5) {
+      height = initData.length * 40;
+    } else {
+      height = maxHeight ?? 200;
     }
 
     return height;

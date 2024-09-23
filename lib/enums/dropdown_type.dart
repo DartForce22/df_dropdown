@@ -1,0 +1,4 @@
+enum DropdownType {
+  expandable,
+  overlay,
+}

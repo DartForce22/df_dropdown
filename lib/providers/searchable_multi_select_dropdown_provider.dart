@@ -11,6 +11,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
     super.initData,
     this.multiSelectValidator,
     this.selectorMaxHeight,
+    super.context,
   }) {
     this.selectedValues.addAll(selectedValues ?? []);
     if (selectedValues != null && selectedValues.isNotEmpty) {

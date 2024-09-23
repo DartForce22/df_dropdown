@@ -1,3 +1,4 @@
+import 'package:df_dropdown/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,10 @@ class DfSimpleDropdown<T> extends StatelessWidget {
     this.decoration,
     this.selectorDecoration,
     this.arrowWidget,
+    this.dropdownType = DropdownType.expandable,
   });
+
+  final DropdownType dropdownType;
 
   /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
@@ -63,12 +67,13 @@ class DfSimpleDropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SimpleDropdownProvider<T>(
+      create: (ctx) => SimpleDropdownProvider<T>(
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
         validator: validator,
         maxHeight: selectorDecoration?.maxHeight,
+        context: context,
       ),
       child: _Dropdown<T>(
         arrowWidget: arrowWidget,
@@ -76,6 +81,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
         decoration: decoration,
         hintText: hintText,
         labelText: labelText,
+        dropdownType: dropdownType,
       ),
     );
   }
@@ -88,27 +94,44 @@ class _Dropdown<T> extends StatelessWidget {
     required this.decoration,
     required this.selectorDecoration,
     required this.arrowWidget,
+    required this.dropdownType,
   });
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
   final Widget? arrowWidget;
+  final DropdownType dropdownType;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         DropdownField<SimpleDropdownProvider<T>>(
+          key: context.read<SimpleDropdownProvider<T>>().dropdownKey,
           decoration: decoration,
           hintText: hintText,
           labelText: labelText,
           disableInput: true,
           outlineBorderVisible:
               context.read<SimpleDropdownProvider<T>>().suggestionsExpanded,
-          onTapInside: context
+          onTapInside: () => context
               .read<SimpleDropdownProvider<T>>()
-              .toggleSuggestionsExpanded,
+              .toggleSuggestionsExpanded(
+                selectorWidget: dropdownType == DropdownType.expandable
+                    ? null
+                    : SimpleDropdownSelector<T>(
+                        selectorDecoration: selectorDecoration,
+                        dropdownData:
+                            context.read<SimpleDropdownProvider<T>>().initData,
+                        dropdownHeight: context
+                            .read<SimpleDropdownProvider<T>>()
+                            .dropdownMaxHeight,
+                        onSelectSuggestion: context
+                            .read<SimpleDropdownProvider<T>>()
+                            .onSelectSuggestion,
+                      ),
+              ),
           suffixWidget: SizedBox(
             height: 48,
             child: arrowWidget ??
@@ -119,19 +142,21 @@ class _Dropdown<T> extends StatelessWidget {
                 ),
           ),
         ),
-        const SizedBox(
-          height: 8,
-        ),
-        Consumer<SimpleDropdownProvider<T>>(
-          builder: (_, provider, __) => provider.suggestionsExpanded
-              ? SimpleDropdownSelector<T>(
-                  selectorDecoration: selectorDecoration,
-                  dropdownData: provider.initData,
-                  dropdownHeight: provider.dropdownHeight,
-                  onSelectSuggestion: provider.onSelectSuggestion,
-                )
-              : const SizedBox(),
-        )
+        if (dropdownType == DropdownType.expandable) ...[
+          const SizedBox(
+            height: 8,
+          ),
+          Consumer<SimpleDropdownProvider<T>>(
+            builder: (_, provider, __) => provider.suggestionsExpanded
+                ? SimpleDropdownSelector<T>(
+                    selectorDecoration: selectorDecoration,
+                    dropdownData: provider.initData,
+                    dropdownHeight: provider.dropdownHeight,
+                    onSelectSuggestion: provider.onSelectSuggestion,
+                  )
+                : const SizedBox(),
+          )
+        ]
       ],
     );
   }
