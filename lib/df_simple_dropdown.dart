@@ -105,33 +105,27 @@ class _Dropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider =
+        Provider.of<SimpleDropdownProvider<T>>(context, listen: false);
     return Column(
       children: [
         DropdownField<SimpleDropdownProvider<T>>(
-          key: context.read<SimpleDropdownProvider<T>>().dropdownKey,
+          key: provider.dropdownKey,
           decoration: decoration,
           hintText: hintText,
           labelText: labelText,
           disableInput: true,
-          outlineBorderVisible:
-              context.read<SimpleDropdownProvider<T>>().suggestionsExpanded,
-          onTapInside: () => context
-              .read<SimpleDropdownProvider<T>>()
-              .toggleSuggestionsExpanded(
-                selectorWidget: dropdownType == DropdownType.expandable
-                    ? null
-                    : SimpleDropdownSelector<T>(
-                        selectorDecoration: selectorDecoration,
-                        dropdownData:
-                            context.read<SimpleDropdownProvider<T>>().initData,
-                        dropdownHeight: context
-                            .read<SimpleDropdownProvider<T>>()
-                            .dropdownMaxHeight,
-                        onSelectSuggestion: context
-                            .read<SimpleDropdownProvider<T>>()
-                            .onSelectSuggestion,
-                      ),
-              ),
+          outlineBorderVisible: provider.suggestionsExpanded,
+          onTapInside: () => provider.toggleSuggestionsExpanded(
+            selectorWidget: dropdownType == DropdownType.expandable
+                ? null
+                : SimpleDropdownSelector<T>(
+                    selectorDecoration: selectorDecoration,
+                    dropdownData: provider.initData,
+                    dropdownHeight: provider.dropdownMaxHeight,
+                    onSelectSuggestion: provider.onSelectSuggestion,
+                  ),
+          ),
           suffixWidget: SizedBox(
             height: 48,
             child: arrowWidget ??

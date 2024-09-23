@@ -102,6 +102,7 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableSingleSelectDropdown<String>(
+                      dropdownType: DropdownType.overlay,
                       hintText: "Select...",
                       labelText: "Single Select",
                       selectorDecoration: const SingleSelectorDecoration(

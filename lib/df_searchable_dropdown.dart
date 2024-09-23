@@ -75,6 +75,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         validator: validator,
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
+        context: context,
       ),
       child: _Dropdown<T>(
         decoration: decoration,

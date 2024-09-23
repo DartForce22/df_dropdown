@@ -15,10 +15,10 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   BaseDropdownProvider({
     this.initData = const [],
     this.validator,
-    this.context,
+    required this.context,
   });
 
-  final BuildContext? context;
+  final BuildContext context;
   OverlayEntry? _overlayEntry;
 
   // Global key to identify the child widget
