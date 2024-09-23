@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -105,7 +103,6 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   /// Expands the suggestions list in the dropdown.
   void expandSuggestions({Widget? selectorWidget}) {
-    log("message $selectorWidget");
     suggestionsExpanded = true;
     if (selectorWidget != null) {
       _showOverlay(selectorWidget);

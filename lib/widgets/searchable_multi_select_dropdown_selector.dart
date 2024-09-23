@@ -40,36 +40,38 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Row(
-                children: [
-                  if (selectorDecoration?.showSearchIcon != false)
-                    selectorDecoration?.searchIcon ??
-                        Icon(
-                          Icons.search,
-                          color: Colors.grey.shade400,
-                        ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: provider.selectorTextEditingController,
-                      onChanged: provider.onInputChanged,
-                      decoration: fieldInputDecoration,
-                      style: selectorDecoration?.searchTextStyle,
+            if (provider.suggestionsExpanded)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: Row(
+                  children: [
+                    if (selectorDecoration?.showSearchIcon != false)
+                      selectorDecoration?.searchIcon ??
+                          Icon(
+                            Icons.search,
+                            color: Colors.grey.shade400,
+                          ),
+                    const SizedBox(
+                      width: 4,
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: TextField(
+                        controller: provider.selectorTextEditingController,
+                        onChanged: provider.onInputChanged,
+                        decoration: fieldInputDecoration,
+                        style: selectorDecoration?.searchTextStyle,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Divider(
-              height: 1,
-              color: selectorDecoration?.dividerColor,
-            ),
+            if (provider.suggestionsExpanded)
+              Divider(
+                height: 1,
+                color: selectorDecoration?.dividerColor,
+              ),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               width: double.infinity,
