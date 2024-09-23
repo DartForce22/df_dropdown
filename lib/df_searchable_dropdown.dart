@@ -1,3 +1,4 @@
+import 'package:df_dropdown/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,8 @@ class DfSearchableDropdown<T> extends StatelessWidget {
   /// - [decoration]: Custom styling for the dropdown field.
   /// - [selectorDecoration]: Additional custom styling for the dropdown selector.
   /// - [arrowWidget]: Widget for the arrow icon displayed in the dropdown.
+  /// - [dropdownType]: Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
+  /// the overlay appearance
   const DfSearchableDropdown({
     super.key,
     this.initData = const [],
@@ -33,7 +36,12 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.decoration,
     this.selectorDecoration,
     this.arrowWidget,
+    this.dropdownType = DropdownType.expandable,
   });
+
+  ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
+  /// the overlay appearance
+  final DropdownType dropdownType;
 
   /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
@@ -75,6 +83,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         validator: validator,
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
+        context: context,
       ),
       child: _Dropdown<T>(
         decoration: decoration,
@@ -82,47 +91,87 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         labelText: labelText,
         selectorDecoration: selectorDecoration,
         arrowWidget: arrowWidget,
+        dropdownType: dropdownType,
       ),
     );
   }
 }
 
-class _Dropdown<T> extends StatelessWidget {
+class _Dropdown<T> extends StatefulWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
     required this.decoration,
     required this.selectorDecoration,
     required this.arrowWidget,
+    required this.dropdownType,
   });
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
   final String? hintText;
   final Widget? arrowWidget;
+  final DropdownType dropdownType;
+
+  @override
+  State<_Dropdown<T>> createState() => _DropdownState<T>();
+}
+
+class _DropdownState<T> extends State<_Dropdown<T>> {
+  late final Widget selectorWidget;
+
+  @override
+  void initState() {
+    selectorWidget = Consumer<SearchableDropdownProvider<T>>(
+      builder: (_, provider, __) => SimpleDropdownSelector<T>(
+        selectorDecoration: widget.selectorDecoration,
+        dropdownData:
+            provider.suggestionsExpanded ? provider.getDropdownData : [],
+        dropdownHeight: provider.dropdownHeight,
+        onSelectSuggestion: provider.onSelectSuggestion,
+      ),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider =
         Provider.of<SearchableDropdownProvider<T>>(context, listen: false);
+
     return Column(
       children: [
         DropdownField<SearchableDropdownProvider<T>>(
-          decoration: decoration,
-          hintText: hintText,
-          labelText: labelText,
+          key: provider.dropdownKey,
+          decoration: widget.decoration,
+          hintText: widget.hintText,
+          labelText: widget.labelText,
           outlineBorderVisible: provider.suggestionsExpanded ||
               provider.textFieldFocusNode.hasFocus,
-          onTapInside: provider.expandSuggestions,
+          onTapInside: () => provider.expandSuggestions(
+            selectorWidget: widget.dropdownType == DropdownType.expandable
+                ? null
+                : ChangeNotifierProvider.value(
+                    value: provider,
+                    child: selectorWidget,
+                  ),
+          ),
           onTapOutside: () {
             provider.onTapOutside(context);
           },
           suffixTapEnabled: false,
           suffixWidget: GestureDetector(
-            onTap: provider.toggleSuggestionsExpanded,
+            onTap: () => provider.toggleSuggestionsExpanded(
+              selectorWidget: widget.dropdownType == DropdownType.expandable
+                  ? null
+                  : ChangeNotifierProvider.value(
+                      value: provider,
+                      child: selectorWidget,
+                    ),
+            ),
             child: SizedBox(
               height: 48,
-              child: arrowWidget ??
+              child: widget.arrowWidget ??
                   Icon(
                     context
                             .watch<SearchableDropdownProvider<T>>()
@@ -133,19 +182,12 @@ class _Dropdown<T> extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          height: 8,
-        ),
-        Consumer<SearchableDropdownProvider<T>>(
-          builder: (_, provider, __) => provider.suggestionsExpanded
-              ? SimpleDropdownSelector<T>(
-                  selectorDecoration: selectorDecoration,
-                  dropdownData: provider.getDropdownData,
-                  dropdownHeight: provider.dropdownHeight,
-                  onSelectSuggestion: provider.onSelectSuggestion,
-                )
-              : const SizedBox(),
-        )
+        if (widget.dropdownType == DropdownType.expandable) ...[
+          const SizedBox(
+            height: 8,
+          ),
+          selectorWidget,
+        ]
       ],
     );
   }

@@ -1,75 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '/models/searchable_selector_base_decoration.dart';
+
 /// A class to define and customize the appearance and behavior of a single-selection widget.
 ///
 /// This class allows customization of various visual and interactive elements,
 /// such as the search icon, colors, text styles, and more for a single-selector component.
-class SingleSelectorDecoration {
-  /// The border radius for the multi-selector widget.
-  ///
-  /// This property defines the corner radius of the multi-selector's border.
-  final BorderRadius? borderRadius;
-
-  /// The elevation of the multi-selector widget.
-  ///
-  /// This affects the shadow depth of the multi-selector. A higher value indicates more elevation.
-  final double? elevation;
-
-  /// The maximum height of the multi-selector when it expands.
-  ///
-  /// This sets a limit on how tall the multi-selector dropdown can grow.
-  final double? maxHeight;
-
-  /// The background color of the multi-selector widget.
-  ///
-  /// This color is applied to the background of the entire multi-selector dropdown.
-  final Color? selectorColor;
-
-  /// The background color of individual items in the multi-selector.
-  ///
-  /// This color is applied to each selectable item within the multi-selector dropdown.
-  final Color? itemColor;
-
-  /// The color of the divider between items in the multi-selector dropdown.
-  ///
-  /// This is used to visually separate each item with a line.
-  final Color? dividerColor;
-
-  /// The text style of each option in the multi-selector.
-  ///
-  /// This style defines how the text of the dropdown items will appear.
-  final TextStyle? optionTextStyle;
-
-  /// A custom icon for the search field in the multi-selector.
-  ///
-  /// This icon appears in the search field when the user wants to filter options.
-  final Widget? searchIcon;
-
-  /// Determines whether the search icon is displayed.
-  ///
-  /// This boolean controls the visibility of the search icon. Defaults to `true`.
-  final bool showSearchIcon;
-
-  /// The text style for the search input field.
-  ///
-  /// This style applies to the text entered in the search field when filtering options.
-  final TextStyle? searchTextStyle;
-
-  /// The text to display for clearing all selections.
-  ///
-  /// This text is shown as an option to clear all selected items in the multi-selector.
-  final String? clearSelectionText;
-
-  /// The text style for the clear selection option.
-  ///
-  /// This style defines how the "Clear Selection" text will appear.
-  final TextStyle? clearSelectionTextStyle;
-
-  /// The background color for selected items.
-  ///
-  /// This color is applied to items that are currently selected in the dropdown.
-  final Color? selectedItemColor;
-
+class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
   ///Controls whether selected item icon indicator is visible (default is `true`).
   final bool? selectedItemIconVisible;
 
@@ -95,20 +32,20 @@ class SingleSelectorDecoration {
   /// - [showSearchIcon]: Controls whether the search icon is visible (default is `true`).
 
   const SingleSelectorDecoration({
-    this.borderRadius,
-    this.elevation,
-    this.maxHeight,
-    this.selectorColor,
-    this.itemColor,
-    this.dividerColor,
-    this.optionTextStyle,
-    this.searchIcon,
-    this.searchTextStyle,
-    this.clearSelectionText,
-    this.clearSelectionTextStyle,
-    this.selectedItemColor,
-    this.selectedItemIcon,
+    super.borderRadius,
+    super.elevation,
+    super.maxHeight,
+    super.selectorColor,
+    super.itemColor,
+    super.dividerColor,
+    super.optionTextStyle,
+    super.searchIcon,
+    super.searchTextStyle,
+    super.clearSelectionText,
+    super.clearSelectionTextStyle,
+    super.showSearchIcon = true,
+    super.selectedItemColor,
     this.selectedItemIconVisible = true,
-    this.showSearchIcon = true,
+    this.selectedItemIcon,
   });
 }

@@ -12,6 +12,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectorMaxHeight,
     super.initData,
     super.validator,
+    required super.context,
   }) {
     if (selectedValue != null) {
       searchTextController.text = selectedValue!.text;

@@ -15,7 +15,48 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   BaseDropdownProvider({
     this.initData = const [],
     this.validator,
+    required this.context,
   });
+
+  final BuildContext context;
+  OverlayEntry? _overlayEntry;
+
+  // Global key to identify the child widget
+  final GlobalKey dropdownKey = GlobalKey();
+
+  // Function to show the overlay
+  void _showOverlay(Widget selectorWidget) {
+    _selectorWidget = selectorWidget;
+    // Find the position of the child widget using the GlobalKey
+    final RenderBox renderBox =
+        dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    final Offset offset = renderBox.localToGlobal(Offset.zero);
+    final Size size = renderBox.size;
+
+    // Create an OverlayEntry and position it based on the child's position
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        // Position the overlay under the child widget
+        left: offset.dx,
+        top: offset.dy + size.height + 4,
+        child: SizedBox(
+          width: size.width,
+          child: selectorWidget,
+        ),
+      ),
+    );
+
+    // Insert the OverlayEntry into the Overlay
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+    _selectorWidget = null;
+  }
+
+  Widget? _selectorWidget;
 
   /// Whether the suggestions list is expanded or collapsed.
   bool suggestionsExpanded = false;
@@ -49,20 +90,32 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Toggles the state of the suggestions list between expanded and collapsed.
   ///
   /// Expands the dropdown if it's collapsed, and collapses it if it's already expanded.
-  void toggleSuggestionsExpanded() {
+  void toggleSuggestionsExpanded({Widget? selectorWidget}) {
     suggestionsExpanded = !suggestionsExpanded;
-    notifyListeners();
+    if (suggestionsExpanded) {
+      expandSuggestions(
+        selectorWidget: selectorWidget,
+      );
+    } else {
+      closeSuggestions();
+    }
   }
 
   /// Expands the suggestions list in the dropdown.
-  void expandSuggestions() {
+  void expandSuggestions({Widget? selectorWidget}) {
     suggestionsExpanded = true;
+    if (selectorWidget != null) {
+      _showOverlay(selectorWidget);
+    }
     notifyListeners();
   }
 
   /// Collapses the suggestions list in the dropdown.
   void closeSuggestions() {
     suggestionsExpanded = false;
+    if (_selectorWidget != null) {
+      _removeOverlay();
+    }
     notifyListeners();
   }
 
