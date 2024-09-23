@@ -68,7 +68,6 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableDropdown<String>(
-                      dropdownType: DropdownType.overlay,
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {

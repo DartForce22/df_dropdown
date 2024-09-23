@@ -117,46 +117,51 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                       if (provider.selectedValues.isNotEmpty &&
                           selectorDecoration?.showSelectedItems != false)
                         Column(
-                          children: [
-                            ...provider.selectedValues.map(
-                              (suggestion) {
-                                return MultiSelect(
-                                  selectorDecoration: selectorDecoration,
-                                  text: suggestion.text,
-                                  selected: true,
-                                  onTap: () {
-                                    provider.onSelectSuggestion(suggestion);
-                                  },
-                                );
-                              },
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Divider(
-                                height: 1,
-                                color: selectorDecoration?.dividerColor,
-                              ),
-                            )
-                          ],
+                          children: provider.suggestionsExpanded
+                              ? [
+                                  ...provider.selectedValues.map(
+                                    (suggestion) {
+                                      return MultiSelect(
+                                        selectorDecoration: selectorDecoration,
+                                        text: suggestion.text,
+                                        selected: true,
+                                        onTap: () {
+                                          provider
+                                              .onSelectSuggestion(suggestion);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Divider(
+                                      height: 1,
+                                      color: selectorDecoration?.dividerColor,
+                                    ),
+                                  )
+                                ]
+                              : [],
                         ),
                       Column(
-                        children: provider.getDropdownData.map(
-                          (suggestion) {
-                            return MultiSelect(
-                              selectorDecoration: selectorDecoration,
-                              text: suggestion.text,
-                              selected: provider.selectedValues
-                                  .map((el) => el.key)
-                                  .contains(
-                                    suggestion.key,
-                                  ),
-                              onTap: () {
-                                provider.onSelectSuggestion(suggestion);
-                              },
-                            );
-                          },
-                        ).toList(),
+                        children: provider.suggestionsExpanded
+                            ? provider.getDropdownData.map(
+                                (suggestion) {
+                                  return MultiSelect(
+                                    selectorDecoration: selectorDecoration,
+                                    text: suggestion.text,
+                                    selected: provider.selectedValues
+                                        .map((el) => el.key)
+                                        .contains(
+                                          suggestion.key,
+                                        ),
+                                    onTap: () {
+                                      provider.onSelectSuggestion(suggestion);
+                                    },
+                                  );
+                                },
+                              ).toList()
+                            : [],
                       )
                     ],
                   ),

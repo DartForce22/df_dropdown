@@ -123,11 +123,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
   @override
   void initState() {
     selectorWidget = Consumer<SearchableMultiSelectDropdownProvider<T>>(
-      builder: (_, provider, __) => provider.suggestionsExpanded
-          ? SearchableMultiSelectDropdownSelector<T>(
-              selectorDecoration: widget.selectorDecoration,
-            )
-          : const SizedBox(),
+      builder: (_, provider, __) => SearchableMultiSelectDropdownSelector<T>(
+        selectorDecoration: widget.selectorDecoration,
+      ),
     );
     super.initState();
   }

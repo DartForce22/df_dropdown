@@ -104,18 +104,21 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                         ),
                       ),
                       Column(
-                        children: provider.getDropdownData.map(
-                          (suggestion) {
-                            return SingleSelect(
-                              selectorDecoration: selectorDecoration,
-                              text: suggestion.text,
-                              selected: suggestion == provider.selectedValue,
-                              onTap: () {
-                                provider.onSelectSuggestion(suggestion);
-                              },
-                            );
-                          },
-                        ).toList(),
+                        children: provider.suggestionsExpanded
+                            ? provider.getDropdownData.map(
+                                (suggestion) {
+                                  return SingleSelect(
+                                    selectorDecoration: selectorDecoration,
+                                    text: suggestion.text,
+                                    selected:
+                                        suggestion == provider.selectedValue,
+                                    onTap: () {
+                                      provider.onSelectSuggestion(suggestion);
+                                    },
+                                  );
+                                },
+                              ).toList()
+                            : [],
                       )
                     ],
                   ),
