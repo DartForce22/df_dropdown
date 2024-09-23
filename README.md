@@ -22,6 +22,10 @@ Then, run: `flutter pub get`
 
 # Usage
 
+### Note
+- Setting `dropdownType` to `DropdownType.overlay` displays the dropdown options on top of the existing widgets, without repositioning them.
+- By default, `dropdownType` is set to `DropdownType.expandable`, which expands the dropdown by shifting the widgets below it to make space for the options.
+
 ## 1. Simple Dropdown
   This provides a basic dropdown menu with customizable styles such as rounded borders, border color, and more.
   
