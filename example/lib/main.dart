@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     DfSimpleDropdown<String>(
-                      // dropdownType: DropdownType.overlay,
+                      dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableDropdown<String>(
+                      // dropdownType: DropdownType.overlay,
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {
@@ -102,7 +103,7 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableSingleSelectDropdown<String>(
-                      // dropdownType: DropdownType.overlay,
+                      dropdownType: DropdownType.overlay,
                       hintText: "Select...",
                       labelText: "Single Select",
                       selectorDecoration: const SingleSelectorDecoration(
@@ -130,6 +131,7 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableMultiSelectDropdown<String>(
+                      // dropdownType: DropdownType.overlay,
                       hintText: "Select options...",
                       decoration: const DropdownDecoration(
                         borderColor: Colors.amber,
@@ -170,7 +172,6 @@ class MyApp extends StatelessWidget {
                         DropDownModel<String>(
                             key: "11", value: "5", text: "Texas"),
                       ],
-                      // dropdownType: DropdownType.overlay,
                     ),
                     ElevatedButton(
                       onPressed: () {
