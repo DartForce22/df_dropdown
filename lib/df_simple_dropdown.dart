@@ -87,7 +87,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
   }
 }
 
-class _Dropdown<T> extends StatelessWidget {
+class _Dropdown<T> extends StatefulWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
@@ -104,6 +104,27 @@ class _Dropdown<T> extends StatelessWidget {
   final DropdownType dropdownType;
 
   @override
+  State<_Dropdown<T>> createState() => _DropdownState<T>();
+}
+
+class _DropdownState<T> extends State<_Dropdown<T>> {
+  late final Widget selectorWidget;
+  @override
+  void initState() {
+    selectorWidget = Consumer<SimpleDropdownProvider<T>>(
+      builder: (_, provider, __) => provider.suggestionsExpanded
+          ? SimpleDropdownSelector<T>(
+              selectorDecoration: widget.selectorDecoration,
+              dropdownData: provider.initData,
+              dropdownHeight: provider.dropdownHeight,
+              onSelectSuggestion: provider.onSelectSuggestion,
+            )
+          : const SizedBox(),
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider =
         Provider.of<SimpleDropdownProvider<T>>(context, listen: false);
@@ -111,24 +132,22 @@ class _Dropdown<T> extends StatelessWidget {
       children: [
         DropdownField<SimpleDropdownProvider<T>>(
           key: provider.dropdownKey,
-          decoration: decoration,
-          hintText: hintText,
-          labelText: labelText,
+          decoration: widget.decoration,
+          hintText: widget.hintText,
+          labelText: widget.labelText,
           disableInput: true,
           outlineBorderVisible: provider.suggestionsExpanded,
           onTapInside: () => provider.toggleSuggestionsExpanded(
-            selectorWidget: dropdownType == DropdownType.expandable
+            selectorWidget: widget.dropdownType == DropdownType.expandable
                 ? null
-                : SimpleDropdownSelector<T>(
-                    selectorDecoration: selectorDecoration,
-                    dropdownData: provider.initData,
-                    dropdownHeight: provider.dropdownMaxHeight,
-                    onSelectSuggestion: provider.onSelectSuggestion,
+                : ChangeNotifierProvider.value(
+                    value: provider,
+                    child: selectorWidget,
                   ),
           ),
           suffixWidget: SizedBox(
             height: 48,
-            child: arrowWidget ??
+            child: widget.arrowWidget ??
                 Icon(
                   context.watch<SimpleDropdownProvider<T>>().suggestionsExpanded
                       ? Icons.keyboard_arrow_up_outlined
@@ -136,20 +155,11 @@ class _Dropdown<T> extends StatelessWidget {
                 ),
           ),
         ),
-        if (dropdownType == DropdownType.expandable) ...[
+        if (widget.dropdownType == DropdownType.expandable) ...[
           const SizedBox(
             height: 8,
           ),
-          Consumer<SimpleDropdownProvider<T>>(
-            builder: (_, provider, __) => provider.suggestionsExpanded
-                ? SimpleDropdownSelector<T>(
-                    selectorDecoration: selectorDecoration,
-                    dropdownData: provider.initData,
-                    dropdownHeight: provider.dropdownHeight,
-                    onSelectSuggestion: provider.onSelectSuggestion,
-                  )
-                : const SizedBox(),
-          )
+          selectorWidget,
         ]
       ],
     );

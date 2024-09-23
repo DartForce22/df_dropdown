@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableDropdown<String>(
+                      dropdownType: DropdownType.overlay,
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {
@@ -137,12 +138,6 @@ class MyApp extends StatelessWidget {
                       ),
                       selectorDecoration: const MultiSelectorDecoration(
                           selectedItemColor: Colors.orange),
-                      onSearch: (context) async {
-                        return [
-                          DropDownModel<String>(
-                              key: "4", value: "4", text: "Houston")
-                        ];
-                      },
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value.length}");
                       },

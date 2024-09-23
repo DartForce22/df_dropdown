@@ -93,7 +93,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   }
 }
 
-class _Dropdown<T> extends StatelessWidget {
+class _Dropdown<T> extends StatefulWidget {
   const _Dropdown({
     this.labelText,
     this.hintText,
@@ -110,6 +110,24 @@ class _Dropdown<T> extends StatelessWidget {
   final Widget? arrowWidget;
 
   @override
+  State<_Dropdown<T>> createState() => _DropdownState<T>();
+}
+
+class _DropdownState<T> extends State<_Dropdown<T>> {
+  late final Widget selectorWidget;
+  @override
+  void initState() {
+    selectorWidget = Consumer<SearchableMultiSelectDropdownProvider<T>>(
+      builder: (_, provider, __) => provider.suggestionsExpanded
+          ? SearchableMultiSelectDropdownSelector<T>(
+              selectorDecoration: widget.selectorDecoration,
+            )
+          : const SizedBox(),
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
         context,
@@ -120,22 +138,20 @@ class _Dropdown<T> extends StatelessWidget {
           key: context
               .read<SearchableMultiSelectDropdownProvider<T>>()
               .dropdownKey,
-          decoration: decoration,
-          hintText: hintText,
-          labelText: labelText,
+          decoration: widget.decoration,
+          hintText: widget.hintText,
+          labelText: widget.labelText,
           disableInput: true,
           outlineBorderVisible: provider.suggestionsExpanded ||
               provider.textFieldFocusNode.hasFocus,
           onTapInside: () => context
               .read<SearchableMultiSelectDropdownProvider<T>>()
               .toggleSuggestionsExpanded(
-                selectorWidget: dropdownType == DropdownType.expandable
+                selectorWidget: widget.dropdownType == DropdownType.expandable
                     ? null
                     : ChangeNotifierProvider.value(
                         value: provider,
-                        child: SearchableMultiSelectDropdownSelector<T>(
-                          selectorDecoration: selectorDecoration,
-                        ),
+                        child: selectorWidget,
                       ),
               ),
           onTapOutside: () {
@@ -144,7 +160,7 @@ class _Dropdown<T> extends StatelessWidget {
           suffixTapEnabled: false,
           suffixWidget: SizedBox(
             height: 48,
-            child: arrowWidget ??
+            child: widget.arrowWidget ??
                 Icon(
                   context
                           .watch<SearchableMultiSelectDropdownProvider<T>>()
@@ -154,17 +170,11 @@ class _Dropdown<T> extends StatelessWidget {
                 ),
           ),
         ),
-        if (dropdownType == DropdownType.expandable) ...[
+        if (widget.dropdownType == DropdownType.expandable) ...[
           const SizedBox(
             height: 8,
           ),
-          Consumer<SearchableMultiSelectDropdownProvider<T>>(
-            builder: (_, provider, __) => provider.suggestionsExpanded
-                ? SearchableMultiSelectDropdownSelector<T>(
-                    selectorDecoration: selectorDecoration,
-                  )
-                : const SizedBox(),
-          )
+          selectorWidget,
         ]
       ],
     );

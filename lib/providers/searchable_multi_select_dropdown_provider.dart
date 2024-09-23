@@ -30,6 +30,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
       TextEditingController();
   final String? Function(List<DropDownModel<T>>)? multiSelectValidator;
   final double? selectorMaxHeight;
+  final bool selectedDataVisible = true;
 
   @override
   double get dropdownHeight {
@@ -41,6 +42,11 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
         : initData.length;
 
     if (suggestionsExpanded) {
+      if (selectedDataVisible) {
+        dataLength += selectedValues.length;
+        height += (dataLength * 40);
+      }
+
       if (dataLength < 5) {
         height = (dataLength * 40) + 40;
       } else {

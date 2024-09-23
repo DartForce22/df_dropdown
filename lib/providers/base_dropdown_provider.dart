@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -47,7 +49,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     );
 
     // Insert the OverlayEntry into the Overlay
-    Overlay.of(context!).insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
   }
 
   void _removeOverlay() {
@@ -103,6 +105,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   /// Expands the suggestions list in the dropdown.
   void expandSuggestions({Widget? selectorWidget}) {
+    log("message $selectorWidget");
     suggestionsExpanded = true;
     if (selectorWidget != null) {
       _showOverlay(selectorWidget);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -23,8 +25,19 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   final Function(DropDownModel<T>)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final double? selectorMaxHeight;
+
   @override
   double get dropdownHeight {
+    double height = 0;
+
+    if (suggestionsExpanded) {
+      height = dropdownMaxHeight;
+    }
+
+    return height;
+  }
+
+  double get dropdownMaxHeight {
     double height = 0;
 
     int dataLength =
@@ -32,12 +45,10 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
             ? searchResults.length
             : initData.length;
 
-    if (suggestionsExpanded) {
-      if (dataLength < 5) {
-        height = dataLength * 40;
-      } else {
-        height = selectorMaxHeight ?? 200;
-      }
+    if (dataLength < 5) {
+      height = dataLength * 40;
+    } else {
+      height = selectorMaxHeight ?? 200;
     }
 
     return height;
