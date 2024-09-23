@@ -21,6 +21,8 @@ class DfSimpleDropdown<T> extends StatelessWidget {
   /// - [decoration]: Custom styling for the dropdown field.
   /// - [selectorDecoration]: Additional custom styling for the dropdown selector.
   /// - [arrowWidget]: Widget for the arrow icon displayed in the dropdown.
+  /// - [dropdownType]: Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
+  /// the overlay appearance
   const DfSimpleDropdown({
     super.key,
     this.initData = const [],
@@ -35,6 +37,8 @@ class DfSimpleDropdown<T> extends StatelessWidget {
     this.dropdownType = DropdownType.expandable,
   });
 
+  ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
+  /// the overlay appearance
   final DropdownType dropdownType;
 
   /// Initial list of dropdown options.

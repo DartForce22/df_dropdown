@@ -22,6 +22,8 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   /// - [decoration]: Custom styling for the dropdown field.
   /// - [selectorDecoration]: Additional custom styling for the dropdown selector.
   /// - [arrowWidget]: Widget for the arrow icon displayed in the dropdown.
+  /// - [dropdownType]: Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
+  /// the overlay appearance
   const DfSearchableMultiSelectDropdown({
     super.key,
     this.initData = const [],
@@ -37,6 +39,8 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.dropdownType = DropdownType.expandable,
   });
 
+  ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
+  /// the overlay appearance
   final DropdownType dropdownType;
 
   /// Initial list of dropdown options.
@@ -80,6 +84,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
         context: context,
+        selectedDataVisible: selectorDecoration?.showSelectedItems ?? true,
       ),
       child: _Dropdown<T>(
         decoration: decoration,
