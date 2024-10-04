@@ -37,6 +37,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
         height: dropdownHeight,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: dropdownData
                 .map(
@@ -95,11 +96,26 @@ class _DropdownSuggestion extends StatelessWidget {
                 selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
             color: selectorDecoration?.itemColor ?? Colors.transparent,
           ),
-          width: expanded ? double.infinity : null,
-          child: Text(
-            text,
-            style: selectorDecoration?.optionTextStyle ?? textTheme.labelMedium,
-            textAlign: TextAlign.start,
+          width: expanded ? double.infinity : 164,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  text,
+                  style: selectorDecoration?.optionTextStyle ??
+                      textTheme.labelMedium,
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(
+                width: 4,
+              ),
+              Icon(
+                Icons.check,
+                size: 16,
+              ),
+            ],
           ),
         ),
       ),
