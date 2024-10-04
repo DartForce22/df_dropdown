@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +14,6 @@ class DfDropdownWrapper<T> extends StatelessWidget {
   /// - [initData]: Initial list of data for the dropdown.
   /// - [selectedValue]: Currently selected dropdown value.
   /// - [labelText]: Text for the label of the dropdown.
-  /// - [hintText]: Placeholder text shown when no value is selected.
   /// - [onOptionSelected]: Callback function triggered when an option is selected.
   /// - [validator]: Optional validation function for dropdown selection.
   /// - [decoration]: Custom styling for the dropdown field.
@@ -29,7 +26,6 @@ class DfDropdownWrapper<T> extends StatelessWidget {
     this.initData = const [],
     this.selectedValue,
     this.labelText,
-    this.hintText,
     this.onOptionSelected,
     this.validator,
     this.decoration,
@@ -47,9 +43,6 @@ class DfDropdownWrapper<T> extends StatelessWidget {
 
   /// The label text for the dropdown field.
   final String? labelText;
-
-  /// Placeholder text displayed when no value is selected.
-  final String? hintText;
 
   /// Callback triggered when an option from the dropdown is selected.
   final Function(DropDownModel<T>)? onOptionSelected;
@@ -85,7 +78,6 @@ class DfDropdownWrapper<T> extends StatelessWidget {
         arrowWidget: arrowWidget,
         selectorDecoration: selectorDecoration,
         decoration: decoration,
-        hintText: hintText,
         labelText: labelText,
         closeOnTapOutside: closeOnTapOutside,
         child: child,
@@ -97,7 +89,6 @@ class DfDropdownWrapper<T> extends StatelessWidget {
 class _Dropdown<T> extends StatefulWidget {
   const _Dropdown({
     this.labelText,
-    this.hintText,
     required this.decoration,
     required this.selectorDecoration,
     required this.arrowWidget,
@@ -107,7 +98,6 @@ class _Dropdown<T> extends StatefulWidget {
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
-  final String? hintText;
   final Widget? arrowWidget;
   final Widget? child;
   final bool closeOnTapOutside;
@@ -164,7 +154,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         suffixWidget: InkWell(
           key: provider.dropdownKey,
           onTap: () {
-            log("onTap");
             provider.toggleSuggestionsExpanded(
               expanded: false,
               selectorWidget: ChangeNotifierProvider.value(
