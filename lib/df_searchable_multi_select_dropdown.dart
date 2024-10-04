@@ -128,6 +128,18 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
       ),
     );
     super.initState();
+    if (widget.dropdownType == DropdownType.overlay) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context
+            .read<SearchableMultiSelectDropdownProvider<T>>()
+            .updateSelectorPositionIfNeeded(
+              selectorWidget: ChangeNotifierProvider.value(
+                value: context.read<SearchableMultiSelectDropdownProvider<T>>(),
+                child: selectorWidget,
+              ),
+            );
+      });
+    }
   }
 
   @override
