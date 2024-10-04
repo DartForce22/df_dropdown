@@ -1,15 +1,6 @@
 import 'dart:developer';
 
-import 'package:df_dropdown/df_searchable_dropdown.dart';
-import 'package:df_dropdown/df_searchable_multi_select_dropdown.dart';
-import 'package:df_dropdown/df_searchable_single_select_dropdown.dart';
-import 'package:df_dropdown/df_simple_dropdown.dart';
-import 'package:df_dropdown/enums/dropdown_type.dart';
-import 'package:df_dropdown/models/drop_down_model.dart';
-import 'package:df_dropdown/models/dropdown_decoration.dart';
-import 'package:df_dropdown/models/multi_selector_decoration.dart';
-import 'package:df_dropdown/models/simple_selector_decoration.dart';
-import 'package:df_dropdown/models/single_selector_decoration.dart';
+import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
 void main() {
