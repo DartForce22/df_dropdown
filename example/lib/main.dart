@@ -30,18 +30,23 @@ class MyApp extends StatelessWidget {
                 clipBehavior: Clip.none,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DfDropdownWrapper(
-                      child: Text("NEKI TEST"),
-                      decoration: DropdownDecoration(
-                        backgroundColor: Colors.greenAccent,
+                    SizedBox(
+                      child: DfDropdownWrapper(
+                        child: Text("NEKI TEST"),
+                        decoration: DropdownDecoration(
+                          backgroundColor: Colors.greenAccent,
+                        ),
+                        initData: [
+                          DropDownModel<String>(
+                              key: "1",
+                              value: "1",
+                              text: "New York Cityttttttttttt"),
+                          DropDownModel<String>(
+                              key: "2", value: "2", text: "Los Angeles"),
+                        ],
                       ),
-                      initData: [
-                        DropDownModel<String>(
-                            key: "1", value: "1", text: "New York City"),
-                        DropDownModel<String>(
-                            key: "2", value: "2", text: "Los Angeles"),
-                      ],
                     ),
                     const SizedBox(
                       height: 8,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +37,6 @@ class DropdownContainer<T extends BaseDropdownProvider>
 
   @override
   Widget build(BuildContext context) {
-    log("child $child");
     final textTheme = Theme.of(context).textTheme;
     return Consumer<T>(
       builder: (_, provider, child) => Column(
@@ -71,7 +68,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
                   )
               ],
             ),
-            height: decoration?.fieldHeight ?? 54,
+            height: decoration?.fieldHeight ?? 52,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -146,47 +148,49 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DropdownContainer<SimpleDropdownProvider<T>>(
-          contentPadding: const EdgeInsets.all(0),
-          decoration: widget.decoration,
-          labelText: widget.labelText,
-          disableInput: true,
-          outlineBorderVisible: provider.suggestionsExpanded,
-          onTapOutside: () {
-            if (widget.closeOnTapOutside) provider.closeSuggestions();
+    return TapRegion(
+      onTapOutside: provider.suggestionsExpanded && widget.closeOnTapOutside
+          ? (_) {
+              provider.closeSuggestions();
+            }
+          : null,
+      child: DropdownContainer<SimpleDropdownProvider<T>>(
+        contentPadding: const EdgeInsets.all(0),
+        decoration: widget.decoration,
+        labelText: widget.labelText,
+        disableInput: true,
+        outlineBorderVisible: provider.suggestionsExpanded,
+        suffixTapEnabled: true,
+        suffixWidget: InkWell(
+          key: provider.dropdownKey,
+          onTap: () {
+            log("onTap");
+            provider.toggleSuggestionsExpanded(
+              expanded: false,
+              selectorWidget: ChangeNotifierProvider.value(
+                value: provider,
+                child: selectorWidget,
+              ),
+            );
           },
-          suffixWidget: InkWell(
-            onTap: () {
-              provider.toggleSuggestionsExpanded(
-                expanded: false,
-                selectorWidget: ChangeNotifierProvider.value(
-                  value: provider,
-                  child: selectorWidget,
-                ),
-              );
-            },
-            child: SizedBox(
-              key: provider.dropdownKey,
-              child: widget.arrowWidget ??
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: Icon(
-                      context
-                              .watch<SimpleDropdownProvider<T>>()
-                              .suggestionsExpanded
-                          ? Icons.keyboard_arrow_up_outlined
-                          : Icons.keyboard_arrow_down_outlined,
-                    ),
+          child: SizedBox(
+            child: widget.arrowWidget ??
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 8,
                   ),
-            ),
+                  child: Icon(
+                    context
+                            .watch<SimpleDropdownProvider<T>>()
+                            .suggestionsExpanded
+                        ? Icons.keyboard_arrow_up_outlined
+                        : Icons.keyboard_arrow_down_outlined,
+                  ),
+                ),
           ),
-          child: widget.child,
         ),
-      ],
+        child: widget.child,
+      ),
     );
   }
 }

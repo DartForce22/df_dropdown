@@ -39,14 +39,16 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size size = renderBox.size;
 
-    final int topOffset = expanded ? 4 : -8;
+    final int topOffset = expanded ? 4 : -6;
 
     // Create an OverlayEntry and position it based on the child's position
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         // Position the overlay under the child widget
         left: expanded ? offset.dx : null,
-        right: !expanded ? 24 : null,
+        right: !expanded
+            ? MediaQuery.of(context).size.width - offset.dx - size.width
+            : null,
         top: offset.dy + size.height + topOffset,
         child: SizedBox(
           width: expanded ? size.width : null,
