@@ -10,12 +10,14 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
     required this.dropdownHeight,
     required this.onSelectSuggestion,
     this.selectorDecoration,
+    this.expanded = true,
   });
 
   final List<DropDownModel<T>> dropdownData;
   final double dropdownHeight;
   final SimpleSelectorDecoration? selectorDecoration;
   final Function(DropDownModel<T>) onSelectSuggestion;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
               selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
           color: selectorDecoration?.selectorColor ?? Colors.white,
         ),
-        width: double.infinity,
+        width: expanded ? double.infinity : null,
         height: dropdownHeight,
         child: SingleChildScrollView(
           child: Column(
@@ -39,6 +41,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
             children: dropdownData
                 .map(
                   (suggestion) => _DropdownSuggestion(
+                    expanded: expanded,
                     selectorDecoration: selectorDecoration,
                     text: suggestion.text,
                     onTap: () {
@@ -65,11 +68,13 @@ class _DropdownSuggestion extends StatelessWidget {
     required this.text,
     required this.onTap,
     required this.selectorDecoration,
+    required this.expanded,
   });
 
   final String text;
   final VoidCallback onTap;
   final SimpleSelectorDecoration? selectorDecoration;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +95,7 @@ class _DropdownSuggestion extends StatelessWidget {
                 selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
             color: selectorDecoration?.itemColor ?? Colors.transparent,
           ),
-          width: double.infinity,
+          width: expanded ? double.infinity : null,
           child: Text(
             text,
             style: selectorDecoration?.optionTextStyle ?? textTheme.labelMedium,

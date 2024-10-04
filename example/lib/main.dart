@@ -31,6 +31,21 @@ class MyApp extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    DfDropdownWrapper(
+                      child: Text("NEKI TEST"),
+                      decoration: DropdownDecoration(
+                        fieldHeight: 80,
+                      ),
+                      initData: [
+                        DropDownModel<String>(
+                            key: "1", value: "1", text: "New York City"),
+                        DropDownModel<String>(
+                            key: "2", value: "2", text: "Los Angeles"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     DfSimpleDropdown<String>(
                       dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
