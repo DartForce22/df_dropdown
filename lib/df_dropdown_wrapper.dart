@@ -111,16 +111,29 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   late SimpleDropdownProvider<T> provider;
 
+  bool tapOutside = false;
+
   @override
   void initState() {
     provider = Provider.of<SimpleDropdownProvider<T>>(context, listen: false);
     selectorWidget = Consumer<SimpleDropdownProvider<T>>(
-      builder: (_, provider, __) => SimpleDropdownSelector<T>(
-        expanded: false,
-        selectorDecoration: widget.selectorDecoration,
-        dropdownData: provider.suggestionsExpanded ? provider.initData : [],
-        dropdownHeight: provider.dropdownHeight,
-        onSelectSuggestion: provider.onSelectSuggestion,
+      builder: (_, provider, __) => TapRegion(
+        onTapOutside: provider.suggestionsExpanded && widget.closeOnTapOutside
+            ? (_) {
+                tapOutside = true;
+                provider.closeSuggestions();
+                Future.delayed(const Duration(milliseconds: 200), () {
+                  tapOutside = false;
+                });
+              }
+            : null,
+        child: SimpleDropdownSelector<T>(
+          expanded: false,
+          selectorDecoration: widget.selectorDecoration,
+          dropdownData: provider.suggestionsExpanded ? provider.initData : [],
+          dropdownHeight: provider.dropdownHeight,
+          onSelectSuggestion: provider.onSelectSuggestion,
+        ),
       ),
     );
     super.initState();
@@ -138,22 +151,17 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return TapRegion(
-      onTapOutside: provider.suggestionsExpanded && widget.closeOnTapOutside
-          ? (_) {
-              provider.closeSuggestions();
-            }
-          : null,
-      child: DropdownContainer<SimpleDropdownProvider<T>>(
-        contentPadding: const EdgeInsets.all(0),
-        decoration: widget.decoration,
-        labelText: widget.labelText,
-        disableInput: true,
-        outlineBorderVisible: provider.suggestionsExpanded,
-        suffixTapEnabled: true,
-        suffixWidget: InkWell(
-          key: provider.dropdownKey,
-          onTap: () {
+    return DropdownContainer<SimpleDropdownProvider<T>>(
+      contentPadding: const EdgeInsets.all(0),
+      decoration: widget.decoration,
+      labelText: widget.labelText,
+      disableInput: true,
+      outlineBorderVisible: provider.suggestionsExpanded,
+      suffixTapEnabled: true,
+      suffixWidget: InkWell(
+        key: provider.dropdownKey,
+        onTap: () {
+          if (!tapOutside) {
             provider.toggleSuggestionsExpanded(
               expanded: false,
               selectorWidget: ChangeNotifierProvider.value(
@@ -161,25 +169,23 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
                 child: selectorWidget,
               ),
             );
-          },
-          child: SizedBox(
-            child: widget.arrowWidget ??
-                Padding(
-                  padding: const EdgeInsets.only(
-                    right: 8,
-                  ),
-                  child: Icon(
-                    context
-                            .watch<SimpleDropdownProvider<T>>()
-                            .suggestionsExpanded
-                        ? Icons.keyboard_arrow_up_outlined
-                        : Icons.keyboard_arrow_down_outlined,
-                  ),
+          }
+        },
+        child: SizedBox(
+          child: widget.arrowWidget ??
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 8,
                 ),
-          ),
+                child: Icon(
+                  context.watch<SimpleDropdownProvider<T>>().suggestionsExpanded
+                      ? Icons.keyboard_arrow_up_outlined
+                      : Icons.keyboard_arrow_down_outlined,
+                ),
+              ),
         ),
-        child: widget.child,
       ),
+      child: widget.child,
     );
   }
 }

@@ -38,6 +38,9 @@ class MyApp extends StatelessWidget {
                         decoration: DropdownDecoration(
                           backgroundColor: Colors.greenAccent,
                         ),
+                        onOptionSelected: (option) {
+                          log("Option selected ${option}");
+                        },
                         initData: [
                           DropDownModel<String>(
                               key: "1",

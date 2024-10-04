@@ -28,7 +28,7 @@ class DropDownModel<T> {
   /// This is used when the object is printed or displayed.
   @override
   String toString() {
-    return text;
+    return "Key:$key\n Display text: $text\n Value:$value\n";
   }
 
   /// Compares two [DropDownModel] objects based on their [key].
