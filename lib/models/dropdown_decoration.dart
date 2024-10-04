@@ -35,6 +35,10 @@ class DropdownDecoration {
   /// This color is applied when the dropdown field is enabled and not focused.
   final Color? borderColor;
 
+  /// Color for the dropdown field background, default is `transparent`.
+  ///.
+  final Color? backgroundColor;
+
   /// Color for the border of the dropdown field when an error occurs.
   ///
   /// This color is applied when the dropdown field displays an error.
@@ -61,6 +65,7 @@ class DropdownDecoration {
   /// - [errorBorderColor]: Color for the error state border.
   /// - [fieldHeight]: Height of the dropdown field (default is `52`).
   /// - [borderRadius]: Border radius for rounded corners.
+  /// - [backgroundColor]: Color for the dropdown background.
   const DropdownDecoration({
     this.labelTextStyle,
     this.hintTextStyle,
@@ -70,6 +75,7 @@ class DropdownDecoration {
     this.errorBorderColor,
     this.fieldHeight = 52,
     this.borderRadius,
+    this.backgroundColor,
     this.dropdownTextStyle = const TextStyle(
       fontSize: 14,
     ),

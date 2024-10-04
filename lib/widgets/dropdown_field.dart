@@ -57,6 +57,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
               horizontal: 12,
             ),
             decoration: BoxDecoration(
+              color: decoration?.backgroundColor ?? Colors.transparent,
               border: Border.all(
                 color: provider.fieldBorderColor(
                   borderColor: decoration?.borderColor,

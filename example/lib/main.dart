@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
+                        backgroundColor: Colors.green.withOpacity(0.2),
                       ),
                       selectorDecoration: SimpleSelectorDecoration(
                         selectorColor: Colors.amber.shade300,
