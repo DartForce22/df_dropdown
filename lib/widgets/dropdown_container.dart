@@ -19,6 +19,10 @@ class DropdownContainer<T extends BaseDropdownProvider>
     this.suffixWidget,
     this.decoration,
     this.child,
+    this.contentPadding = const EdgeInsets.symmetric(
+      vertical: 6,
+      horizontal: 12,
+    ),
   });
 
   final VoidCallback? onTapInside;
@@ -29,6 +33,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
   final Widget? suffixWidget;
   final bool suffixTapEnabled;
   final Widget? child;
+  final EdgeInsetsGeometry? contentPadding;
 
   final DropdownDecoration? decoration;
 
@@ -41,10 +46,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 6,
-              horizontal: 12,
-            ),
+            padding: contentPadding,
             decoration: BoxDecoration(
               color: decoration?.backgroundColor ?? Colors.transparent,
               border: Border.all(

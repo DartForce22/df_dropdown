@@ -31,7 +31,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   final GlobalKey dropdownKey = GlobalKey();
 
   // Function to show the overlay
-  void _showOverlay(Widget selectorWidget) {
+  void _showOverlay(Widget selectorWidget, bool expanded) {
     _selectorWidget = selectorWidget;
     // Find the position of the child widget using the GlobalKey
     final RenderBox renderBox =
@@ -39,14 +39,17 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size size = renderBox.size;
 
+    final int topOffset = expanded ? 4 : -8;
+
     // Create an OverlayEntry and position it based on the child's position
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         // Position the overlay under the child widget
-        left: offset.dx,
-        top: offset.dy + size.height + 4,
+        left: expanded ? offset.dx : null,
+        right: !expanded ? 24 : null,
+        top: offset.dy + size.height + topOffset,
         child: SizedBox(
-          width: size.width,
+          width: expanded ? size.width : null,
           child: selectorWidget,
         ),
       ),
@@ -96,11 +99,13 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Toggles the state of the suggestions list between expanded and collapsed.
   ///
   /// Expands the dropdown if it's collapsed, and collapses it if it's already expanded.
-  void toggleSuggestionsExpanded({Widget? selectorWidget}) {
+  void toggleSuggestionsExpanded(
+      {Widget? selectorWidget, bool expanded = true}) {
     suggestionsExpanded = !suggestionsExpanded;
     if (suggestionsExpanded) {
       expandSuggestions(
         selectorWidget: selectorWidget,
+        expanded: expanded,
       );
     } else {
       closeSuggestions();
@@ -108,10 +113,10 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   }
 
   /// Expands the suggestions list in the dropdown.
-  void expandSuggestions({Widget? selectorWidget}) {
+  void expandSuggestions({Widget? selectorWidget, bool expanded = true}) {
     suggestionsExpanded = true;
     if (selectorWidget != null) {
-      _showOverlay(selectorWidget);
+      _showOverlay(selectorWidget, expanded);
     }
     notifyListeners();
   }
@@ -189,7 +194,10 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Parameters:
   /// - [selectorWidget]: The dropdown selector widget that needs position adjustments.
   ///
-  void updateSelectorPositionIfNeeded({required Widget selectorWidget}) {
+  void updateSelectorPositionIfNeeded({
+    required Widget selectorWidget,
+    bool expanded = true,
+  }) {
     final RenderBox renderBox =
         dropdownKey.currentContext!.findRenderObject() as RenderBox;
     final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
@@ -208,6 +216,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
             _suggestionClosedOnMove = false;
             expandSuggestions(
               selectorWidget: selectorWidget,
+              expanded: expanded,
             );
           });
         }

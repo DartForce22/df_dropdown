@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
                     DfDropdownWrapper(
                       child: Text("NEKI TEST"),
                       decoration: DropdownDecoration(
-                        fieldHeight: 80,
+                        backgroundColor: Colors.greenAccent,
                       ),
                       initData: [
                         DropDownModel<String>(

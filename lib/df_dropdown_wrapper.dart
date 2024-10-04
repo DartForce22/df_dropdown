@@ -34,6 +34,7 @@ class DfDropdownWrapper<T> extends StatelessWidget {
     this.selectorDecoration,
     this.arrowWidget,
     this.child,
+    this.closeOnTapOutside = true,
   });
 
   /// Initial list of dropdown options.
@@ -65,6 +66,8 @@ class DfDropdownWrapper<T> extends StatelessWidget {
 
   final Widget? child;
 
+  final bool closeOnTapOutside;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -82,6 +85,7 @@ class DfDropdownWrapper<T> extends StatelessWidget {
         decoration: decoration,
         hintText: hintText,
         labelText: labelText,
+        closeOnTapOutside: closeOnTapOutside,
         child: child,
       ),
     );
@@ -96,6 +100,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.selectorDecoration,
     required this.arrowWidget,
     required this.child,
+    required this.closeOnTapOutside,
   });
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
@@ -103,6 +108,7 @@ class _Dropdown<T> extends StatefulWidget {
   final String? hintText;
   final Widget? arrowWidget;
   final Widget? child;
+  final bool closeOnTapOutside;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -129,6 +135,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       provider.updateSelectorPositionIfNeeded(
+        expanded: false,
         selectorWidget: ChangeNotifierProvider.value(
           value: provider,
           child: selectorWidget,
@@ -142,25 +149,40 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     return Column(
       children: [
         DropdownContainer<SimpleDropdownProvider<T>>(
-          key: provider.dropdownKey,
+          contentPadding: const EdgeInsets.all(0),
           decoration: widget.decoration,
           labelText: widget.labelText,
           disableInput: true,
           outlineBorderVisible: provider.suggestionsExpanded,
-          onTapInside: () => provider.toggleSuggestionsExpanded(
-            selectorWidget: ChangeNotifierProvider.value(
-              value: provider,
-              child: selectorWidget,
-            ),
-          ),
-          suffixWidget: SizedBox(
-            height: 48,
-            child: widget.arrowWidget ??
-                Icon(
-                  context.watch<SimpleDropdownProvider<T>>().suggestionsExpanded
-                      ? Icons.keyboard_arrow_up_outlined
-                      : Icons.keyboard_arrow_down_outlined,
+          onTapOutside: () {
+            if (widget.closeOnTapOutside) provider.closeSuggestions();
+          },
+          suffixWidget: InkWell(
+            onTap: () {
+              provider.toggleSuggestionsExpanded(
+                expanded: false,
+                selectorWidget: ChangeNotifierProvider.value(
+                  value: provider,
+                  child: selectorWidget,
                 ),
+              );
+            },
+            child: SizedBox(
+              key: provider.dropdownKey,
+              child: widget.arrowWidget ??
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 8,
+                    ),
+                    child: Icon(
+                      context
+                              .watch<SimpleDropdownProvider<T>>()
+                              .suggestionsExpanded
+                          ? Icons.keyboard_arrow_up_outlined
+                          : Icons.keyboard_arrow_down_outlined,
+                    ),
+                  ),
+            ),
           ),
           child: widget.child,
         ),
