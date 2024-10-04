@@ -113,8 +113,12 @@ class _Dropdown<T> extends StatefulWidget {
 
 class _DropdownState<T> extends State<_Dropdown<T>> {
   late final Widget selectorWidget;
+
+  late SimpleDropdownProvider<T> provider;
+
   @override
   void initState() {
+    provider = Provider.of<SimpleDropdownProvider<T>>(context, listen: false);
     selectorWidget = Consumer<SimpleDropdownProvider<T>>(
       builder: (_, provider, __) => SimpleDropdownSelector<T>(
         selectorDecoration: widget.selectorDecoration,
@@ -124,12 +128,21 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
       ),
     );
     super.initState();
+
+    if (widget.dropdownType == DropdownType.overlay) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        provider.updateSelectorPositionIfNeeded(
+          selectorWidget: ChangeNotifierProvider.value(
+            value: provider,
+            child: selectorWidget,
+          ),
+        );
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider =
-        Provider.of<SimpleDropdownProvider<T>>(context, listen: false);
     return Column(
       children: [
         DropdownField<SimpleDropdownProvider<T>>(

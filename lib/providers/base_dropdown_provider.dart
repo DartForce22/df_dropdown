@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -20,6 +22,10 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   final BuildContext context;
   OverlayEntry? _overlayEntry;
+
+  Offset _previousOffset = Offset.zero;
+  Timer? _timer;
+  bool _suggestionClosedOnMove = false;
 
   // Global key to identify the child widget
   final GlobalKey dropdownKey = GlobalKey();
@@ -164,5 +170,57 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     }
 
     return color;
+  }
+
+  /// Monitors and updates the position of the dropdown selector widget if needed.
+  ///
+  /// This method checks the position of the dropdown using its current global offset.
+  /// If the position has changed since the last check, the suggestions are either
+  /// closed or reopened, depending on the direction of the movement and the expansion
+  /// state of the suggestions.
+  ///
+  /// - If the dropdown has moved horizontally, it closes the suggestions immediately.
+  /// - If the dropdown has moved vertically and the suggestions are expanded, it
+  ///   temporarily closes them and then reopens them after a short delay.
+  ///
+  /// It also ensures that the method continues to check for future position changes
+  /// by adding a post-frame callback.
+  ///
+  /// Parameters:
+  /// - [selectorWidget]: The dropdown selector widget that needs position adjustments.
+  ///
+  void updateSelectorPositionIfNeeded({required Widget selectorWidget}) {
+    final RenderBox renderBox =
+        dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
+
+    if (_previousOffset != currentOffset) {
+      _timer?.cancel();
+      if (_previousOffset.dx != currentOffset.dx) {
+        closeSuggestions();
+      } else {
+        if (suggestionsExpanded) {
+          closeSuggestions();
+          _suggestionClosedOnMove = true;
+        }
+        if (_suggestionClosedOnMove) {
+          _timer = Timer(const Duration(milliseconds: 100), () {
+            _suggestionClosedOnMove = false;
+            expandSuggestions(
+              selectorWidget: selectorWidget,
+            );
+          });
+        }
+      }
+
+      _previousOffset = currentOffset;
+    }
+
+    // Continue to check for future changes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      updateSelectorPositionIfNeeded(
+        selectorWidget: selectorWidget,
+      );
+    });
   }
 }

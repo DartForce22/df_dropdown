@@ -31,6 +31,9 @@ class MyApp extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 100,
+                    ),
                     DfSimpleDropdown<String>(
                       dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
@@ -57,7 +60,7 @@ class MyApp extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 8,
+                      height: 800,
                     ),
                     DfSearchableDropdown<String>(
                       // dropdownType: DropdownType.overlay,
