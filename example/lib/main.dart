@@ -32,43 +32,44 @@ class MyApp extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      child: DfDropdownWrapper(
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Icon(Icons.car_rental),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text("Custom Dropdown Example"),
-                          ],
-                        ),
-                        decoration: DropdownDecoration(
-                          backgroundColor: Colors.greenAccent,
-                        ),
-                        selectorDecoration: SimpleSelectorDecoration(
-                          selectedItemIcon: Icon(
-                            Icons.cabin,
+                    DfDropdownWrapper(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 4,
                           ),
-                          selectedItemColor: Colors.blue.withOpacity(
-                            0.4,
+                          Icon(Icons.car_rental),
+                          SizedBox(
+                            width: 4,
                           ),
-                        ),
-                        onOptionSelected: (option) {
-                          log("Option selected ${option}");
-                        },
-                        selectedValue: DropDownModel<String>(
-                            key: "1", value: "1", text: "New York City"),
-                        initData: [
-                          DropDownModel<String>(
-                              key: "1", value: "1", text: "New York City"),
-                          DropDownModel<String>(
-                              key: "2", value: "2", text: "Los Angeles"),
+                          Text("Custom Dropdown Example"),
                         ],
                       ),
+                      decoration: DropdownDecoration(
+                        backgroundColor: Colors.greenAccent,
+                      ),
+                      selectorDecoration: SimpleSelectorDecoration(
+                        selectedItemIcon: Icon(
+                          Icons.cabin,
+                        ),
+                        selectedItemColor: Colors.blue.withOpacity(
+                          0.4,
+                        ),
+                      ),
+                      onOptionSelected: (option) {
+                        log("Option selected ${option}");
+                      },
+                      selectedValue: DropDownModel<String>(
+                        key: "1",
+                        value: "1",
+                        text: "New York City",
+                      ),
+                      initData: [
+                        DropDownModel<String>(
+                            key: "1", value: "1", text: "New York City"),
+                        DropDownModel<String>(
+                            key: "2", value: "2", text: "Los Angeles"),
+                      ],
                     ),
                     const SizedBox(
                       height: 8,
