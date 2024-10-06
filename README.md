@@ -137,8 +137,8 @@ Then, run: `flutter pub get`
    With `DfDropdownWrapper`, you can create custom dropdowns while maintaining flexibility for the content you display inside the dropdown selector.
 
   ### Example
-    ```dart
-      DfDropdownWrapper(
+```dart
+    DfDropdownWrapper(
         child: Row(
           children: [
             SizedBox(width: 4),
@@ -167,15 +167,4 @@ Then, run: `flutter pub get`
           DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
         ],
       )
-  ```
-
-
-
-
-
-
-      
-
-      
-
-
+```
