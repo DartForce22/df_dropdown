@@ -35,6 +35,13 @@ class SimpleSelectorDecoration {
   /// This defines the appearance of the text in each dropdown option.
   final TextStyle? optionTextStyle;
 
+  ///This is applied only when the [DfDropdownWrapper] widget is used
+  final double? selectorWidth;
+
+  final Widget? selectedItemIcon;
+
+  final Color? selectedItemColor;
+
   /// Creates a new [SimpleSelectorDecoration] instance with optional customization.
   ///
   /// - [borderRadius]: Sets the border radius for the selector.
@@ -43,6 +50,8 @@ class SimpleSelectorDecoration {
   /// - [selectorColor]: Sets the background color for the selector dropdown.
   /// - [itemColor]: Defines the background color of each selectable item.
   /// - [optionTextStyle]: Specifies the text style for the dropdown options.
+  /// - [selectedItemIcon]: Customizes the icon displayed next to the selected option.
+  /// - [selectedItemColor]: Sets the background color for selected items.
   const SimpleSelectorDecoration({
     this.borderRadius,
     this.elevation,
@@ -50,5 +59,8 @@ class SimpleSelectorDecoration {
     this.selectorColor,
     this.itemColor,
     this.optionTextStyle,
+    this.selectorWidth,
+    this.selectedItemIcon,
+    this.selectedItemColor,
   });
 }

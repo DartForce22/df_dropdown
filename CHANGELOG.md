@@ -16,3 +16,8 @@
 
 - Added the "Overlay" selector appearance
 - When the `dropdownType` is set to `DropdownType.overlay` the options will be added on the top of the existing visible widgets
+
+## 1.0.4
+
+- Added a new dropdown variant `DfDropdownWrapper`
+- Added selected icons, and selected color parameters to the `SimpleSelectorDecoration`

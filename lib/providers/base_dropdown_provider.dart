@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -21,11 +23,15 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   final BuildContext context;
   OverlayEntry? _overlayEntry;
 
+  Offset _previousOffset = Offset.zero;
+  Timer? _timer;
+  bool _suggestionClosedOnMove = false;
+
   // Global key to identify the child widget
   final GlobalKey dropdownKey = GlobalKey();
 
   // Function to show the overlay
-  void _showOverlay(Widget selectorWidget) {
+  void _showOverlay(Widget selectorWidget, bool expanded) {
     _selectorWidget = selectorWidget;
     // Find the position of the child widget using the GlobalKey
     final RenderBox renderBox =
@@ -33,14 +39,19 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size size = renderBox.size;
 
+    final int topOffset = expanded ? 4 : -6;
+
     // Create an OverlayEntry and position it based on the child's position
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         // Position the overlay under the child widget
-        left: offset.dx,
-        top: offset.dy + size.height + 4,
+        left: expanded ? offset.dx : null,
+        right: !expanded
+            ? MediaQuery.of(context).size.width - offset.dx - size.width
+            : null,
+        top: offset.dy + size.height + topOffset,
         child: SizedBox(
-          width: size.width,
+          width: expanded ? size.width : null,
           child: selectorWidget,
         ),
       ),
@@ -90,11 +101,13 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Toggles the state of the suggestions list between expanded and collapsed.
   ///
   /// Expands the dropdown if it's collapsed, and collapses it if it's already expanded.
-  void toggleSuggestionsExpanded({Widget? selectorWidget}) {
+  void toggleSuggestionsExpanded(
+      {Widget? selectorWidget, bool expanded = true}) {
     suggestionsExpanded = !suggestionsExpanded;
     if (suggestionsExpanded) {
       expandSuggestions(
         selectorWidget: selectorWidget,
+        expanded: expanded,
       );
     } else {
       closeSuggestions();
@@ -102,10 +115,10 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   }
 
   /// Expands the suggestions list in the dropdown.
-  void expandSuggestions({Widget? selectorWidget}) {
+  void expandSuggestions({Widget? selectorWidget, bool expanded = true}) {
     suggestionsExpanded = true;
     if (selectorWidget != null) {
-      _showOverlay(selectorWidget);
+      _showOverlay(selectorWidget, expanded);
     }
     notifyListeners();
   }
@@ -164,5 +177,61 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     }
 
     return color;
+  }
+
+  /// Monitors and updates the position of the dropdown selector widget if needed.
+  ///
+  /// This method checks the position of the dropdown using its current global offset.
+  /// If the position has changed since the last check, the suggestions are either
+  /// closed or reopened, depending on the direction of the movement and the expansion
+  /// state of the suggestions.
+  ///
+  /// - If the dropdown has moved horizontally, it closes the suggestions immediately.
+  /// - If the dropdown has moved vertically and the suggestions are expanded, it
+  ///   temporarily closes them and then reopens them after a short delay.
+  ///
+  /// It also ensures that the method continues to check for future position changes
+  /// by adding a post-frame callback.
+  ///
+  /// Parameters:
+  /// - [selectorWidget]: The dropdown selector widget that needs position adjustments.
+  ///
+  void updateSelectorPositionIfNeeded({
+    required Widget selectorWidget,
+    bool expanded = true,
+  }) {
+    final RenderBox renderBox =
+        dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
+
+    if (_previousOffset != currentOffset) {
+      _timer?.cancel();
+      if (_previousOffset.dx != currentOffset.dx) {
+        closeSuggestions();
+      } else {
+        if (suggestionsExpanded) {
+          closeSuggestions();
+          _suggestionClosedOnMove = true;
+        }
+        if (_suggestionClosedOnMove) {
+          _timer = Timer(const Duration(milliseconds: 100), () {
+            _suggestionClosedOnMove = false;
+            expandSuggestions(
+              selectorWidget: selectorWidget,
+              expanded: expanded,
+            );
+          });
+        }
+      }
+
+      _previousOffset = currentOffset;
+    }
+
+    // Continue to check for future changes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      updateSelectorPositionIfNeeded(
+        selectorWidget: selectorWidget,
+      );
+    });
   }
 }

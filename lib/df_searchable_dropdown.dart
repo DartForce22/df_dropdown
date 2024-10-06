@@ -125,6 +125,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     selectorWidget = Consumer<SearchableDropdownProvider<T>>(
       builder: (_, provider, __) => SimpleDropdownSelector<T>(
         selectorDecoration: widget.selectorDecoration,
+        selectedOption: provider.selectedValue,
         dropdownData:
             provider.suggestionsExpanded ? provider.getDropdownData : [],
         dropdownHeight: provider.dropdownHeight,
@@ -132,6 +133,18 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
       ),
     );
     super.initState();
+    if (widget.dropdownType == DropdownType.overlay) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context
+            .read<SearchableDropdownProvider<T>>()
+            .updateSelectorPositionIfNeeded(
+              selectorWidget: ChangeNotifierProvider.value(
+                value: context.read<SearchableDropdownProvider<T>>(),
+                child: selectorWidget,
+              ),
+            );
+      });
+    }
   }
 
   @override
