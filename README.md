@@ -132,7 +132,7 @@ Then, run: `flutter pub get`
   ## 5. DfDropdownWrapper a widget container
   `DfDropdownWrapper` is a versatile widget that acts as a container for any custom widget while providing an integrated dropdown functionality. You can wrap any widget inside the `DfDropdownWrapper`, and it will allow you to show dropdown options with customizable design and behavior.
   
-  <img src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/overlay_fix/assets/wrapper-dd.jpg" alt="drawing" width="200"/>
+  <img src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/main/assets/wrapper-dd.jpg" alt="DfDropdownWrapper" width="200"/>
 
    With `DfDropdownWrapper`, you can create custom dropdowns while maintaining flexibility for the content you display inside the dropdown selector.
 
