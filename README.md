@@ -134,6 +134,8 @@ Then, run: `flutter pub get`
   
   <img src="https://raw.githubusercontent.com/DartForce22/df_dropdown/refs/heads/overlay_fix/assets/wrapper-dd.jpg" alt="drawing" width="200"/>
 
+   With `DfDropdownWrapper`, you can create custom dropdowns while maintaining flexibility for the content you display inside the dropdown selector.
+
   ### Example
     ```dart
       DfDropdownWrapper(
@@ -166,9 +168,6 @@ Then, run: `flutter pub get`
         ],
       )
   ```
-    
-### With `DfDropdownWrapper`, you can create custom dropdowns while maintaining flexibility for the content you display inside the dropdown selector.
-
 
 
 
