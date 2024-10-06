@@ -48,8 +48,8 @@ Then, run: `flutter pub get`
       DropDownModel<String>(key: "1", value: "1", text: "New York City"),
       DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
     ],
-  )```
-  
+  )
+  ```
   
   ## 2. Simple Searchable Dropdown
   This dropdown includes a search option for filtering through a large set of options, helping users quickly find what they’re looking for.
@@ -72,8 +72,8 @@ Then, run: `flutter pub get`
         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
         DropDownModel<String>(key: "3", value: "3", text: "Chicago"),
       ],
-    )```
- 
+    )
+  ```
   ## 3. Searchable Single Select Dropdown
   A dropdown that allows users to search for and select only one option from the list, ideal for forms where only one selection is required.
   Similar to the `DfSearchableDropdown`, but with several UI differences.
@@ -96,8 +96,8 @@ Then, run: `flutter pub get`
         DropDownModel<String>(key: "2", value: 2, text: "Los Angeles"),
         DropDownModel<String>(key: "3", value: 3, text: "Chicago"),
       ],
-    )```
-  
+    )
+  ```
   ## 4. Searchable Multi Select Dropdown
   This allows users to search and select multiple options from the list, perfect for scenarios where more than one selection is necessary.
   
@@ -126,8 +126,8 @@ Then, run: `flutter pub get`
         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
         DropDownModel<String>(key: "3", value: "3", text: "Chicago"),
       ],
-    )```
-
+    )
+```
 
   ## 5. DfDropdownWrapper a widget container
   `DfDropdownWrapper` is a versatile widget that acts as a container for any custom widget while providing an integrated dropdown functionality. You can wrap any widget inside the `DfDropdownWrapper`, and it will allow you to show dropdown options with customizable design and behavior.
@@ -164,10 +164,10 @@ Then, run: `flutter pub get`
           DropDownModel<String>(key: "1", value: "1", text: "New York City"),
           DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
         ],
-      )```
-  
+      )
+  ```
     
-With `DfDropdownWrapper`, you can create custom dropdowns while maintaining flexibility for the content you display inside the dropdown selector.
+### With `DfDropdownWrapper`, you can create custom dropdowns while maintaining flexibility for the content you display inside the dropdown selector.
 
 
 
