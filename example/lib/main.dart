@@ -34,18 +34,37 @@ class MyApp extends StatelessWidget {
                   children: [
                     SizedBox(
                       child: DfDropdownWrapper(
-                        child: Text("NEKI TEST"),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Icon(Icons.car_rental),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text("Custom Dropdown Example"),
+                          ],
+                        ),
                         decoration: DropdownDecoration(
                           backgroundColor: Colors.greenAccent,
+                        ),
+                        selectorDecoration: SimpleSelectorDecoration(
+                          selectedItemIcon: Icon(
+                            Icons.cabin,
+                          ),
+                          selectedItemColor: Colors.blue.withOpacity(
+                            0.4,
+                          ),
                         ),
                         onOptionSelected: (option) {
                           log("Option selected ${option}");
                         },
+                        selectedValue: DropDownModel<String>(
+                            key: "1", value: "1", text: "New York City"),
                         initData: [
                           DropDownModel<String>(
-                              key: "1",
-                              value: "1",
-                              text: "New York Cityttttttttttt"),
+                              key: "1", value: "1", text: "New York City"),
                           DropDownModel<String>(
                               key: "2", value: "2", text: "Los Angeles"),
                         ],

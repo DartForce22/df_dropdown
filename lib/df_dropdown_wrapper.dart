@@ -129,6 +129,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             : null,
         child: SimpleDropdownSelector<T>(
           expanded: false,
+          selectedOption: provider.selectedValue,
           selectorDecoration: widget.selectorDecoration,
           dropdownData: provider.suggestionsExpanded ? provider.initData : [],
           dropdownHeight: provider.dropdownHeight,

@@ -122,6 +122,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     selectorWidget = Consumer<SimpleDropdownProvider<T>>(
       builder: (_, provider, __) => SimpleDropdownSelector<T>(
         selectorDecoration: widget.selectorDecoration,
+        selectedOption: provider.selectedValue,
         dropdownData: provider.suggestionsExpanded ? provider.initData : [],
         dropdownHeight: provider.dropdownHeight,
         onSelectSuggestion: provider.onSelectSuggestion,

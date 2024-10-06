@@ -9,6 +9,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
     required this.dropdownData,
     required this.dropdownHeight,
     required this.onSelectSuggestion,
+    required this.selectedOption,
     this.selectorDecoration,
     this.expanded = true,
   });
@@ -18,6 +19,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
   final SimpleSelectorDecoration? selectorDecoration;
   final Function(DropDownModel<T>) onSelectSuggestion;
   final bool expanded;
+  final DropDownModel<T>? selectedOption;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
                     expanded: expanded,
                     selectorDecoration: selectorDecoration,
                     text: suggestion.text,
+                    selected: suggestion == selectedOption,
                     onTap: () {
                       onSelectSuggestion(suggestion);
                     },
@@ -70,18 +73,22 @@ class _DropdownSuggestion extends StatelessWidget {
     required this.onTap,
     required this.selectorDecoration,
     required this.expanded,
+    required this.selected,
   });
 
   final String text;
   final VoidCallback onTap;
   final SimpleSelectorDecoration? selectorDecoration;
   final bool expanded;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Material(
-      color: Colors.transparent,
+      color: selected
+          ? selectorDecoration?.selectedItemColor ?? Colors.transparent
+          : Colors.transparent,
       borderRadius:
           selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       child: InkWell(
@@ -96,7 +103,9 @@ class _DropdownSuggestion extends StatelessWidget {
                 selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
             color: selectorDecoration?.itemColor ?? Colors.transparent,
           ),
-          width: expanded ? double.infinity : 164,
+          width: expanded
+              ? double.infinity
+              : selectorDecoration?.selectorWidth ?? 164,
           child: Row(
             children: [
               Expanded(
@@ -108,13 +117,12 @@ class _DropdownSuggestion extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(
-                width: 4,
-              ),
-              Icon(
-                Icons.check,
-                size: 16,
-              ),
+              if (selectorDecoration?.selectedItemIcon != null && selected) ...[
+                const SizedBox(
+                  width: 4,
+                ),
+                selectorDecoration!.selectedItemIcon!,
+              ]
             ],
           ),
         ),
