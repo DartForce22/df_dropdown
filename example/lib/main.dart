@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
                       validator: (obj) {
                         return "This is a really long validation error, an this is how it will be displayed...";
                       },
-                      dropdownType: DropdownType.overlay,
+                      //dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
@@ -150,7 +150,7 @@ class MyApp extends StatelessWidget {
                       validator: (obj) {
                         return "This is a really long validation error, an this is how it will be displayed...";
                       },
-                      dropdownType: DropdownType.overlay,
+                      //dropdownType: DropdownType.overlay,
                       hintText: "Select...",
                       labelText: "Single Select",
                       selectorDecoration: const SingleSelectorDecoration(
@@ -181,7 +181,7 @@ class MyApp extends StatelessWidget {
                       validator: (obj) {
                         return "This is a really long validation error, an this is how it will be displayed...";
                       },
-                      dropdownType: DropdownType.overlay,
+                      //dropdownType: DropdownType.overlay,
                       hintText: "Select options...",
                       decoration: const DropdownDecoration(
                         borderColor: Colors.amber,
