@@ -63,7 +63,6 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
       child: TextFormField(
         focusNode: provider.textFieldFocusNode,
         ignorePointers: disableInput,
-        validator: provider.onValidateField,
         controller: provider.searchTextController,
         style: decoration?.dropdownTextStyle,
         onChanged: provider.onInputChanged,

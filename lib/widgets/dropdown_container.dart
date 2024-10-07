@@ -48,6 +48,10 @@ class DropdownContainer<T extends BaseDropdownProvider>
           builder: (_, provider, child) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              FormField(
+                builder: (s) => const SizedBox(),
+                validator: provider.onValidateField,
+              ),
               Container(
                 padding: contentPadding,
                 decoration: BoxDecoration(
