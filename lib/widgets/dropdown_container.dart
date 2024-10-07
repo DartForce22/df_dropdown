@@ -8,6 +8,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
     extends StatelessWidget {
   const DropdownContainer({
     super.key,
+    required this.disabled,
     this.onTapInside,
     this.onTapOutside,
     this.labelText,
@@ -34,101 +35,111 @@ class DropdownContainer<T extends BaseDropdownProvider>
   final EdgeInsetsGeometry? contentPadding;
 
   final DropdownDecoration? decoration;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Consumer<T>(
-      builder: (_, provider, child) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: contentPadding,
-            decoration: BoxDecoration(
-              color: decoration?.backgroundColor ?? Colors.transparent,
-              border: Border.all(
-                color: provider.fieldBorderColor(
-                  borderColor: decoration?.borderColor,
-                  errorBorderColor: decoration?.errorBorderColor,
-                ),
-              ),
-              borderRadius:
-                  decoration?.borderRadius ?? BorderRadius.circular(12),
-              boxShadow: [
-                if (outlineBorderVisible && provider.validationError == null)
-                  BoxShadow(
-                    color: (decoration?.outlineBorderColor ??
-                        (Colors.teal[450] ?? Colors.teal)),
-                    spreadRadius: 4,
+    return IgnorePointer(
+      ignoring: disabled,
+      child: Opacity(
+        opacity: disabled ? 0.4 : 1,
+        child: Consumer<T>(
+          builder: (_, provider, child) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: contentPadding,
+                decoration: BoxDecoration(
+                  color: decoration?.backgroundColor ?? Colors.transparent,
+                  border: Border.all(
+                    color: provider.fieldBorderColor(
+                      borderColor: decoration?.borderColor,
+                      errorBorderColor: decoration?.errorBorderColor,
+                    ),
                   ),
-                if (outlineBorderVisible && provider.validationError == null)
-                  const BoxShadow(
-                    color: Colors.white,
-                    spreadRadius: 2,
-                  )
-              ],
-            ),
-            height: decoration?.fieldHeight ?? 52,
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: TapRegion(
-                    onTapOutside: (_) {
-                      if (onTapOutside != null) onTapOutside!();
-                    },
-                    onTapInside: (_) {
-                      if (onTapInside != null) onTapInside!();
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (labelText != null &&
-                            provider.searchTextController.text.isNotEmpty)
-                          Flexible(
-                            child: FittedBox(
-                              child: Text(
-                                labelText!,
-                                style: decoration?.labelTextStyle ??
-                                    TextStyle(
-                                      color: Colors.grey.shade600,
-                                    ),
+                  borderRadius:
+                      decoration?.borderRadius ?? BorderRadius.circular(12),
+                  boxShadow: [
+                    if (outlineBorderVisible &&
+                        provider.validationError == null)
+                      BoxShadow(
+                        color: (decoration?.outlineBorderColor ??
+                            (Colors.teal[450] ?? Colors.teal)),
+                        spreadRadius: 4,
+                      ),
+                    if (outlineBorderVisible &&
+                        provider.validationError == null)
+                      const BoxShadow(
+                        color: Colors.white,
+                        spreadRadius: 2,
+                      )
+                  ],
+                ),
+                height: decoration?.fieldHeight ?? 52,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TapRegion(
+                        onTapOutside: (_) {
+                          if (onTapOutside != null) onTapOutside!();
+                        },
+                        onTapInside: (_) {
+                          if (onTapInside != null) onTapInside!();
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (labelText != null &&
+                                provider.searchTextController.text.isNotEmpty)
+                              Flexible(
+                                child: FittedBox(
+                                  child: Text(
+                                    labelText!,
+                                    style: decoration?.labelTextStyle ??
+                                        TextStyle(
+                                          color: Colors.grey.shade600,
+                                        ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        if (child != null) child,
-                      ],
+                            if (child != null) child,
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    if (suffixWidget != null)
+                      GestureDetector(
+                        onTap: onTapInside,
+                        child: suffixWidget,
+                      ),
+                  ],
                 ),
-                if (suffixWidget != null)
-                  GestureDetector(
-                    onTap: onTapInside,
-                    child: suffixWidget,
-                  ),
-              ],
-            ),
-          ),
+              ),
 
-          //An error message [Text] widget displayed only when validation returns an error
-          if (provider.validationError != null && !provider.suggestionsExpanded)
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 4,
-              ),
-              child: Text(
-                provider.validationError!,
-                style: decoration?.errorMessageTextStyle ??
-                    textTheme.bodySmall?.copyWith(
-                      color: Colors.red.shade500,
-                    ),
-              ),
-            )
-        ],
+              //An error message [Text] widget displayed only when validation returns an error
+              if (provider.validationError != null &&
+                  !provider.suggestionsExpanded)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4,
+                  ),
+                  child: Text(
+                    provider.validationError!,
+                    style: decoration?.errorMessageTextStyle ??
+                        textTheme.bodySmall?.copyWith(
+                          color: Colors.red.shade500,
+                        ),
+                  ),
+                )
+            ],
+          ),
+          child: child,
+        ),
       ),
-      child: child,
     );
   }
 }
