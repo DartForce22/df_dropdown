@@ -33,6 +33,10 @@ class MyApp extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DfDropdownWrapper(
+                      validator: (obj) {
+                        log("message");
+                        return "Validation error";
+                      },
                       child: Row(
                         children: [
                           SizedBox(
@@ -75,6 +79,10 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSimpleDropdown<String>(
+                      validator: (obj) {
+                        log("message");
+                        return "Validation error 2";
+                      },
                       dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
@@ -103,6 +111,10 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableDropdown<String>(
+                      validator: (obj) {
+                        log("message");
+                        return "Validation error 3";
+                      },
                       // dropdownType: DropdownType.overlay,
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
@@ -138,6 +150,10 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableSingleSelectDropdown<String>(
+                      validator: (obj) {
+                        log("message");
+                        return "Validation error 4";
+                      },
                       dropdownType: DropdownType.overlay,
                       hintText: "Select...",
                       labelText: "Single Select",
@@ -166,6 +182,10 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableMultiSelectDropdown<String>(
+                      validator: (obj) {
+                        log("message");
+                        return "Validation error 5";
+                      },
                       // dropdownType: DropdownType.overlay,
                       hintText: "Select options...",
                       decoration: const DropdownDecoration(

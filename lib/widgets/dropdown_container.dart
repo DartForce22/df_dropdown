@@ -121,14 +121,15 @@ class DropdownContainer<T extends BaseDropdownProvider>
               ),
 
               //An error message [Text] widget displayed only when validation returns an error
-              if (provider.validationError != null &&
-                  !provider.suggestionsExpanded)
+              if (!provider.suggestionsExpanded &&
+                  (decoration?.reserveSpaceForValidationMessage != false ||
+                      provider.validationError != null))
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 4,
                   ),
                   child: Text(
-                    provider.validationError!,
+                    provider.validationError ?? "",
                     style: decoration?.errorMessageTextStyle ??
                         textTheme.bodySmall?.copyWith(
                           color: Colors.red.shade500,
