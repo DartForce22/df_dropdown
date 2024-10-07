@@ -17,6 +17,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.suffixTapEnabled = true,
     this.suffixWidget,
     this.decoration,
+    required this.disabled,
   });
 
   final VoidCallback? onTapInside;
@@ -27,6 +28,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   final bool disableInput;
   final Widget? suffixWidget;
   final bool suffixTapEnabled;
+  final bool disabled;
 
   final DropdownDecoration? decoration;
 
@@ -49,6 +51,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<T>(context, listen: false);
     return DropdownContainer<T>(
+      disabled: disabled,
       decoration: decoration,
       disableInput: disableInput,
       labelText: labelText,
@@ -60,7 +63,6 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
       child: TextFormField(
         focusNode: provider.textFieldFocusNode,
         ignorePointers: disableInput,
-        validator: provider.onValidateField,
         controller: provider.searchTextController,
         style: decoration?.dropdownTextStyle,
         onChanged: provider.onInputChanged,

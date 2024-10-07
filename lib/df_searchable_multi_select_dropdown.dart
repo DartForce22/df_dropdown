@@ -37,6 +37,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.selectorDecoration,
     this.arrowWidget,
     this.dropdownType = DropdownType.expandable,
+    this.disabled = false,
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
@@ -73,6 +74,8 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   /// Widget displayed for the dropdown arrow icon.
   final Widget? arrowWidget;
 
+  final bool disabled;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -93,6 +96,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         selectorDecoration: selectorDecoration,
         arrowWidget: arrowWidget,
         dropdownType: dropdownType,
+        disabled: disabled,
       ),
     );
   }
@@ -106,6 +110,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.selectorDecoration,
     required this.arrowWidget,
     required this.dropdownType,
+    required this.disabled,
   });
   final DropdownType dropdownType;
   final DropdownDecoration? decoration;
@@ -113,6 +118,7 @@ class _Dropdown<T> extends StatefulWidget {
   final String? hintText;
   final MultiSelectorDecoration? selectorDecoration;
   final Widget? arrowWidget;
+  final bool disabled;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -153,6 +159,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           key: context
               .read<SearchableMultiSelectDropdownProvider<T>>()
               .dropdownKey,
+          disabled: widget.disabled,
           decoration: widget.decoration,
           hintText: widget.hintText,
           labelText: widget.labelText,

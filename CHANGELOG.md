@@ -21,3 +21,8 @@
 
 - Added a new dropdown variant `DfDropdownWrapper`
 - Added selected icons, and selected color parameters to the `SimpleSelectorDecoration`
+
+## 1.0.5
+
+- Added more customization parameters
+- Fixed form validations

@@ -33,6 +33,7 @@ class DfDropdownWrapper<T> extends StatelessWidget {
     this.arrowWidget,
     this.child,
     this.closeOnTapOutside = true,
+    this.disabled = false,
   });
 
   /// Initial list of dropdown options.
@@ -63,6 +64,8 @@ class DfDropdownWrapper<T> extends StatelessWidget {
 
   final bool closeOnTapOutside;
 
+  final bool disabled;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -75,6 +78,7 @@ class DfDropdownWrapper<T> extends StatelessWidget {
         context: context,
       ),
       child: _Dropdown<T>(
+        disabled: disabled,
         arrowWidget: arrowWidget,
         selectorDecoration: selectorDecoration,
         decoration: decoration,
@@ -94,6 +98,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.arrowWidget,
     required this.child,
     required this.closeOnTapOutside,
+    required this.disabled,
   });
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
@@ -101,6 +106,7 @@ class _Dropdown<T> extends StatefulWidget {
   final Widget? arrowWidget;
   final Widget? child;
   final bool closeOnTapOutside;
+  final bool disabled;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -153,6 +159,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
   @override
   Widget build(BuildContext context) {
     return DropdownContainer<SimpleDropdownProvider<T>>(
+      disabled: widget.disabled,
       contentPadding: const EdgeInsets.all(0),
       decoration: widget.decoration,
       labelText: widget.labelText,

@@ -54,6 +54,12 @@ class DropdownDecoration {
   /// This allows customizing the corners of the dropdown field with a specific radius.
   final BorderRadius? borderRadius;
 
+  ///Indicator wether validation error container will be present even
+  ///there is no error to display
+  ///
+  ///Default is `true`
+  final bool reserveSpaceForValidationMessage;
+
   /// Creates a new [DropdownDecoration] instance with optional customization.
   ///
   /// - [labelTextStyle]: Style for the label text.
@@ -66,6 +72,9 @@ class DropdownDecoration {
   /// - [fieldHeight]: Height of the dropdown field (default is `52`).
   /// - [borderRadius]: Border radius for rounded corners.
   /// - [backgroundColor]: Color for the dropdown background.
+  /// - [reserveSpaceForValidationMessage]: Indicator wether validation error container will be present
+  /// even  there is no error to display
+  ///
   const DropdownDecoration({
     this.labelTextStyle,
     this.hintTextStyle,
@@ -76,6 +85,7 @@ class DropdownDecoration {
     this.fieldHeight = 52,
     this.borderRadius,
     this.backgroundColor,
+    this.reserveSpaceForValidationMessage = true,
     this.dropdownTextStyle = const TextStyle(
       fontSize: 14,
     ),

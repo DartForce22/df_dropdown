@@ -33,6 +33,9 @@ class MyApp extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DfDropdownWrapper(
+                      validator: (obj) {
+                        return "This is a really long validation error, an this is how it will be displayed...";
+                      },
                       child: Row(
                         children: [
                           SizedBox(
