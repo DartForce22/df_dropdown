@@ -78,6 +78,9 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSimpleDropdown<String>(
+                      validator: (obj) {
+                        return "This is a really long validation error, an this is how it will be displayed...";
+                      },
                       dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
@@ -106,7 +109,10 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableDropdown<String>(
-                      // dropdownType: DropdownType.overlay,
+                      validator: (obj) {
+                        return "This is a really long validation error, an this is how it will be displayed...";
+                      },
+                      dropdownType: DropdownType.overlay,
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {
@@ -141,6 +147,9 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableSingleSelectDropdown<String>(
+                      validator: (obj) {
+                        return "This is a really long validation error, an this is how it will be displayed...";
+                      },
                       dropdownType: DropdownType.overlay,
                       hintText: "Select...",
                       labelText: "Single Select",
@@ -169,7 +178,10 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableMultiSelectDropdown<String>(
-                      // dropdownType: DropdownType.overlay,
+                      validator: (obj) {
+                        return "This is a really long validation error, an this is how it will be displayed...";
+                      },
+                      dropdownType: DropdownType.overlay,
                       hintText: "Select options...",
                       decoration: const DropdownDecoration(
                         borderColor: Colors.amber,

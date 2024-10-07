@@ -39,7 +39,6 @@ class DropdownContainer<T extends BaseDropdownProvider>
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return IgnorePointer(
       ignoring: disabled,
       child: Opacity(
@@ -123,23 +122,6 @@ class DropdownContainer<T extends BaseDropdownProvider>
                   ],
                 ),
               ),
-
-              //An error message [Text] widget displayed only when validation returns an error
-              if (!provider.suggestionsExpanded &&
-                  (decoration?.reserveSpaceForValidationMessage != false ||
-                      provider.validationError != null))
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 4,
-                  ),
-                  child: Text(
-                    provider.validationError ?? "",
-                    style: decoration?.errorMessageTextStyle ??
-                        textTheme.bodySmall?.copyWith(
-                          color: Colors.red.shade500,
-                        ),
-                  ),
-                )
             ],
           ),
           child: child,
