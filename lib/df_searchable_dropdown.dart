@@ -1,9 +1,7 @@
-import 'dart:developer';
-
-import 'package:df_dropdown/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/enums/dropdown_type.dart';
 import '/models/drop_down_model.dart';
 import '/models/dropdown_decoration.dart';
 import '/models/simple_selector_decoration.dart';
