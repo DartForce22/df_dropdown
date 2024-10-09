@@ -160,6 +160,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
       children: [
         DropdownContainer<SimpleDropdownProvider<T>>(
           disabled: widget.disabled,
+          addDropdownKey: false,
           dropdownType: DropdownType.overlay,
           contentPadding: const EdgeInsets.all(0),
           decoration: widget.decoration,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:df_dropdown/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -163,7 +165,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         DropdownField<SearchableDropdownProvider<T>>(
           disabled: widget.disabled,
           dropdownType: widget.dropdownType,
-          key: provider.dropdownKey,
           decoration: widget.decoration,
           hintText: widget.hintText,
           labelText: widget.labelText,

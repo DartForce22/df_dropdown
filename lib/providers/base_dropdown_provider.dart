@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -207,7 +206,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
         dropdownKey.currentContext!.findRenderObject() as RenderBox;
     final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
 
-    if (_previousOffset != currentOffset) {
+    if (_previousOffset != currentOffset && this.suggestionsExpanded) {
       _timer?.cancel();
       if (_previousOffset.dx != currentOffset.dx) {
         closeSuggestions();

@@ -9,6 +9,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
   const DropdownContainer({
     super.key,
     required this.disabled,
+    this.addDropdownKey = true,
     this.onTapInside,
     this.onTapOutside,
     this.labelText,
@@ -32,6 +33,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
   final bool disableInput;
   final Widget? suffixWidget;
   final bool suffixTapEnabled;
+  final bool addDropdownKey;
   final Widget? child;
   final EdgeInsetsGeometry? contentPadding;
 
@@ -55,6 +57,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
                 validator: provider.onValidateField,
               ),
               Container(
+                key: addDropdownKey ? provider.dropdownKey : null,
                 padding: contentPadding,
                 decoration: BoxDecoration(
                   color: decoration?.backgroundColor ?? Colors.transparent,

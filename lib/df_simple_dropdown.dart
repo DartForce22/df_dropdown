@@ -74,7 +74,7 @@ class DfSimpleDropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => SimpleDropdownProvider<T>(
+      create: (_) => SimpleDropdownProvider<T>(
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
@@ -153,7 +153,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     return Column(
       children: [
         DropdownField<SimpleDropdownProvider<T>>(
-          key: provider.dropdownKey,
           dropdownType: widget.dropdownType,
           decoration: widget.decoration,
           disabled: widget.disabled,

@@ -54,7 +54,6 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<T>(context, listen: false);
-    log("DD Field build");
     return DropdownContainer<T>(
       disabled: disabled,
       decoration: decoration,

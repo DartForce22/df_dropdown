@@ -157,9 +157,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     return Column(
       children: [
         DropdownField<SearchableMultiSelectDropdownProvider<T>>(
-          key: context
-              .read<SearchableMultiSelectDropdownProvider<T>>()
-              .dropdownKey,
           disabled: widget.disabled,
           dropdownType: widget.dropdownType,
           decoration: widget.decoration,
