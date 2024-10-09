@@ -1,4 +1,4 @@
-import 'package:df_dropdown/enums/dropdown_type.dart';
+import '/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -153,7 +153,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
         context,
         listen: false);
-    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
@@ -162,6 +161,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
               .read<SearchableMultiSelectDropdownProvider<T>>()
               .dropdownKey,
           disabled: widget.disabled,
+          dropdownType: widget.dropdownType,
           decoration: widget.decoration,
           hintText: widget.hintText,
           labelText: widget.labelText,
@@ -200,23 +200,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           ),
           selectorWidget,
         ],
-        //An error message [Text] widget displayed only when validation returns an error
-        if ((!provider.suggestionsExpanded &&
-                widget.dropdownType == DropdownType.expandable) ||
-            (widget.decoration?.reserveSpaceForValidationMessage != false ||
-                provider.validationError != null))
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4,
-            ),
-            child: Text(
-              provider.validationError ?? "",
-              style: widget.decoration?.errorMessageTextStyle ??
-                  textTheme.bodySmall?.copyWith(
-                    color: Colors.red.shade500,
-                  ),
-            ),
-          )
       ],
     );
   }

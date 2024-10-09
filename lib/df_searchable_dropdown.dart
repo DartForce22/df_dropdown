@@ -157,12 +157,12 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
   Widget build(BuildContext context) {
     final provider =
         Provider.of<SearchableDropdownProvider<T>>(context, listen: false);
-    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
         DropdownField<SearchableDropdownProvider<T>>(
           disabled: widget.disabled,
+          dropdownType: widget.dropdownType,
           key: provider.dropdownKey,
           decoration: widget.decoration,
           hintText: widget.hintText,
@@ -209,23 +209,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           ),
           selectorWidget,
         ],
-        //An error message [Text] widget displayed only when validation returns an error
-        if ((!provider.suggestionsExpanded &&
-                widget.dropdownType == DropdownType.expandable) ||
-            (widget.decoration?.reserveSpaceForValidationMessage != false ||
-                provider.validationError != null))
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4,
-            ),
-            child: Text(
-              provider.validationError ?? "",
-              style: widget.decoration?.errorMessageTextStyle ??
-                  textTheme.bodySmall?.copyWith(
-                    color: Colors.red.shade500,
-                  ),
-            ),
-          )
       ],
     );
   }

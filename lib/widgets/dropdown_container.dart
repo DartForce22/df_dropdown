@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/models/dropdown_decoration.dart';
+import '/df_dropdown.dart';
 import '../providers/base_dropdown_provider.dart';
 
 class DropdownContainer<T extends BaseDropdownProvider>
@@ -22,6 +22,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
       vertical: 6,
       horizontal: 12,
     ),
+    required this.dropdownType,
   });
 
   final VoidCallback? onTapInside;
@@ -36,9 +37,11 @@ class DropdownContainer<T extends BaseDropdownProvider>
 
   final DropdownDecoration? decoration;
   final bool disabled;
+  final DropdownType dropdownType;
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return IgnorePointer(
       ignoring: disabled,
       child: Opacity(
@@ -87,7 +90,10 @@ class DropdownContainer<T extends BaseDropdownProvider>
                     Expanded(
                       child: TapRegion(
                         onTapOutside: (_) {
-                          if (onTapOutside != null) onTapOutside!();
+                          if (onTapOutside != null &&
+                              provider.textFieldFocusNode.hasFocus) {
+                            onTapOutside!();
+                          }
                         },
                         onTapInside: (_) {
                           if (onTapInside != null) onTapInside!();
@@ -121,7 +127,25 @@ class DropdownContainer<T extends BaseDropdownProvider>
                       ),
                   ],
                 ),
-              ),
+              ), //An error message [Text] widget displayed only when validation returns an error
+
+              if (((dropdownType == DropdownType.expandable &&
+                          !provider.suggestionsExpanded) ||
+                      dropdownType == DropdownType.overlay) &&
+                  (decoration?.reserveSpaceForValidationMessage != false ||
+                      provider.validationError != null))
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4,
+                  ),
+                  child: Text(
+                    provider.validationError ?? "",
+                    style: decoration?.errorMessageTextStyle ??
+                        textTheme.bodySmall?.copyWith(
+                          color: Colors.red.shade500,
+                        ),
+                  ),
+                )
             ],
           ),
           child: child,

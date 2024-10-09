@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/models/dropdown_decoration.dart';
+import '/df_dropdown.dart';
 import '/widgets/dropdown_container.dart';
 import '../providers/base_dropdown_provider.dart';
 
@@ -18,6 +20,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.suffixWidget,
     this.decoration,
     required this.disabled,
+    required this.dropdownType,
   });
 
   final VoidCallback? onTapInside;
@@ -29,6 +32,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   final Widget? suffixWidget;
   final bool suffixTapEnabled;
   final bool disabled;
+  final DropdownType dropdownType;
 
   final DropdownDecoration? decoration;
 
@@ -50,16 +54,18 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<T>(context, listen: false);
+    log("DD Field build");
     return DropdownContainer<T>(
       disabled: disabled,
       decoration: decoration,
       disableInput: disableInput,
       labelText: labelText,
-      onTapInside: onTapInside,
+      onTapInside: provider.textFieldFocusNode.hasFocus ? null : onTapInside,
       onTapOutside: onTapOutside,
       outlineBorderVisible: outlineBorderVisible,
       suffixTapEnabled: suffixTapEnabled,
       suffixWidget: suffixWidget,
+      dropdownType: dropdownType,
       child: TextFormField(
         focusNode: provider.textFieldFocusNode,
         ignorePointers: disableInput,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -32,6 +33,8 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   // Function to show the overlay
   void _showOverlay(Widget selectorWidget, bool expanded) {
+    if (_overlayEntry != null) return;
+
     _selectorWidget = selectorWidget;
     // Find the position of the child widget using the GlobalKey
     final RenderBox renderBox =
