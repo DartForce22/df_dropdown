@@ -19,6 +19,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.decoration,
     required this.disabled,
     required this.dropdownType,
+    this.onEditingComplete,
   });
 
   final VoidCallback? onTapInside;
@@ -33,6 +34,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   final DropdownType dropdownType;
 
   final DropdownDecoration? decoration;
+  final void Function()? onEditingComplete;
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
   final InputDecoration fieldInputDecoration = const InputDecoration(
@@ -71,6 +73,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
         onTapOutside: (_) {
           onTapOutside!();
         },
+        onEditingComplete: onEditingComplete,
         decoration: fieldInputDecoration.copyWith(
           hintText: hintText,
           hintStyle: decoration?.hintTextStyle ??

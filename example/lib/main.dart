@@ -110,13 +110,15 @@ class MyApp extends StatelessWidget {
                     ),
                     DfSearchableDropdown<String>(
                       validator: (obj) {
-                        return "This is a really long validation error, an this is how it will be displayed...";
+                        return obj == null
+                            ? null
+                            : "This is a really long validation error, an this is how it will be displayed...";
                       },
                       dropdownType: DropdownType.overlay,
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {
-                        log("SELECTED VALUE ${value.value}");
+                        log("SELECTED VALUE ${value?.value}");
                       },
                       initData: [
                         DropDownModel<String>(

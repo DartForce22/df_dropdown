@@ -60,7 +60,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
   final String? hintText;
 
   /// Callback triggered when an option from the dropdown is selected.
-  final Function(DropDownModel<T>)? onOptionSelected;
+  final Function(DropDownModel<T>?)? onOptionSelected;
 
   /// Validator function for validating the selected dropdown option.
   final String? Function(DropDownModel<T>?)? validator;
@@ -162,6 +162,15 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
       children: [
         DropdownField<SearchableDropdownProvider<T>>(
           disabled: widget.disabled,
+          onEditingComplete: () {
+            if (provider.selectedValue?.text !=
+                provider.searchTextController.text) {
+              provider.onSelectSuggestion(null);
+            }
+
+            FocusScope.of(context).requestFocus(FocusNode());
+            provider.closeSuggestions();
+          },
           dropdownType: widget.dropdownType,
           decoration: widget.decoration,
           hintText: widget.hintText,
