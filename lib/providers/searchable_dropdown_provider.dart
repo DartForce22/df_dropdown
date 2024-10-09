@@ -19,10 +19,13 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   DropDownModel<T>? selectedValue;
-  final List<DropDownModel<T>> searchResults = [];
+  final List<DropDownModel<T>> _searchResults = [];
   final Function(DropDownModel<T>)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final double? selectorMaxHeight;
+
+  List<DropDownModel<T>> get searchResults =>
+      [if (selectedValue != null) selectedValue!, ..._searchResults];
 
   @override
   double get dropdownHeight {
@@ -76,14 +79,14 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   void onInputChanged(String text) {
     if (onSearch != null) {
       onSearch!(text).then((values) {
-        searchResults.clear();
-        searchResults.addAll(values);
+        _searchResults.clear();
+        _searchResults.addAll(values);
         notifyListeners();
       });
     } else {
-      searchResults.clear();
+      _searchResults.clear();
 
-      searchResults.addAll(
+      _searchResults.addAll(
         initData.where(
           (el) => el.text.toLowerCase().startsWith(
                 text.toLowerCase(),
@@ -101,6 +104,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
 
   List<DropDownModel<T>> get getDropdownData {
     if (searchTextController.text.isNotEmpty || searchResults.isNotEmpty) {
+      _searchResults.removeWhere((el) => el == selectedValue);
       return searchResults;
     }
     return initData;

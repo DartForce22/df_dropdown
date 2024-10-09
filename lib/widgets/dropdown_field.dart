@@ -58,7 +58,6 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
       disableInput: disableInput,
       labelText: labelText,
       onTapInside: provider.textFieldFocusNode.hasFocus ? null : onTapInside,
-      onTapOutside: onTapOutside,
       outlineBorderVisible: outlineBorderVisible,
       suffixTapEnabled: suffixTapEnabled,
       suffixWidget: suffixWidget,
@@ -69,6 +68,9 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
         controller: provider.searchTextController,
         style: decoration?.dropdownTextStyle,
         onChanged: provider.onInputChanged,
+        onTapOutside: (_) {
+          onTapOutside!();
+        },
         decoration: fieldInputDecoration.copyWith(
           hintText: hintText,
           hintStyle: decoration?.hintTextStyle ??
