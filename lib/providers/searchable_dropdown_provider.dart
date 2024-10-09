@@ -79,6 +79,15 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   @override
+  void closeSuggestions() {
+    if (selectedValue != null &&
+        selectedValue?.text != searchTextController.text) {
+      searchTextController.text = selectedValue!.text;
+    }
+    super.closeSuggestions();
+  }
+
+  @override
   void onInputChanged(String text) {
     if (onSearch != null) {
       onSearch!(text).then((values) {
