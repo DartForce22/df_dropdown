@@ -163,9 +163,12 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         DropdownField<SearchableDropdownProvider<T>>(
           disabled: widget.disabled,
           onEditingComplete: () {
-            if (provider.selectedValue?.text !=
-                provider.searchTextController.text) {
+            if (provider.searchTextController.text.isEmpty) {
               provider.onSelectSuggestion(null);
+            } else if (provider.selectedValue != null &&
+                provider.selectedValue?.text !=
+                    provider.searchTextController.text) {
+              provider.searchTextController.text = provider.selectedValue!.text;
             }
 
             FocusScope.of(context).requestFocus(FocusNode());
