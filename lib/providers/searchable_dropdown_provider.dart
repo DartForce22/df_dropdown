@@ -42,9 +42,9 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     double height = 0;
 
     int dataLength =
-        searchResults.isNotEmpty || searchTextController.text.isNotEmpty
+        (searchResults.isNotEmpty || searchTextController.text.isNotEmpty
             ? searchResults.length
-            : initData.length;
+            : initData.length);
 
     if (dataLength < 5) {
       height = dataLength * 40;
@@ -52,7 +52,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
       height = selectorMaxHeight ?? 200;
     }
 
-    return height;
+    return height > 0 ? height : 40;
   }
 
   void onSelectSuggestion(DropDownModel<T>? value) {

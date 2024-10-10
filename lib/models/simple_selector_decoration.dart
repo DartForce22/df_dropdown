@@ -42,6 +42,14 @@ class SimpleSelectorDecoration {
 
   final Color? selectedItemColor;
 
+  ///A widget which will be displayed in the selector container if there is no
+  ///available data
+  final Widget? noAvailableDataWidget;
+
+  ///Text which will be displayed in the selector container if there is no
+  ///available data default is `No available options`
+  final String? noAvailableDataText;
+
   /// Creates a new [SimpleSelectorDecoration] instance with optional customization.
   ///
   /// - [borderRadius]: Sets the border radius for the selector.
@@ -62,5 +70,7 @@ class SimpleSelectorDecoration {
     this.selectorWidth,
     this.selectedItemIcon,
     this.selectedItemColor,
+    this.noAvailableDataWidget,
+    this.noAvailableDataText,
   });
 }
