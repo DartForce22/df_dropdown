@@ -202,11 +202,14 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     required Widget selectorWidget,
     bool expanded = true,
   }) {
+    if (!this.suggestionsExpanded || dropdownKey.currentContext == null) {
+      return;
+    }
     final RenderBox renderBox =
         dropdownKey.currentContext!.findRenderObject() as RenderBox;
     final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
 
-    if (_previousOffset != currentOffset && this.suggestionsExpanded) {
+    if (_previousOffset != currentOffset) {
       _timer?.cancel();
       if (_previousOffset.dx != currentOffset.dx) {
         closeSuggestions();

@@ -193,14 +193,16 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           },
           suffixTapEnabled: false,
           suffixWidget: GestureDetector(
-            onTap: () => provider.toggleSuggestionsExpanded(
-              selectorWidget: widget.dropdownType == DropdownType.expandable
-                  ? null
-                  : ChangeNotifierProvider.value(
-                      value: provider,
-                      child: selectorWidget,
-                    ),
-            ),
+            onTap: () {
+              provider.toggleSuggestionsExpanded(
+                selectorWidget: widget.dropdownType == DropdownType.expandable
+                    ? null
+                    : ChangeNotifierProvider.value(
+                        value: provider,
+                        child: selectorWidget,
+                      ),
+              );
+            },
             child: SizedBox(
               height: 48,
               child: widget.arrowWidget ??
