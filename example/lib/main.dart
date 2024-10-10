@@ -86,7 +86,6 @@ class MyApp extends StatelessWidget {
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
                         backgroundColor: Colors.green.withOpacity(0.2),
-                        reserveSpaceForValidationMessage: false,
                       ),
                       selectorDecoration: SimpleSelectorDecoration(
                         selectorColor: Colors.amber.shade300,
@@ -147,7 +146,7 @@ class MyApp extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 80,
+                      height: 8,
                     ),
                     DfSearchableSingleSelectDropdown<String>(
                       validator: (obj) {
