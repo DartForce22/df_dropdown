@@ -147,7 +147,7 @@ class MyApp extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 8,
+                      height: 80,
                     ),
                     DfSearchableSingleSelectDropdown<String>(
                       validator: (obj) {
