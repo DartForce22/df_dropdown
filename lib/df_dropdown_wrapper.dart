@@ -46,7 +46,11 @@ class DfDropdownWrapper<T> extends StatelessWidget {
   /// Callback triggered when an option from the dropdown is selected.
   final Function(DropDownModel<T>)? onOptionSelected;
 
-  /// Validator function for validating dropdown selection.
+  /// Provides a [DropDownModel] object if selected, and `null` if not
+  ///
+  /// Should return null when no validation error is present,
+  /// and a [String] if there is an error
+  ///
   final String? Function(DropDownModel<T>?)? validator;
 
   /// Decoration for customizing the dropdown's appearance (e.g., border, padding, etc.).

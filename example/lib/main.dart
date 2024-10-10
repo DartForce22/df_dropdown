@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
                   children: [
                     DfDropdownWrapper(
                       validator: (obj) {
-                        return "This is a really long validation error, an this is how it will be displayed...";
+                        return obj == null ? "No selected option..." : null;
                       },
                       child: Row(
                         children: [
@@ -79,9 +79,9 @@ class MyApp extends StatelessWidget {
                     ),
                     DfSimpleDropdown<String>(
                       validator: (obj) {
-                        return "This is a really long validation error, an this is how it will be displayed...";
+                        return obj == null ? "No selected option..." : null;
                       },
-                      //dropdownType: DropdownType.overlay,
+                      dropdownType: DropdownType.overlay,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
@@ -93,8 +93,6 @@ class MyApp extends StatelessWidget {
                       ),
                       hintText: "Select an option...",
                       labelText: "Simple Dropdown",
-                      selectedValue: DropDownModel<String>(
-                          key: "2", value: "2", text: "Los Angeles"),
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value.value}");
                       },

@@ -59,7 +59,11 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   /// Callback triggered when options from the dropdown are selected.
   final Function(List<DropDownModel<T>>)? onOptionSelected;
 
-  /// Validator function for validating the list of selected dropdown options.
+  /// Provides a [DropDownModel] object if selected, and `null` if not
+  ///
+  /// Should return null when no validation error is present,
+  /// and a [String] if there is an error
+  ///
   final String? Function(List<DropDownModel<T>>?)? validator;
 
   /// Function that performs the search operation based on the user's input. It returns a list of filtered options.

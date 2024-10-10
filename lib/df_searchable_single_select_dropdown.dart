@@ -59,7 +59,11 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
   /// Callback triggered when an option from the dropdown is selected.
   final Function(DropDownModel<T>?)? onOptionSelected;
 
-  /// Validator function for validating dropdown selection.
+  /// Provides a [DropDownModel] object if selected, and `null` if not
+  ///
+  /// Should return null when no validation error is present,
+  /// and a [String] if there is an error
+  ///
   final String? Function(DropDownModel<T>?)? validator;
 
   /// Function that performs the search operation based on the user's input. It returns a list of filtered options.
