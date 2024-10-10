@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/models/dropdown_decoration.dart';
+import '/df_dropdown.dart';
 import '/widgets/dropdown_container.dart';
 import '../providers/base_dropdown_provider.dart';
 
@@ -18,6 +18,8 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
     this.suffixWidget,
     this.decoration,
     required this.disabled,
+    required this.dropdownType,
+    this.onEditingComplete,
   });
 
   final VoidCallback? onTapInside;
@@ -29,8 +31,10 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
   final Widget? suffixWidget;
   final bool suffixTapEnabled;
   final bool disabled;
+  final DropdownType dropdownType;
 
   final DropdownDecoration? decoration;
+  final void Function()? onEditingComplete;
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
   final InputDecoration fieldInputDecoration = const InputDecoration(
@@ -55,17 +59,21 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
       decoration: decoration,
       disableInput: disableInput,
       labelText: labelText,
-      onTapInside: onTapInside,
-      onTapOutside: onTapOutside,
+      onTapInside: provider.textFieldFocusNode.hasFocus ? null : onTapInside,
       outlineBorderVisible: outlineBorderVisible,
       suffixTapEnabled: suffixTapEnabled,
       suffixWidget: suffixWidget,
+      dropdownType: dropdownType,
       child: TextFormField(
         focusNode: provider.textFieldFocusNode,
         ignorePointers: disableInput,
         controller: provider.searchTextController,
         style: decoration?.dropdownTextStyle,
         onChanged: provider.onInputChanged,
+        onTapOutside: (_) {
+          onTapOutside!();
+        },
+        onEditingComplete: onEditingComplete,
         decoration: fieldInputDecoration.copyWith(
           hintText: hintText,
           hintStyle: decoration?.hintTextStyle ??

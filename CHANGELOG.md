@@ -26,3 +26,10 @@
 
 - Added more customization parameters
 - Fixed form validations
+
+## 1.0.6
+
+- Fixed reported errors
+- Added information if there are no available options for the Searchable dropdown
+- Optimized overall package usage
+

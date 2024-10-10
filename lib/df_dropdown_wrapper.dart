@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/models/drop_down_model.dart';
-import '/models/dropdown_decoration.dart';
-import '/models/simple_selector_decoration.dart';
 import '/widgets/dropdown_container.dart';
 import '/widgets/simple_dropdown_selector.dart';
+import '/df_dropdown.dart';
 import 'providers/simple_dropdown_provider.dart';
 
 class DfDropdownWrapper<T> extends StatelessWidget {
@@ -48,7 +46,11 @@ class DfDropdownWrapper<T> extends StatelessWidget {
   /// Callback triggered when an option from the dropdown is selected.
   final Function(DropDownModel<T>)? onOptionSelected;
 
-  /// Validator function for validating dropdown selection.
+  /// Provides a [DropDownModel] object if selected, and `null` if not
+  ///
+  /// Should return `null` when no validation error is present,
+  /// and a [String] if there is an error
+  ///
   final String? Function(DropDownModel<T>?)? validator;
 
   /// Decoration for customizing the dropdown's appearance (e.g., border, padding, etc.).
@@ -158,12 +160,12 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Column(
       children: [
         DropdownContainer<SimpleDropdownProvider<T>>(
           disabled: widget.disabled,
+          addDropdownKey: false,
+          dropdownType: DropdownType.overlay,
           contentPadding: const EdgeInsets.all(0),
           decoration: widget.decoration,
           labelText: widget.labelText,
@@ -200,21 +202,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             ),
           ),
           child: widget.child,
-        ), //An error message [Text] widget displayed only when validation returns an error
-        if ((widget.decoration?.reserveSpaceForValidationMessage != false ||
-            provider.validationError != null))
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4,
-            ),
-            child: Text(
-              provider.validationError ?? "",
-              style: widget.decoration?.errorMessageTextStyle ??
-                  textTheme.bodySmall?.copyWith(
-                    color: Colors.red.shade500,
-                  ),
-            ),
-          )
+        ),
       ],
     );
   }

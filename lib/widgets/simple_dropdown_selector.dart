@@ -37,25 +37,33 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
         ),
         width: expanded ? double.infinity : null,
         height: dropdownHeight,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: dropdownData
-                .map(
-                  (suggestion) => _DropdownSuggestion(
-                    expanded: expanded,
-                    selectorDecoration: selectorDecoration,
-                    text: suggestion.text,
-                    selected: suggestion == selectedOption,
-                    onTap: () {
-                      onSelectSuggestion(suggestion);
-                    },
-                  ),
-                )
-                .toList(),
-          ),
-        ),
+        child: dropdownData.isNotEmpty
+            ? SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: dropdownData
+                      .map(
+                        (suggestion) => _DropdownSuggestion(
+                          expanded: expanded,
+                          selectorDecoration: selectorDecoration,
+                          text: suggestion.text,
+                          selected: suggestion == selectedOption,
+                          onTap: () {
+                            onSelectSuggestion(suggestion);
+                          },
+                        ),
+                      )
+                      .toList(),
+                ),
+              )
+            : Center(
+                child: selectorDecoration?.noAvailableDataWidget ??
+                    Text(
+                      selectorDecoration?.noAvailableDataText ??
+                          "No available options",
+                    ),
+              ),
       ),
     );
   }

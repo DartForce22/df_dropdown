@@ -23,7 +23,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   final BuildContext context;
   OverlayEntry? _overlayEntry;
 
-  Offset _previousOffset = Offset.zero;
+  Offset? _previousOffset;
   Timer? _timer;
   bool _suggestionClosedOnMove = false;
 
@@ -32,6 +32,8 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   // Function to show the overlay
   void _showOverlay(Widget selectorWidget, bool expanded) {
+    if (_overlayEntry != null) return;
+
     _selectorWidget = selectorWidget;
     // Find the position of the child widget using the GlobalKey
     final RenderBox renderBox =
@@ -200,37 +202,43 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     required Widget selectorWidget,
     bool expanded = true,
   }) {
-    final RenderBox renderBox =
-        dropdownKey.currentContext!.findRenderObject() as RenderBox;
-    final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
+    if ((this.suggestionsExpanded || _suggestionClosedOnMove) &&
+        dropdownKey.currentContext != null) {
+      final RenderBox renderBox =
+          dropdownKey.currentContext!.findRenderObject() as RenderBox;
+      final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
 
-    if (_previousOffset != currentOffset) {
-      _timer?.cancel();
-      if (_previousOffset.dx != currentOffset.dx) {
-        closeSuggestions();
-      } else {
-        if (suggestionsExpanded) {
+      _previousOffset ??= currentOffset;
+
+      if (_previousOffset != currentOffset) {
+        _timer?.cancel();
+        if (_previousOffset!.dx != currentOffset.dx) {
           closeSuggestions();
-          _suggestionClosedOnMove = true;
+        } else {
+          if (suggestionsExpanded) {
+            closeSuggestions();
+            _suggestionClosedOnMove = true;
+          }
+          if (_suggestionClosedOnMove) {
+            _timer = Timer(const Duration(milliseconds: 100), () {
+              _suggestionClosedOnMove = false;
+              expandSuggestions(
+                selectorWidget: selectorWidget,
+                expanded: expanded,
+              );
+            });
+          }
         }
-        if (_suggestionClosedOnMove) {
-          _timer = Timer(const Duration(milliseconds: 100), () {
-            _suggestionClosedOnMove = false;
-            expandSuggestions(
-              selectorWidget: selectorWidget,
-              expanded: expanded,
-            );
-          });
-        }
-      }
 
-      _previousOffset = currentOffset;
+        _previousOffset = currentOffset;
+      }
     }
 
     // Continue to check for future changes
     WidgetsBinding.instance.addPostFrameCallback((_) {
       updateSelectorPositionIfNeeded(
         selectorWidget: selectorWidget,
+        expanded: expanded,
       );
     });
   }

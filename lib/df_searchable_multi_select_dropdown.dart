@@ -1,4 +1,4 @@
-import 'package:df_dropdown/enums/dropdown_type.dart';
+import '/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +59,11 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   /// Callback triggered when options from the dropdown are selected.
   final Function(List<DropDownModel<T>>)? onOptionSelected;
 
-  /// Validator function for validating the list of selected dropdown options.
+  /// Provides a [DropDownModel] object if selected, and `null` if not
+  ///
+  /// Should return `null` when no validation error is present,
+  /// and a [String] if there is an error
+  ///
   final String? Function(List<DropDownModel<T>>?)? validator;
 
   /// Function that performs the search operation based on the user's input. It returns a list of filtered options.
@@ -153,15 +157,12 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
         context,
         listen: false);
-    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
         DropdownField<SearchableMultiSelectDropdownProvider<T>>(
-          key: context
-              .read<SearchableMultiSelectDropdownProvider<T>>()
-              .dropdownKey,
           disabled: widget.disabled,
+          dropdownType: widget.dropdownType,
           decoration: widget.decoration,
           hintText: widget.hintText,
           labelText: widget.labelText,
@@ -200,23 +201,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           ),
           selectorWidget,
         ],
-        //An error message [Text] widget displayed only when validation returns an error
-        if ((!provider.suggestionsExpanded &&
-                widget.dropdownType == DropdownType.expandable) ||
-            (widget.decoration?.reserveSpaceForValidationMessage != false ||
-                provider.validationError != null))
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4,
-            ),
-            child: Text(
-              provider.validationError ?? "",
-              style: widget.decoration?.errorMessageTextStyle ??
-                  textTheme.bodySmall?.copyWith(
-                    color: Colors.red.shade500,
-                  ),
-            ),
-          )
       ],
     );
   }

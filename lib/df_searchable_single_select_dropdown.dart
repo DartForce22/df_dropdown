@@ -1,7 +1,7 @@
-import 'package:df_dropdown/enums/dropdown_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/enums/dropdown_type.dart';
 import '/models/drop_down_model.dart';
 import '/models/dropdown_decoration.dart';
 import '/models/single_selector_decoration.dart';
@@ -59,7 +59,11 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
   /// Callback triggered when an option from the dropdown is selected.
   final Function(DropDownModel<T>?)? onOptionSelected;
 
-  /// Validator function for validating dropdown selection.
+  /// Provides a [DropDownModel] object if selected, and `null` if not
+  ///
+  /// Should return `null` when no validation error is present,
+  /// and a [String] if there is an error
+  ///
   final String? Function(DropDownModel<T>?)? validator;
 
   /// Function that performs the search operation based on the user's input. It returns a list of filtered options.
@@ -154,12 +158,11 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     final provider = Provider.of<SearchableSingleSelectDropdownProvider<T>>(
         context,
         listen: false);
-    final textTheme = Theme.of(context).textTheme;
 
     return Column(
       children: [
         DropdownField<SearchableSingleSelectDropdownProvider<T>>(
-          key: provider.dropdownKey,
+          dropdownType: widget.dropdownType,
           disabled: widget.disabled,
           decoration: widget.decoration,
           hintText: widget.hintText,
@@ -197,23 +200,6 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           ),
           selectorWidget,
         ],
-        //An error message [Text] widget displayed only when validation returns an error
-        if ((!provider.suggestionsExpanded &&
-                widget.dropdownType == DropdownType.expandable) ||
-            (widget.decoration?.reserveSpaceForValidationMessage != false ||
-                provider.validationError != null))
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4,
-            ),
-            child: Text(
-              provider.validationError ?? "",
-              style: widget.decoration?.errorMessageTextStyle ??
-                  textTheme.bodySmall?.copyWith(
-                    color: Colors.red.shade500,
-                  ),
-            ),
-          ),
       ],
     );
   }
