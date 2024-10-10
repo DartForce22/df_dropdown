@@ -30,6 +30,6 @@
 ## 1.0.6
 
 - Fixed reported errors
-- Added information if there is no available options for Searchable dropdown
+- Added information if there are no available options for the Searchable dropdown
 - Optimized overall package usage
 
