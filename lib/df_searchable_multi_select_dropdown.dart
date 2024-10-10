@@ -61,7 +61,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
 
   /// Provides a [DropDownModel] object if selected, and `null` if not
   ///
-  /// Should return null when no validation error is present,
+  /// Should return `null` when no validation error is present,
   /// and a [String] if there is an error
   ///
   final String? Function(List<DropDownModel<T>>?)? validator;
