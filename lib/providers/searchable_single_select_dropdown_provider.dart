@@ -12,6 +12,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectorMaxHeight,
     super.initData,
     super.validator,
+    required this.closeDropdownOnSelection,
     required super.context,
   }) {
     if (selectedValue != null) {
@@ -26,6 +27,7 @@ class SearchableSingleSelectDropdownProvider<T>
   final TextEditingController selectorTextEditingController =
       TextEditingController();
   final double? selectorMaxHeight;
+  final bool closeDropdownOnSelection;
 
   @override
   double get dropdownHeight {
@@ -55,6 +57,7 @@ class SearchableSingleSelectDropdownProvider<T>
       selectedValue = value;
       searchTextController.text = value.text;
     }
+    if (closeDropdownOnSelection) closeSuggestions();
     validationError = null;
     if (onOptionSelected != null) {
       onOptionSelected!(selectedValue);
