@@ -38,6 +38,7 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
     this.arrowWidget,
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
+    this.closeDropdownOnSelection = true,
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
@@ -80,6 +81,9 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
 
   final bool disabled;
 
+  /// Whether to close dropdown after an option has been selected
+  final bool closeDropdownOnSelection;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -90,6 +94,7 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
         validator: validator,
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
+        closeDropdownOnSelection: closeDropdownOnSelection,
         context: context,
       ),
       child: _Dropdown<T>(
