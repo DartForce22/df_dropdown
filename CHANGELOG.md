@@ -33,3 +33,7 @@
 - Added information if there are no available options for the Searchable dropdown
 - Optimized overall package usage
 
+## 1.0.7
+
+- Added `closeDropdownOnSelection` parameter to the `SearchableSingleSelectDropdownProvider`
+
