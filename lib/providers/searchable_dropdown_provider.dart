@@ -56,7 +56,10 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   void onSelectSuggestion(DropDownModel<T>? value) {
-    if (value == selectedValue) return;
+    if (value == selectedValue) {
+      closeSuggestions();
+      return;
+    }
     selectedValue = value;
     validationError = null;
     closeSuggestions();

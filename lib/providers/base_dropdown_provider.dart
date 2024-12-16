@@ -107,6 +107,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
       {Widget? selectorWidget, bool expanded = true}) {
     suggestionsExpanded = !suggestionsExpanded;
     if (suggestionsExpanded) {
+      textFieldFocusNode.requestFocus();
       expandSuggestions(
         selectorWidget: selectorWidget,
         expanded: expanded,
