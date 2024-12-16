@@ -38,6 +38,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.arrowWidget,
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
+    this.closeDropdownOnOutsideTap = true,
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
@@ -80,6 +81,9 @@ class DfSearchableDropdown<T> extends StatelessWidget {
 
   final bool disabled;
 
+  /// Whether to close dropdown after outside tap
+  final bool closeDropdownOnOutsideTap;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -100,6 +104,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         arrowWidget: arrowWidget,
         dropdownType: dropdownType,
         disabled: disabled,
+        closeDropdownOnOutsideTap: closeDropdownOnOutsideTap,
       ),
     );
   }
@@ -114,6 +119,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.arrowWidget,
     required this.dropdownType,
     required this.disabled,
+    required this.closeDropdownOnOutsideTap,
   });
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
@@ -122,6 +128,7 @@ class _Dropdown<T> extends StatefulWidget {
   final Widget? arrowWidget;
   final DropdownType dropdownType;
   final bool disabled;
+  final bool closeDropdownOnOutsideTap;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -193,6 +200,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
                   ),
           ),
           onTapOutside: () {
+            if (widget.closeDropdownOnOutsideTap) {
+              provider.closeSuggestions();
+            }
             provider.onTapOutside(context);
           },
           suffixTapEnabled: false,
