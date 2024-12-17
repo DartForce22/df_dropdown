@@ -38,7 +38,11 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.arrowWidget,
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
+<<<<<<< HEAD
     this.closeDropdownOnOutsideTap = true,
+=======
+    this.closeOnTapOutside = true,
+>>>>>>> 5d7ec15 (added close on tap outside parameter)
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
@@ -81,8 +85,8 @@ class DfSearchableDropdown<T> extends StatelessWidget {
 
   final bool disabled;
 
-  /// Whether to close dropdown after outside tap
-  final bool closeDropdownOnOutsideTap;
+  ///Selector widget will be `closed` when pressed outside of the field
+  final bool closeOnTapOutside;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +108,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         arrowWidget: arrowWidget,
         dropdownType: dropdownType,
         disabled: disabled,
-        closeDropdownOnOutsideTap: closeDropdownOnOutsideTap,
+        closeOnTapOutside: closeOnTapOutside,
       ),
     );
   }
@@ -119,7 +123,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.arrowWidget,
     required this.dropdownType,
     required this.disabled,
-    required this.closeDropdownOnOutsideTap,
+    required this.closeOnTapOutside,
   });
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
@@ -128,7 +132,7 @@ class _Dropdown<T> extends StatefulWidget {
   final Widget? arrowWidget;
   final DropdownType dropdownType;
   final bool disabled;
-  final bool closeDropdownOnOutsideTap;
+  final bool closeOnTapOutside;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -142,7 +146,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     final selectorProvider = context.read<SearchableDropdownProvider<T>>();
     selectorWidget = TapRegion(
       onTapOutside: (_) {
-        if (selectorProvider.suggestionsExpanded) {
+        if (selectorProvider.suggestionsExpanded && widget.closeOnTapOutside) {
           if (selectorProvider.fieldTapOutside) {
             selectorProvider.fieldTapOutside = false;
             selectorProvider.closeSuggestions();
@@ -182,7 +186,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
     return TapRegion(
       onTapOutside: (_) {
-        if (provider.suggestionsExpanded) {
+        if (provider.suggestionsExpanded && widget.closeOnTapOutside) {
           if (widget.dropdownType == DropdownType.expandable) {
             provider.closeSuggestions();
           } else if (provider.selectorTapOutside) {
