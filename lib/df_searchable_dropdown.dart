@@ -38,11 +38,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.arrowWidget,
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
-<<<<<<< HEAD
-    this.closeDropdownOnOutsideTap = true,
-=======
     this.closeOnTapOutside = true,
->>>>>>> 5d7ec15 (added close on tap outside parameter)
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
