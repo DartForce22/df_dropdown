@@ -37,3 +37,12 @@
 
 - Added `closeDropdownOnSelection` parameter to the `SearchableSingleSelectDropdownProvider`
 
+## 1.0.8
+
+- Fixed issues with closing suggestions for the `DfSearchableDropdown` widget
+- Added the `closeDropdownOnOutsideTap` parameter, and default value is set to `true`
+
+## 1.0.9
+
+- Fixed reported issues with the Searchable dropdown
+

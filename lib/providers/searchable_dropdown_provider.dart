@@ -23,6 +23,8 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   final Function(DropDownModel<T>?)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final double? selectorMaxHeight;
+  bool selectorTapOutside = false;
+  bool fieldTapOutside = false;
 
   List<DropDownModel<T>> get searchResults =>
       [if (selectedValue != null) selectedValue!, ..._searchResults];
@@ -56,7 +58,10 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   void onSelectSuggestion(DropDownModel<T>? value) {
-    if (value == selectedValue) return;
+    if (value == selectedValue) {
+      closeSuggestions();
+      return;
+    }
     selectedValue = value;
     validationError = null;
     closeSuggestions();
