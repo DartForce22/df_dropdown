@@ -43,7 +43,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
 
   void onSelectSuggestion(DropDownModel<T> value) {
     selectedValue = value;
-    validationError = null;
+    setValidationError = null;
     closeSuggestions();
     searchTextController.text = value.text;
     if (onOptionSelected != null) {
@@ -55,7 +55,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
   @override
   String? onValidateField(text) {
     if (validator != null) {
-      validationError = validator!(selectedValue);
+      setValidationError = validator!(selectedValue);
     }
     notifyListeners();
     return super.onValidateField(text);

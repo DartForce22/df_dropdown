@@ -63,7 +63,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
       return;
     }
     selectedValue = value;
-    validationError = null;
+    setValidationError = null;
     closeSuggestions();
     if (value != null) {
       searchTextController.text = value.text;
@@ -76,8 +76,10 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
 
   @override
   String? onValidateField(text) {
+    String? err;
     if (validator != null) {
-      validationError = validator!(selectedValue);
+      err = validator!(selectedValue);
+      setValidationError = err;
     }
     notifyListeners();
     return super.onValidateField(text);
@@ -121,6 +123,9 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
 
   List<DropDownModel<T>> get getDropdownData {
     if (searchTextController.text.isNotEmpty || searchResults.isNotEmpty) {
+      if (_searchResults.isEmpty) {
+        _searchResults.addAll(initData);
+      }
       _searchResults.removeWhere((el) => el == selectedValue);
       return searchResults;
     }

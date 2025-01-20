@@ -39,17 +39,20 @@ class SingleSelect extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                text,
-                style: (selectorDecoration?.optionTextStyle ??
-                        textTheme.labelMedium)
-                    ?.copyWith(
-                  color: selected
-                      ? (selectorDecoration?.selectedItemColor ??
-                          Colors.teal[400])
-                      : null,
+              Expanded(
+                child: Text(
+                  text,
+                  style: (selectorDecoration?.optionTextStyle ??
+                          textTheme.labelMedium)
+                      ?.copyWith(
+                    color: selected
+                        ? (selectorDecoration?.selectedItemColor ??
+                            Colors.teal[400])
+                        : null,
+                  ),
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                textAlign: TextAlign.start,
               ),
               if (selected &&
                   selectorDecoration?.selectedItemIconVisible != false)
