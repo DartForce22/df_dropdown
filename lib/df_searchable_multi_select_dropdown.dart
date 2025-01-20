@@ -36,6 +36,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.decoration,
     this.selectorDecoration,
     this.arrowWidget,
+    this.displayResultsCount,
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
   });
@@ -80,6 +81,10 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
 
   final bool disabled;
 
+  ///Define max count of displayed elements in the dropdown selector
+  ///_Default_ value is null, and all available results will be displayed
+  final int? displayResultsCount;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -91,6 +96,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
         context: context,
+        displayResultsCount: displayResultsCount,
         selectedDataVisible: selectorDecoration?.showSelectedItems ?? true,
       ),
       child: _Dropdown<T>(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -122,8 +124,15 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   List<DropDownModel<T>> get getDropdownData {
+    log("getDropdownData $_searchResults");
+
     if (searchTextController.text.isNotEmpty || searchResults.isNotEmpty) {
+      if (_searchResults.isEmpty) {
+        _searchResults.addAll(initData);
+      }
       _searchResults.removeWhere((el) => el == selectedValue);
+
+      log("getDropdownData $_searchResults");
       return searchResults;
     }
     return initData;
