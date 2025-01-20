@@ -46,3 +46,9 @@
 
 - Fixed reported issues with the Searchable dropdown
 
+## 1.1.0
+
+- Fixed dropdown overflows
+- Fixed initial data bug
+- Fixed validation border color
+
