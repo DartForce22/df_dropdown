@@ -58,7 +58,7 @@ class SearchableSingleSelectDropdownProvider<T>
       searchTextController.text = value.text;
     }
     if (closeDropdownOnSelection) closeSuggestions();
-    validationError = null;
+    setValidationError = null;
     if (onOptionSelected != null) {
       onOptionSelected!(selectedValue);
     }
@@ -68,7 +68,7 @@ class SearchableSingleSelectDropdownProvider<T>
   @override
   String? onValidateField(text) {
     if (validator != null) {
-      validationError = validator!(selectedValue);
+      setValidationError = validator!(selectedValue);
     }
     notifyListeners();
     return super.onValidateField(text);

@@ -108,7 +108,7 @@ class MyApp extends StatelessWidget {
                     ),
                     DfSearchableDropdown<String>(
                       validator: (obj) {
-                        return obj == null
+                        return obj != null
                             ? null
                             : "This is a really long validation error, an this is how it will be displayed...";
                       },

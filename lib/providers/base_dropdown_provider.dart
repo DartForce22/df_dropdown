@@ -82,15 +82,13 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   /// Stores any validation error that might occur.
   String? _validationError;
+  String? get validationError => _validationError;
 
   /// FocusNode for managing the text field's focus state.
   FocusNode textFieldFocusNode = FocusNode();
 
   /// Validator function that checks if a dropdown selection is valid.
   final String? Function(DropDownModel<T>?)? validator;
-
-  /// Public variable for tracking any validation error.
-  String? validationError;
 
   /// Sets the validation error message and triggers a UI update.
   ///
@@ -152,9 +150,10 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   ///
   /// Returns the current validation error if any, otherwise returns `null`.
   ///
+  ///
   /// - [text]: The text to validate.
   String? onValidateField(text) {
-    return validationError;
+    return _validationError;
   }
 
   /// Returns the color to be used for the border of a form field, based on validation state.

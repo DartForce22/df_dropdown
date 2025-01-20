@@ -74,7 +74,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
       searchTextController.text = "";
     }
 
-    validationError = null;
+    setValidationError = null;
     if (onOptionSelected != null) {
       onOptionSelected!(selectedValues);
     }
@@ -84,7 +84,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   @override
   String? onValidateField(text) {
     if (multiSelectValidator != null) {
-      validationError = multiSelectValidator!(selectedValues);
+      setValidationError = multiSelectValidator!(selectedValues);
     }
     notifyListeners();
     return super.onValidateField(text);
