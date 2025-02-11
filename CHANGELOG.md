@@ -56,3 +56,8 @@
 
 - Added close on tap outside flag for the DfSearchableMultiSelectDropdown widget
 
+## 1.1.2
+
+- Added footer to the Searchable Dropdown
+- Added prefix widget to the suggestions
+
