@@ -5,6 +5,7 @@ import '/providers/base_dropdown_provider.dart';
 
 class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   SearchableDropdownProvider({
+    this.rememberSelectedValue = true,
     this.selectedValue,
     this.onOptionSelected,
     this.onSearch,
@@ -25,6 +26,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   final double? selectorMaxHeight;
   bool selectorTapOutside = false;
   bool fieldTapOutside = false;
+  final bool rememberSelectedValue;
 
   List<DropDownModel<T>> get searchResults =>
       [if (selectedValue != null) selectedValue!, ..._searchResults];
@@ -62,10 +64,12 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
       closeSuggestions();
       return;
     }
-    selectedValue = value;
+    if (rememberSelectedValue) {
+      selectedValue = value;
+    }
     setValidationError = null;
     closeSuggestions();
-    if (value != null) {
+    if (value != null && rememberSelectedValue) {
       searchTextController.text = value.text;
     }
     if (onOptionSelected != null) {
