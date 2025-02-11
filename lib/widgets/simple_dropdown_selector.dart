@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '/models/drop_down_model.dart';
 import '/models/simple_selector_decoration.dart';
 
+const footerTapEvent = "footer_tap";
+
 class SimpleDropdownSelector<T> extends StatelessWidget {
   const SimpleDropdownSelector({
     super.key,
@@ -56,7 +58,17 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
                       ),
                     ),
                     if (selectorDecoration?.footerWidget != null)
-                      selectorDecoration!.footerWidget!,
+                      InkWell(
+                        onTap: () {
+                          onSelectSuggestion(
+                            DropDownModel(
+                              key: footerTapEvent,
+                              text: "",
+                            ),
+                          );
+                        },
+                        child: selectorDecoration!.footerWidget!,
+                      ),
                   ],
                 ),
               )

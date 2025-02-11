@@ -12,7 +12,7 @@ class DropDownModel<T> {
   /// - [text]: A required string text to be displayed in the dropdown.
   DropDownModel({
     required this.key,
-    required this.value,
+    this.value,
     required this.text,
     this.prefixWidget,
   });
@@ -21,7 +21,7 @@ class DropDownModel<T> {
   final String key;
 
   /// The associated value for the dropdown item. The type of value is generic [T].
-  final T value;
+  final T? value;
 
   /// The text that is displayed in the dropdown for this item.
   final String text;

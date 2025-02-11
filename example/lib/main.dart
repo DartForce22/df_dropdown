@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:df_dropdown/df_dropdown.dart';
+import 'package:df_dropdown/widgets/simple_dropdown_selector.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -116,8 +117,23 @@ class MyApp extends StatelessWidget {
                       hintText: "Start typing..",
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {
-                        log("SELECTED VALUE ${value?.value}");
+                        log("SELECTED VALUE IS FOOTER ${value?.key == footerTapEvent}");
                       },
+                      selectorDecoration: SimpleSelectorDecoration(
+                        footerWidget: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 4,
+                          ),
+                          color: Colors.red,
+                          height: 40,
+                          width: double.infinity,
+                          child: Text(
+                            "FOOTER TAP TEST",
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
                       initData: [
                         DropDownModel<String>(
                           key: "1",
