@@ -60,4 +60,7 @@
 
 - Added footer to the Searchable Dropdown
 - Added prefix widget to the suggestions
+## 1.1.3
+
+- Added footer tap event, event will have the _key_ value of the const [footerTapEvent]
 
