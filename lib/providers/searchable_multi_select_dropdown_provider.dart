@@ -35,6 +35,9 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   final bool selectedDataVisible;
   final int? displayResultsCount;
 
+  bool selectorTapOutside = false;
+  bool fieldTapOutside = false;
+
   @override
   double get dropdownHeight {
     double height = 0;
