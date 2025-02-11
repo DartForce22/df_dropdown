@@ -42,19 +42,22 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: dropdownData
-                      .map(
-                        (suggestion) => _DropdownSuggestion(
-                          expanded: expanded,
-                          selectorDecoration: selectorDecoration,
-                          text: suggestion.text,
-                          selected: suggestion == selectedOption,
-                          onTap: () {
-                            onSelectSuggestion(suggestion);
-                          },
-                        ),
-                      )
-                      .toList(),
+                  children: [
+                    ...dropdownData.map(
+                      (suggestion) => _DropdownSuggestion(
+                        prefixWidget: suggestion.prefixWidget,
+                        expanded: expanded,
+                        selectorDecoration: selectorDecoration,
+                        text: suggestion.text,
+                        selected: suggestion == selectedOption,
+                        onTap: () {
+                          onSelectSuggestion(suggestion);
+                        },
+                      ),
+                    ),
+                    if (selectorDecoration?.footerWidget != null)
+                      selectorDecoration!.footerWidget!,
+                  ],
                 ),
               )
             : Center(
@@ -77,6 +80,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
 ///   suggestion item is tapped.
 class _DropdownSuggestion extends StatelessWidget {
   const _DropdownSuggestion({
+    required this.prefixWidget,
     required this.text,
     required this.onTap,
     required this.selectorDecoration,
@@ -84,6 +88,7 @@ class _DropdownSuggestion extends StatelessWidget {
     required this.selected,
   });
 
+  final Widget? prefixWidget;
   final String text;
   final VoidCallback onTap;
   final SimpleSelectorDecoration? selectorDecoration;
@@ -116,6 +121,7 @@ class _DropdownSuggestion extends StatelessWidget {
               : selectorDecoration?.selectorWidth ?? 164,
           child: Row(
             children: [
+              if (prefixWidget != null) prefixWidget!,
               Expanded(
                 child: Text(
                   text,

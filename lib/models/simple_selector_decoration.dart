@@ -50,6 +50,10 @@ class SimpleSelectorDecoration {
   ///available data default is `No available options`
   final String? noAvailableDataText;
 
+  ///When provider, this widget will be displayed at the bottom of the selector
+  ///as the last item
+  final Widget? footerWidget;
+
   /// Creates a new [SimpleSelectorDecoration] instance with optional customization.
   ///
   /// - [borderRadius]: Sets the border radius for the selector.
@@ -72,5 +76,6 @@ class SimpleSelectorDecoration {
     this.selectedItemColor,
     this.noAvailableDataWidget,
     this.noAvailableDataText,
+    this.footerWidget,
   });
 }

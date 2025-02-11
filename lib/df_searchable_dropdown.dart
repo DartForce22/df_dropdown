@@ -39,6 +39,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
     this.closeOnTapOutside = true,
+    this.rememberSelectedValue = true,
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
@@ -84,10 +85,15 @@ class DfSearchableDropdown<T> extends StatelessWidget {
   ///Selector widget will be `closed` when pressed outside of the field
   final bool closeOnTapOutside;
 
+  ///Default is set to _true_, and if set to _false_, the selected value will not be remembered
+  ///when the dropdown is closed and reopened
+  final bool rememberSelectedValue;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => SearchableDropdownProvider<T>(
+        rememberSelectedValue: rememberSelectedValue,
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,

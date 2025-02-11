@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// A generic model class for representing items in a dropdown menu.
 ///
 /// This class is designed to store an item with a [key], a [value], and a display [text].
@@ -12,6 +14,7 @@ class DropDownModel<T> {
     required this.key,
     required this.value,
     required this.text,
+    this.prefixWidget,
   });
 
   /// A unique identifier for the dropdown item.
@@ -22,6 +25,9 @@ class DropDownModel<T> {
 
   /// The text that is displayed in the dropdown for this item.
   final String text;
+
+  /// A widget that will be displayed before the text in the dropdown
+  final Widget? prefixWidget;
 
   /// Returns the [text] representation of the item.
   ///
