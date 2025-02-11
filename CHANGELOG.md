@@ -52,3 +52,7 @@
 - Fixed initial data bug
 - Fixed validation border color
 
+## 1.1.1
+
+- Added close on tap outside flag for the DfSearchableMultiSelectDropdown widget
+

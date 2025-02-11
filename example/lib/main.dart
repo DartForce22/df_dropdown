@@ -181,6 +181,7 @@ class MyApp extends StatelessWidget {
                       validator: (obj) {
                         return "This is a really long validation error, an this is how it will be displayed...";
                       },
+                      closeOnTapOutside: false,
                       displayResultsCount: 5,
                       //dropdownType: DropdownType.overlay,
                       hintText: "Select options...",

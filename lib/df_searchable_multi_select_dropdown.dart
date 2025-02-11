@@ -39,6 +39,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.displayResultsCount,
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
+    this.closeOnTapOutside = true,
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
@@ -85,6 +86,9 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   ///_Default_ value is null, and all available results will be displayed
   final int? displayResultsCount;
 
+  ///Selector widget will be `closed` when pressed outside of the field
+  final bool closeOnTapOutside;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -107,6 +111,7 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         arrowWidget: arrowWidget,
         dropdownType: dropdownType,
         disabled: disabled,
+        closeOnTapOutside: closeOnTapOutside,
       ),
     );
   }
@@ -121,6 +126,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.arrowWidget,
     required this.dropdownType,
     required this.disabled,
+    required this.closeOnTapOutside,
   });
   final DropdownType dropdownType;
   final DropdownDecoration? decoration;
@@ -129,6 +135,7 @@ class _Dropdown<T> extends StatefulWidget {
   final MultiSelectorDecoration? selectorDecoration;
   final Widget? arrowWidget;
   final bool disabled;
+  final bool closeOnTapOutside;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -139,8 +146,20 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
   @override
   void initState() {
     selectorWidget = Consumer<SearchableMultiSelectDropdownProvider<T>>(
-      builder: (_, provider, __) => SearchableMultiSelectDropdownSelector<T>(
-        selectorDecoration: widget.selectorDecoration,
+      builder: (_, provider, __) => TapRegion(
+        onTapOutside: (_) {
+          if (provider.suggestionsExpanded && widget.closeOnTapOutside) {
+            if (provider.fieldTapOutside) {
+              provider.fieldTapOutside = false;
+              provider.closeSuggestions();
+            } else {
+              provider.selectorTapOutside = true;
+            }
+          }
+        },
+        child: SearchableMultiSelectDropdownSelector<T>(
+          selectorDecoration: widget.selectorDecoration,
+        ),
       ),
     );
     super.initState();
@@ -164,50 +183,64 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         context,
         listen: false);
 
-    return Column(
-      children: [
-        DropdownField<SearchableMultiSelectDropdownProvider<T>>(
-          disabled: widget.disabled,
-          dropdownType: widget.dropdownType,
-          decoration: widget.decoration,
-          hintText: widget.hintText,
-          labelText: widget.labelText,
-          disableInput: true,
-          outlineBorderVisible: provider.suggestionsExpanded ||
-              provider.textFieldFocusNode.hasFocus,
-          onTapInside: () => context
-              .read<SearchableMultiSelectDropdownProvider<T>>()
-              .toggleSuggestionsExpanded(
-                selectorWidget: widget.dropdownType == DropdownType.expandable
-                    ? null
-                    : ChangeNotifierProvider.value(
-                        value: provider,
-                        child: selectorWidget,
-                      ),
-              ),
-          onTapOutside: () {
-            provider.onTapOutside(context);
-          },
-          suffixTapEnabled: false,
-          suffixWidget: SizedBox(
-            height: 48,
-            child: widget.arrowWidget ??
-                Icon(
-                  context
-                          .watch<SearchableMultiSelectDropdownProvider<T>>()
-                          .suggestionsExpanded
-                      ? Icons.keyboard_arrow_up_outlined
-                      : Icons.keyboard_arrow_down_outlined,
+    return TapRegion(
+      onTapOutside: (_) {
+        if (provider.suggestionsExpanded && widget.closeOnTapOutside) {
+          if (widget.dropdownType == DropdownType.expandable) {
+            provider.closeSuggestions();
+          } else if (provider.selectorTapOutside) {
+            provider.selectorTapOutside = false;
+            provider.closeSuggestions();
+          } else {
+            provider.fieldTapOutside = true;
+          }
+        }
+      },
+      child: Column(
+        children: [
+          DropdownField<SearchableMultiSelectDropdownProvider<T>>(
+            disabled: widget.disabled,
+            dropdownType: widget.dropdownType,
+            decoration: widget.decoration,
+            hintText: widget.hintText,
+            labelText: widget.labelText,
+            disableInput: true,
+            outlineBorderVisible: provider.suggestionsExpanded ||
+                provider.textFieldFocusNode.hasFocus,
+            onTapInside: () => context
+                .read<SearchableMultiSelectDropdownProvider<T>>()
+                .toggleSuggestionsExpanded(
+                  selectorWidget: widget.dropdownType == DropdownType.expandable
+                      ? null
+                      : ChangeNotifierProvider.value(
+                          value: provider,
+                          child: selectorWidget,
+                        ),
                 ),
+            onTapOutside: () {
+              provider.onTapOutside(context);
+            },
+            suffixTapEnabled: false,
+            suffixWidget: SizedBox(
+              height: 48,
+              child: widget.arrowWidget ??
+                  Icon(
+                    context
+                            .watch<SearchableMultiSelectDropdownProvider<T>>()
+                            .suggestionsExpanded
+                        ? Icons.keyboard_arrow_up_outlined
+                        : Icons.keyboard_arrow_down_outlined,
+                  ),
+            ),
           ),
-        ),
-        if (widget.dropdownType == DropdownType.expandable) ...[
-          const SizedBox(
-            height: 4,
-          ),
-          selectorWidget,
+          if (widget.dropdownType == DropdownType.expandable) ...[
+            const SizedBox(
+              height: 4,
+            ),
+            selectorWidget,
+          ],
         ],
-      ],
+      ),
     );
   }
 }
