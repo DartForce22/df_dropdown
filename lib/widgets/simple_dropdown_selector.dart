@@ -42,19 +42,21 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: dropdownData
-                      .map(
-                        (suggestion) => _DropdownSuggestion(
-                          expanded: expanded,
-                          selectorDecoration: selectorDecoration,
-                          text: suggestion.text,
-                          selected: suggestion == selectedOption,
-                          onTap: () {
-                            onSelectSuggestion(suggestion);
-                          },
-                        ),
-                      )
-                      .toList(),
+                  children: [
+                    ...dropdownData.map(
+                      (suggestion) => _DropdownSuggestion(
+                        expanded: expanded,
+                        selectorDecoration: selectorDecoration,
+                        text: suggestion.text,
+                        selected: suggestion == selectedOption,
+                        onTap: () {
+                          onSelectSuggestion(suggestion);
+                        },
+                      ),
+                    ),
+                    if (selectorDecoration?.footerWidget != null)
+                      selectorDecoration!.footerWidget!,
+                  ],
                 ),
               )
             : Center(

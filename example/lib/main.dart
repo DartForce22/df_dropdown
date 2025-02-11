@@ -107,7 +107,6 @@ class MyApp extends StatelessWidget {
                       height: 8,
                     ),
                     DfSearchableDropdown<String>(
-                      rememberSelectedValue: false,
                       validator: (obj) {
                         return obj != null
                             ? null
