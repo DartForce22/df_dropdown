@@ -165,6 +165,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
               provider.suggestionsExpanded ? provider.getDropdownData : [],
           dropdownHeight: provider.dropdownHeight,
           onSelectSuggestion: provider.onSelectSuggestion,
+          expanded: provider.suggestionsExpanded,
         ),
       ),
     );

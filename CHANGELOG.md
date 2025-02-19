@@ -67,4 +67,7 @@
 ## 1.1.4
 
 - Fixed footer widget height
+## 1.1.5
+
+- Bug fixes
 

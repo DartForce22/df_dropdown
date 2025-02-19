@@ -26,7 +26,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final footerWidgetHeight =
-        selectorDecoration?.footerWidget != null ? 40 : 0;
+        selectorDecoration?.footerWidget != null && expanded ? 40 : 0;
     return Material(
       clipBehavior: Clip.hardEdge,
       borderRadius:
