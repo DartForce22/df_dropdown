@@ -64,3 +64,7 @@
 
 - Added footer tap event, event will have the _key_ value of the const [footerTapEvent]
 
+## 1.1.4
+
+- Fixed footer widget height
+
