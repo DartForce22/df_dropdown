@@ -146,6 +146,11 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
   @override
   void initState() {
     final selectorProvider = context.read<SearchableDropdownProvider<T>>();
+    final footerWidgetHeight =
+        widget.selectorDecoration?.footerWidget != null &&
+                selectorProvider.suggestionsExpanded
+            ? 40
+            : 0;
     selectorWidget = TapRegion(
       onTapOutside: (_) {
         if (selectorProvider.suggestionsExpanded && widget.closeOnTapOutside) {
@@ -163,9 +168,8 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           selectedOption: provider.selectedValue,
           dropdownData:
               provider.suggestionsExpanded ? provider.getDropdownData : [],
-          dropdownHeight: provider.dropdownHeight,
+          dropdownHeight: provider.dropdownHeight + footerWidgetHeight,
           onSelectSuggestion: provider.onSelectSuggestion,
-          expanded: provider.suggestionsExpanded,
         ),
       ),
     );
