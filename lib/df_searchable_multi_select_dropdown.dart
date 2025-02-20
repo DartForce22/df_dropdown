@@ -1,7 +1,8 @@
-import '/enums/dropdown_type.dart';
+import 'package:df_dropdown/base_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/enums/dropdown_type.dart';
 import '/models/drop_down_model.dart';
 import '/models/dropdown_decoration.dart';
 import '/models/multi_selector_decoration.dart';
@@ -9,90 +10,56 @@ import '/widgets/dropdown_field.dart';
 import '/widgets/searchable_multi_select_dropdown_selector.dart';
 import 'providers/searchable_multi_select_dropdown_provider.dart';
 
-class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
+class DfSearchableMultiSelectDropdown<T> extends BaseDropdown<T> {
   /// Constructor for [DfSearchableMultiSelectDropdown].
-  ///
-  /// - [initData]: Initial list of data for the dropdown.
-  /// - [selectedValues]: Currently selected list of values.
-  /// - [labelText]: Text for the label of the dropdown.
-  /// - [hintText]: Placeholder text shown when no value is selected.
-  /// - [onOptionSelected]: Callback function triggered when options are selected.
-  /// - [validator]: Optional validation function for dropdown selection.
+  /// - [onOptionsSelected]: Callback function triggered when options are selected.
+  /// - [multiSelectValidator]: Optional validation function for dropdown selection.
   /// - [onSearch]: Function to perform a search based on user input. Returns a filtered list of dropdown options.
-  /// - [decoration]: Custom styling for the dropdown field.
   /// - [selectorDecoration]: Additional custom styling for the dropdown selector.
-  /// - [arrowWidget]: Widget for the arrow icon displayed in the dropdown.
-  /// - [dropdownType]: Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
-  /// the overlay appearance
   const DfSearchableMultiSelectDropdown({
     super.key,
-    this.initData = const [],
     this.selectedValues,
-    this.labelText,
-    this.hintText,
-    this.onOptionSelected,
-    this.validator,
     this.onSearch,
-    this.decoration,
     this.selectorDecoration,
-    this.arrowWidget,
+    super.initData = const [],
+    super.labelText,
+    super.hintText,
+    Function(List<DropDownModel<T>>)? onOptionSelected,
+    String? Function(List<DropDownModel<T>>?)? validator,
+    super.decoration,
+    super.arrowWidget,
+    super.dropdownType = DropdownType.expandable,
+    super.disabled = false,
+    super.asyncInitData,
+    super.closeOnTapOutside,
     this.displayResultsCount,
-    this.dropdownType = DropdownType.expandable,
-    this.disabled = false,
-    this.closeOnTapOutside = true,
-    this.asyncInitData,
-  }) : assert(initData.length == 0 || asyncInitData == null,
+  })  : onOptionsSelected = onOptionSelected,
+        multiSelectValidator = validator,
+        assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
-
-  ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
-  /// the overlay appearance
-  final DropdownType dropdownType;
-
-  /// Initial list of dropdown options.
-  final List<DropDownModel<T>> initData;
 
   /// The currently selected list of dropdown values.
   final List<DropDownModel<T>>? selectedValues;
 
-  /// The label text for the dropdown field.
-  final String? labelText;
-
-  /// Placeholder text displayed when no value is selected.
-  final String? hintText;
-
   /// Callback triggered when options from the dropdown are selected.
-  final Function(List<DropDownModel<T>>)? onOptionSelected;
+  final Function(List<DropDownModel<T>>)? onOptionsSelected;
 
   /// Provides a [DropDownModel] object if selected, and `null` if not
   ///
   /// Should return `null` when no validation error is present,
   /// and a [String] if there is an error
   ///
-  final String? Function(List<DropDownModel<T>>?)? validator;
+  final String? Function(List<DropDownModel<T>>?)? multiSelectValidator;
 
   /// Function that performs the search operation based on the user's input. It returns a list of filtered options.
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
 
-  /// Decoration for customizing the dropdown's appearance (e.g., border, padding, etc.).
-  final DropdownDecoration? decoration;
-
   /// Decoration for customizing the multi-select dropdown selector (e.g., background color, height, etc.).
   final MultiSelectorDecoration? selectorDecoration;
-
-  /// Widget displayed for the dropdown arrow icon.
-  final Widget? arrowWidget;
-
-  final bool disabled;
 
   ///Define max count of displayed elements in the dropdown selector
   ///_Default_ value is null, and all available results will be displayed
   final int? displayResultsCount;
-
-  ///Selector widget will be `closed` when pressed outside of the field
-  final bool closeOnTapOutside;
-
-  /// Future that provides the initial list of dropdown options.
-  final Future<List<DropDownModel<T>>>? asyncInitData;
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +68,8 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
         asyncInitData: asyncInitData,
         initData: initData,
         selectedValues: selectedValues,
-        onOptionSelected: onOptionSelected,
-        multiSelectValidator: validator,
+        onOptionSelected: onOptionsSelected,
+        multiSelectValidator: multiSelectValidator,
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
         context: context,
