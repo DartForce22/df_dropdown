@@ -46,7 +46,8 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
           future: asyncInitData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting &&
-                provider.getDropdownData.isEmpty) {
+                provider.getDropdownData.isEmpty &&
+                provider.suggestionsExpanded) {
               return selectorDecoration?.loadingIndicator ??
                   const Center(
                     child: Padding(

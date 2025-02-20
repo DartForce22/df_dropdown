@@ -140,7 +140,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         asyncInitData: provider.asyncInitDataValue,
         selectorDecoration: widget.selectorDecoration,
         selectedOption: provider.selectedValue,
-        dropdownData: provider.suggestionsExpanded ? provider.initData : [],
+        dropdownData: provider.suggestionsExpanded ? provider.dropdownData : [],
         dropdownHeight: provider.dropdownHeight,
         onSelectSuggestion: provider.onSelectSuggestion,
       ),

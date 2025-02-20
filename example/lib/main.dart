@@ -68,21 +68,12 @@ class MyApp extends StatelessWidget {
                         value: "1",
                         text: "New York City",
                       ),
-                      asyncInitData: () async {
-                        await Future.delayed(const Duration(seconds: 20));
-                        return [
-                          DropDownModel<String>(
-                              key: "1", value: "1", text: "New York City"),
-                          DropDownModel<String>(
-                              key: "2", value: "2", text: "Los Angeles"),
-                        ];
-                      }(),
-                      // initData: [
-                      //   DropDownModel<String>(
-                      //       key: "1", value: "1", text: "New York City"),
-                      //   DropDownModel<String>(
-                      //       key: "2", value: "2", text: "Los Angeles"),
-                      // ],
+                      initData: [
+                        DropDownModel<String>(
+                            key: "1", value: "1", text: "New York City"),
+                        DropDownModel<String>(
+                            key: "2", value: "2", text: "Los Angeles"),
+                      ],
                     ),
                     const SizedBox(
                       height: 8,
@@ -143,7 +134,7 @@ class MyApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      /*   asyncInitData: () async {
+                      asyncInitData: () async {
                         await Future.delayed(const Duration(seconds: 5));
                         return [
                           DropDownModel<String>(
@@ -173,7 +164,6 @@ class MyApp extends StatelessWidget {
                               key: "5", value: "5", text: "Texas"),
                         ];
                       }(),
-                   */
                     ),
                     const SizedBox(
                       height: 8,

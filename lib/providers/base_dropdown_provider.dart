@@ -15,11 +15,12 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// - [initData]: The initial list of data for the dropdown. Defaults to an empty list.
   /// - [validator]: An optional validation function to validate the selected dropdown item.
   BaseDropdownProvider({
-    this.initData = const [],
+    List<DropDownModel<T>> initData = const [],
     this.asyncInitData,
     this.validator,
     required this.context,
   }) {
+    this.initData.addAll(initData);
     asyncInitDataValue = getAsyncInitData();
   }
 
@@ -80,7 +81,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   bool suggestionsExpanded = false;
 
   /// The initial data set for the dropdown.
-  final List<DropDownModel<T>> initData;
+  final List<DropDownModel<T>> initData = [];
 
   /// Future that provides the initial list of dropdown options.
   final Future<List<DropDownModel<T>>>? asyncInitData;
@@ -129,6 +130,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     if (asyncInitData != null) {
       var res = await asyncInitData!;
       baseSearchResults.addAll(res);
+      this.initData.addAll(res);
       print("baseSearchResults $baseSearchResults");
       notifyListeners();
     }
