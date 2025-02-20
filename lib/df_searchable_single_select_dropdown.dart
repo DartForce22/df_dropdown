@@ -39,7 +39,9 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
     this.closeDropdownOnSelection = true,
-  });
+    this.asyncInitData,
+  }) : assert(initData.length == 0 || asyncInitData == null,
+            "initData and asyncInitData cannot be provided at the same time");
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
   /// the overlay appearance
@@ -84,10 +86,14 @@ class DfSearchableSingleSelectDropdown<T> extends StatelessWidget {
   /// Whether to close dropdown after an option has been selected
   final bool closeDropdownOnSelection;
 
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownModel<T>>>? asyncInitData;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => SearchableSingleSelectDropdownProvider<T>(
+        asyncInitData: asyncInitData,
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
@@ -140,6 +146,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     selectorWidget = Consumer<SearchableSingleSelectDropdownProvider<T>>(
       builder: (_, provider, __) => SearchableSingleSelectDropdownSelector<T>(
         selectorDecoration: widget.selectorDecoration,
+        asyncInitData: provider.asyncInitDataValue,
       ),
     );
     super.initState();

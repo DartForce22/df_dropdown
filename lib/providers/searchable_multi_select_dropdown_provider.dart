@@ -13,6 +13,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.selectorMaxHeight,
     this.displayResultsCount,
     this.selectedDataVisible = true,
+    required super.asyncInitData,
     required super.context,
   }) {
     this.selectedValues.addAll(selectedValues ?? []);
@@ -25,7 +26,6 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   final List<DropDownModel<T>> selectedValues = [];
-  final List<DropDownModel<T>> searchResults = [];
   final Function(List<DropDownModel<T>>)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final TextEditingController selectorTextEditingController =
@@ -42,9 +42,9 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   double get dropdownHeight {
     double height = 0;
 
-    int dataLength = searchResults.isNotEmpty ||
+    int dataLength = baseSearchResults.isNotEmpty ||
             selectorTextEditingController.text.isNotEmpty
-        ? searchResults.length
+        ? baseSearchResults.length
         : initData.length;
 
     if (suggestionsExpanded) {
@@ -99,14 +99,14 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   void onInputChanged(String text) {
     if (onSearch != null && text.isNotEmpty) {
       onSearch!(text).then((values) {
-        searchResults.clear();
-        searchResults.addAll(values);
+        baseSearchResults.clear();
+        baseSearchResults.addAll(values);
         notifyListeners();
       });
     } else {
-      searchResults.clear();
+      baseSearchResults.clear();
 
-      searchResults.addAll(
+      baseSearchResults.addAll(
         initData.where(
           (el) => el.text.toLowerCase().startsWith(
                 text.toLowerCase(),
@@ -134,8 +134,8 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
 
   List<DropDownModel<T>> get getDropdownData {
     if (selectorTextEditingController.text.isNotEmpty ||
-        searchResults.isNotEmpty) {
-      return getSelectorResultsData(searchResults);
+        baseSearchResults.isNotEmpty) {
+      return getSelectorResultsData(baseSearchResults);
     }
 
     return getSelectorResultsData(initData);

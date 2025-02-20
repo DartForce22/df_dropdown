@@ -12,6 +12,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectorMaxHeight,
     super.initData,
     super.validator,
+    required super.asyncInitData,
     required this.closeDropdownOnSelection,
     required super.context,
   }) {
@@ -21,7 +22,6 @@ class SearchableSingleSelectDropdownProvider<T>
   }
 
   DropDownModel<T>? selectedValue;
-  final List<DropDownModel<T>> searchResults = [];
   final Function(DropDownModel<T>?)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final TextEditingController selectorTextEditingController =
@@ -33,9 +33,9 @@ class SearchableSingleSelectDropdownProvider<T>
   double get dropdownHeight {
     double height = 0;
 
-    int dataLength = searchResults.isNotEmpty ||
+    int dataLength = baseSearchResults.isNotEmpty ||
             selectorTextEditingController.text.isNotEmpty
-        ? searchResults.length
+        ? baseSearchResults.length
         : initData.length;
 
     if (suggestionsExpanded) {
@@ -78,14 +78,14 @@ class SearchableSingleSelectDropdownProvider<T>
   void onInputChanged(String text) {
     if (onSearch != null && text.isNotEmpty) {
       onSearch!(text).then((values) {
-        searchResults.clear();
-        searchResults.addAll(values);
+        baseSearchResults.clear();
+        baseSearchResults.addAll(values);
         notifyListeners();
       });
     } else {
-      searchResults.clear();
+      baseSearchResults.clear();
 
-      searchResults.addAll(
+      baseSearchResults.addAll(
         initData.where(
           (el) => el.text.toLowerCase().startsWith(
                 text.toLowerCase(),
@@ -113,8 +113,8 @@ class SearchableSingleSelectDropdownProvider<T>
 
   List<DropDownModel<T>> get getDropdownData {
     if (selectorTextEditingController.text.isNotEmpty ||
-        searchResults.isNotEmpty) {
-      return searchResults;
+        baseSearchResults.isNotEmpty) {
+      return baseSearchResults;
     }
     return initData;
   }

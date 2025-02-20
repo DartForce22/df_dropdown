@@ -40,7 +40,9 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
     this.closeOnTapOutside = true,
-  });
+    this.asyncInitData,
+  }) : assert(initData.length == 0 || asyncInitData == null,
+            "initData and asyncInitData cannot be provided at the same time");
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
   /// the overlay appearance
@@ -89,10 +91,14 @@ class DfSearchableMultiSelectDropdown<T> extends StatelessWidget {
   ///Selector widget will be `closed` when pressed outside of the field
   final bool closeOnTapOutside;
 
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownModel<T>>>? asyncInitData;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => SearchableMultiSelectDropdownProvider<T>(
+        asyncInitData: asyncInitData,
         initData: initData,
         selectedValues: selectedValues,
         onOptionSelected: onOptionSelected,
@@ -159,6 +165,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         },
         child: SearchableMultiSelectDropdownSelector<T>(
           selectorDecoration: widget.selectorDecoration,
+          asyncInitData: provider.asyncInitDataValue,
         ),
       ),
     );
