@@ -14,6 +14,11 @@ abstract class BaseDropdown<T> extends StatelessWidget {
   /// - [arrowWidget]: Widget for the arrow icon displayed in the dropdown.
   /// - [dropdownType]: Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
   /// the overlay appearance
+  /// - [disabled]: Whether the dropdown is disabled.
+  /// - [asyncInitData]: Future that provides the initial list of dropdown options.
+  /// - [closeOnTapOutside]: Whether to close the dropdown when the user taps outside the dropdown.
+  ///
+  final bool closeOnTapOutside;
 
   const BaseDropdown({
     super.key,
@@ -28,6 +33,7 @@ abstract class BaseDropdown<T> extends StatelessWidget {
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
     this.asyncInitData,
+    this.closeOnTapOutside = true,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
 

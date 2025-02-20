@@ -31,7 +31,7 @@ class DfSearchableMultiSelectDropdown<T> extends BaseDropdown<T> {
     super.dropdownType = DropdownType.expandable,
     super.disabled = false,
     super.asyncInitData,
-    this.closeOnTapOutside = true,
+    super.closeOnTapOutside,
     this.displayResultsCount,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
@@ -58,9 +58,6 @@ class DfSearchableMultiSelectDropdown<T> extends BaseDropdown<T> {
   ///Define max count of displayed elements in the dropdown selector
   ///_Default_ value is null, and all available results will be displayed
   final int? displayResultsCount;
-
-  ///Selector widget will be `closed` when pressed outside of the field
-  final bool closeOnTapOutside;
 
   @override
   Widget build(BuildContext context) {

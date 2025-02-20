@@ -25,7 +25,7 @@ class DfDropdownWrapper<T> extends BaseDropdown<T> {
     super.asyncInitData,
     this.selectorDecoration,
     this.child,
-    this.closeOnTapOutside = true,
+    super.closeOnTapOutside,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
 
@@ -33,8 +33,6 @@ class DfDropdownWrapper<T> extends BaseDropdown<T> {
   final SimpleSelectorDecoration? selectorDecoration;
 
   final Widget? child;
-
-  final bool closeOnTapOutside;
 
   @override
   Widget build(BuildContext context) {
