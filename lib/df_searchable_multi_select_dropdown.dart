@@ -24,8 +24,8 @@ class DfSearchableMultiSelectDropdown<T> extends BaseDropdown<T> {
     super.initData = const [],
     super.labelText,
     super.hintText,
-    this.onOptionsSelected,
-    this.multiSelectValidator,
+    Function(List<DropDownModel<T>>)? onOptionSelected,
+    String? Function(List<DropDownModel<T>>?)? validator,
     super.decoration,
     super.arrowWidget,
     super.dropdownType = DropdownType.expandable,
@@ -33,7 +33,9 @@ class DfSearchableMultiSelectDropdown<T> extends BaseDropdown<T> {
     super.asyncInitData,
     super.closeOnTapOutside,
     this.displayResultsCount,
-  }) : assert(initData.length == 0 || asyncInitData == null,
+  })  : onOptionsSelected = onOptionSelected,
+        multiSelectValidator = validator,
+        assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
 
   /// The currently selected list of dropdown values.

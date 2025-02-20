@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
                       hintText: "Select an option...",
                       labelText: "Simple Dropdown",
                       onOptionSelected: (value) {
-                        log("SELECTED VALUE ${value.value}");
+                        log("SELECTED VALUE ${value?.value}");
                       },
                       initData: [
                         DropDownModel<String>(
