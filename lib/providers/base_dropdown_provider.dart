@@ -193,7 +193,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     Color? errorBorderColor,
   }) {
     Color color = borderColor ??
-        (Colors.grey[950] ?? Colors.grey.shade900).withOpacity(0.12);
+        (Colors.grey[950] ?? Colors.grey.shade900).withValues(alpha: 0.12);
 
     if (_validationError != null) {
       color = errorBorderColor ?? Colors.red.shade500;

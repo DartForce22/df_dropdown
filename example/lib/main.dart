@@ -56,8 +56,8 @@ class MyApp extends StatelessWidget {
                         selectedItemIcon: Icon(
                           Icons.cabin,
                         ),
-                        selectedItemColor: Colors.blue.withOpacity(
-                          0.4,
+                        selectedItemColor: Colors.blue.withValues(
+                          alpha: 0.4,
                         ),
                       ),
                       onOptionSelected: (option) {
@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
-                        backgroundColor: Colors.green.withOpacity(0.2),
+                        backgroundColor: Colors.green.withValues(alpha: 0.2),
                       ),
                       selectorDecoration: SimpleSelectorDecoration(
                         selectorColor: Colors.amber.shade300,

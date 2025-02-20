@@ -152,7 +152,7 @@ Then, run: `flutter pub get`
         ),
         selectorDecoration: SimpleSelectorDecoration(
           selectedItemIcon: Icon(Icons.cabin),
-          selectedItemColor: Colors.blue.withOpacity(0.4),
+          selectedItemColor: Colors.blue.withValues(alpha: 0.4),
         ),
         onOptionSelected: (option) {
           log("Option selected $option");
