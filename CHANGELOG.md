@@ -86,3 +86,7 @@
 - Refactored base dropdown class, added a unified abstract class for all common parameters
 - This version may have issues
 
+## 1.2.3
+- Fixed reported issues with searchable dropdown UI
+- This version may have issues
+

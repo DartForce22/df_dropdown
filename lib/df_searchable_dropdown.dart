@@ -152,11 +152,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
   @override
   void initState() {
     final selectorProvider = context.read<SearchableDropdownProvider<T>>();
-    final footerWidgetHeight =
-        widget.selectorDecoration?.footerWidget != null &&
-                selectorProvider.suggestionsExpanded
-            ? 40
-            : 0;
+
     selectorWidget = TapRegion(
       onTapOutside: (_) {
         if (selectorProvider.suggestionsExpanded && widget.closeOnTapOutside) {
@@ -169,15 +165,22 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         }
       },
       child: Consumer<SearchableDropdownProvider<T>>(
-        builder: (_, provider, __) => SimpleDropdownSelector<T>(
-          asyncInitData: provider.asyncInitDataValue,
-          selectorDecoration: widget.selectorDecoration,
-          selectedOption: provider.selectedValue,
-          dropdownData:
-              provider.suggestionsExpanded ? provider.getDropdownData : [],
-          dropdownHeight: provider.dropdownHeight + footerWidgetHeight,
-          onSelectSuggestion: provider.onSelectSuggestion,
-        ),
+        builder: (_, provider, __) {
+          final footerWidgetHeight =
+              widget.selectorDecoration?.footerWidget != null &&
+                      provider.suggestionsExpanded
+                  ? 40
+                  : 0;
+          return SimpleDropdownSelector<T>(
+            asyncInitData: provider.asyncInitDataValue,
+            selectorDecoration: widget.selectorDecoration,
+            selectedOption: provider.selectedValue,
+            dropdownData:
+                provider.suggestionsExpanded ? provider.getDropdownData : [],
+            dropdownHeight: provider.dropdownHeight + footerWidgetHeight,
+            onSelectSuggestion: provider.onSelectSuggestion,
+          );
+        },
       ),
     );
     super.initState();
