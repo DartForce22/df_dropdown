@@ -41,7 +41,8 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.closeOnTapOutside = true,
     this.rememberSelectedValue = true,
     this.asyncInitData,
-  });
+  }) : assert(initData.length == 0 || asyncInitData == null,
+            "initData and asyncInitData cannot be provided at the same time");
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
   /// the overlay appearance

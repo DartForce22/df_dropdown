@@ -134,9 +134,7 @@ class MyApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // initData: ,
                       asyncInitData: () async {
-                        print("INITING DATA");
                         await Future.delayed(const Duration(seconds: 5));
                         return [
                           DropDownModel<String>(
