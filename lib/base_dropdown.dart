@@ -2,7 +2,7 @@ import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
 abstract class BaseDropdown<T> extends StatelessWidget {
-  /// Constructor for [DfSimpleDropdown].
+  /// Base class for dropdown widgets.
   ///
   /// - [initData]: Initial list of data for the dropdown.
   /// - [selectedValue]: Currently selected dropdown value.
