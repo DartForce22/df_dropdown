@@ -5,6 +5,7 @@ import '/providers/base_dropdown_provider.dart';
 
 class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   SearchableDropdownProvider({
+    required super.asyncInitData,
     this.rememberSelectedValue = true,
     this.selectedValue,
     this.onOptionSelected,
@@ -20,7 +21,6 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   }
 
   DropDownModel<T>? selectedValue;
-  final List<DropDownModel<T>> _searchResults = [];
   final Function(DropDownModel<T>?)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
   final double? selectorMaxHeight;
@@ -29,7 +29,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   final bool rememberSelectedValue;
 
   List<DropDownModel<T>> get searchResults =>
-      [if (selectedValue != null) selectedValue!, ..._searchResults];
+      [if (selectedValue != null) selectedValue!, ...baseSearchResults];
 
   @override
   double get dropdownHeight {
@@ -102,14 +102,14 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   void onInputChanged(String text) {
     if (onSearch != null) {
       onSearch!(text).then((values) {
-        _searchResults.clear();
-        _searchResults.addAll(values);
+        baseSearchResults.clear();
+        baseSearchResults.addAll(values);
         notifyListeners();
       });
     } else {
-      _searchResults.clear();
+      baseSearchResults.clear();
 
-      _searchResults.addAll(
+      baseSearchResults.addAll(
         initData.where(
           (el) => el.text.toLowerCase().startsWith(
                 text.toLowerCase(),
@@ -127,10 +127,10 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
 
   List<DropDownModel<T>> get getDropdownData {
     if (searchTextController.text.isNotEmpty || searchResults.isNotEmpty) {
-      if (_searchResults.isEmpty) {
-        _searchResults.addAll(initData);
+      if (baseSearchResults.isEmpty) {
+        baseSearchResults.addAll(initData);
       }
-      _searchResults.removeWhere((el) => el == selectedValue);
+      baseSearchResults.removeWhere((el) => el == selectedValue);
       return searchResults;
     }
     return initData;

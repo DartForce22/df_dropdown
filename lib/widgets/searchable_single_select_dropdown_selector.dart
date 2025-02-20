@@ -9,7 +9,11 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
   const SearchableSingleSelectDropdownSelector({
     super.key,
     required this.selectorDecoration,
+    required this.asyncInitData,
   });
+
+  /// Future that provides the initial list of dropdown options.
+  final Future<void> asyncInitData;
 
   ///[InputDecoration] used to remove all predefined values from the [TextFormField]
   final InputDecoration fieldInputDecoration = const InputDecoration(
@@ -39,95 +43,114 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
               selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
           color: selectorDecoration?.selectorColor ?? Colors.white,
         ),
-        child: Column(
-          children: [
-            if (provider.suggestionsExpanded)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: Row(
-                  children: [
-                    if (selectorDecoration?.showSearchIcon != false)
-                      selectorDecoration?.searchIcon ??
-                          Icon(
-                            Icons.search,
-                            color: Colors.grey.shade400,
-                          ),
-                    const SizedBox(
-                      width: 4,
+        child: FutureBuilder(
+          future: asyncInitData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                provider.getDropdownData.isEmpty &&
+                provider.suggestionsExpanded) {
+              return selectorDecoration?.loadingIndicator ??
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: CircularProgressIndicator(),
                     ),
-                    Expanded(
-                      child: TextField(
-                        controller: provider.selectorTextEditingController,
-                        onChanged: provider.onInputChanged,
-                        decoration: fieldInputDecoration,
-                        style: selectorDecoration?.searchTextStyle,
-                      ),
+                  );
+            }
+
+            return Column(
+              children: [
+                if (provider.suggestionsExpanded)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
                     ),
-                  ],
-                ),
-              ),
-            if (provider.suggestionsExpanded)
-              Divider(
-                height: 1,
-                color: selectorDecoration?.dividerColor,
-              ),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              width: double.infinity,
-              height: provider.dropdownHeight,
-              child: Scrollbar(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 8,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: provider.clearSelection,
-                              child: Text(
-                                selectorDecoration?.clearSelectionText ??
-                                    "Clear selection",
-                                style: selectorDecoration?.searchTextStyle ??
-                                    TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.teal.shade400,
-                                    ),
+                    child: Row(
+                      children: [
+                        if (selectorDecoration?.showSearchIcon != false)
+                          selectorDecoration?.searchIcon ??
+                              Icon(
+                                Icons.search,
+                                color: Colors.grey.shade400,
                               ),
-                            ),
-                          ],
+                        const SizedBox(
+                          width: 4,
                         ),
-                      ),
-                      Column(
-                        children: provider.suggestionsExpanded
-                            ? provider.getDropdownData.map(
-                                (suggestion) {
-                                  return SingleSelect(
-                                    selectorDecoration: selectorDecoration,
-                                    text: suggestion.text,
-                                    selected:
-                                        suggestion == provider.selectedValue,
-                                    onTap: () {
-                                      provider.onSelectSuggestion(suggestion);
+                        Expanded(
+                          child: TextField(
+                            controller: provider.selectorTextEditingController,
+                            onChanged: provider.onInputChanged,
+                            decoration: fieldInputDecoration,
+                            style: selectorDecoration?.searchTextStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (provider.suggestionsExpanded)
+                  Divider(
+                    height: 1,
+                    color: selectorDecoration?.dividerColor,
+                  ),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: double.infinity,
+                  height: provider.dropdownHeight,
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 8,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: provider.clearSelection,
+                                  child: Text(
+                                    selectorDecoration?.clearSelectionText ??
+                                        "Clear selection",
+                                    style:
+                                        selectorDecoration?.searchTextStyle ??
+                                            TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.teal.shade400,
+                                            ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: provider.suggestionsExpanded
+                                ? provider.getDropdownData.map(
+                                    (suggestion) {
+                                      return SingleSelect(
+                                        selectorDecoration: selectorDecoration,
+                                        text: suggestion.text,
+                                        selected: suggestion ==
+                                            provider.selectedValue,
+                                        onTap: () {
+                                          provider
+                                              .onSelectSuggestion(suggestion);
+                                        },
+                                      );
                                     },
-                                  );
-                                },
-                              ).toList()
-                            : [],
-                      )
-                    ],
+                                  ).toList()
+                                : [],
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

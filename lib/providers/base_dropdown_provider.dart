@@ -15,10 +15,14 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// - [initData]: The initial list of data for the dropdown. Defaults to an empty list.
   /// - [validator]: An optional validation function to validate the selected dropdown item.
   BaseDropdownProvider({
-    this.initData = const [],
+    List<DropDownModel<T>> initData = const [],
+    this.asyncInitData,
     this.validator,
     required this.context,
-  });
+  }) {
+    this.initData.addAll(initData);
+    asyncInitDataValue = getAsyncInitData();
+  }
 
   final BuildContext context;
   OverlayEntry? _overlayEntry;
@@ -69,13 +73,18 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     _selectorWidget = null;
   }
 
+  final List<DropDownModel<T>> baseSearchResults = [];
+
   Widget? _selectorWidget;
 
   /// Whether the suggestions list is expanded or collapsed.
   bool suggestionsExpanded = false;
 
   /// The initial data set for the dropdown.
-  final List<DropDownModel<T>> initData;
+  final List<DropDownModel<T>> initData = [];
+
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownModel<T>>>? asyncInitData;
 
   /// A controller to manage the search input text for filtering the dropdown.
   final TextEditingController searchTextController = TextEditingController();
@@ -111,6 +120,19 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
       );
     } else {
       closeSuggestions();
+    }
+  }
+
+  late Future<void> asyncInitDataValue;
+
+  Future<void> getAsyncInitData() async {
+    print("getAsyncInitData");
+    if (asyncInitData != null) {
+      var res = await asyncInitData!;
+      baseSearchResults.addAll(res);
+      this.initData.addAll(res);
+      print("baseSearchResults $baseSearchResults");
+      notifyListeners();
     }
   }
 

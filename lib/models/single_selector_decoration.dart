@@ -13,6 +13,9 @@ class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
   ///Customizes the icon displayed next to the selected option.
   final Widget? selectedItemIcon;
 
+  ///A widget that will be displayed when the selector is loading data.
+  final Widget? loadingIndicator;
+
   /// Creates a new [SingleSelectorDecoration] instance with optional customization.
   ///
   /// - [borderRadius]: Sets the corner radius of the multi-selector.
@@ -30,6 +33,7 @@ class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
   /// - [selectedItemIcon]: Customizes the icon displayed next to the selected option.
   /// - [selectedItemIconVisible]: Controls whether selected item icon indicator is visible (default is `true`).
   /// - [showSearchIcon]: Controls whether the search icon is visible (default is `true`).
+  /// - [loadingIndicator]: Widget to display when the selector is loading data.
 
   const SingleSelectorDecoration({
     super.borderRadius,
@@ -47,5 +51,6 @@ class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
     super.selectedItemColor,
     this.selectedItemIconVisible = true,
     this.selectedItemIcon,
+    this.loadingIndicator,
   });
 }

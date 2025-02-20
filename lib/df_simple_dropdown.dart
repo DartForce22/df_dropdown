@@ -36,7 +36,9 @@ class DfSimpleDropdown<T> extends StatelessWidget {
     this.arrowWidget,
     this.dropdownType = DropdownType.expandable,
     this.disabled = false,
-  });
+    this.asyncInitData,
+  }) : assert(initData.length == 0 || asyncInitData == null,
+            "initData and asyncInitData cannot be provided at the same time");
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
   /// the overlay appearance
@@ -75,10 +77,14 @@ class DfSimpleDropdown<T> extends StatelessWidget {
 
   final bool disabled;
 
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownModel<T>>>? asyncInitData;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => SimpleDropdownProvider<T>(
+        asyncInitData: asyncInitData,
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
@@ -131,9 +137,10 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     provider = Provider.of<SimpleDropdownProvider<T>>(context, listen: false);
     selectorWidget = Consumer<SimpleDropdownProvider<T>>(
       builder: (_, provider, __) => SimpleDropdownSelector<T>(
+        asyncInitData: provider.asyncInitDataValue,
         selectorDecoration: widget.selectorDecoration,
         selectedOption: provider.selectedValue,
-        dropdownData: provider.suggestionsExpanded ? provider.initData : [],
+        dropdownData: provider.suggestionsExpanded ? provider.dropdownData : [],
         dropdownHeight: provider.dropdownHeight,
         onSelectSuggestion: provider.onSelectSuggestion,
       ),

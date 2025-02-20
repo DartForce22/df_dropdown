@@ -27,6 +27,9 @@ class MultiSelectorDecoration extends SearchableSelectorBaseDecoration {
   /// This boolean controls the visibility of the selected items. Defaults to `true`.
   final bool? showSelectedItems;
 
+  /// A widget that will be displayed when the selector is loading data.
+  final Widget? loadingIndicator;
+
   /// Creates a new [MultiSelectorDecoration] instance with optional customization.
   ///
   /// - [borderRadius]: Sets the corner radius of the multi-selector.
@@ -45,6 +48,7 @@ class MultiSelectorDecoration extends SearchableSelectorBaseDecoration {
   /// - [selectedItemsTitleStyle]: Defines the style for the selected items title.
   /// - [selectedItemColor]: Sets the background color for selected items.
   /// - [showSelectedItems]: Controls whether selected items are visible (default is `true`).
+  /// - [loadingIndicator]: Widget to display when the selector is loading data.
   const MultiSelectorDecoration({
     super.borderRadius,
     super.elevation,
@@ -61,6 +65,7 @@ class MultiSelectorDecoration extends SearchableSelectorBaseDecoration {
     this.selectedItemColor,
     this.selectedItemsTitle,
     this.selectedItemsTitleStyle,
+    this.loadingIndicator,
     this.showSelectedItems = true,
   });
 }

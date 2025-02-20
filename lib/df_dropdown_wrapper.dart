@@ -32,7 +32,9 @@ class DfDropdownWrapper<T> extends StatelessWidget {
     this.child,
     this.closeOnTapOutside = true,
     this.disabled = false,
-  });
+    this.asyncInitData,
+  }) : assert(initData.length == 0 || asyncInitData == null,
+            "initData and asyncInitData cannot be provided at the same time");
 
   /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
@@ -68,10 +70,14 @@ class DfDropdownWrapper<T> extends StatelessWidget {
 
   final bool disabled;
 
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownModel<T>>>? asyncInitData;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (ctx) => SimpleDropdownProvider<T>(
+        asyncInitData: asyncInitData,
         initData: initData,
         selectedValue: selectedValue,
         onOptionSelected: onOptionSelected,
@@ -137,9 +143,11 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             : null,
         child: SimpleDropdownSelector<T>(
           expanded: false,
+          asyncInitData: provider.asyncInitDataValue,
           selectedOption: provider.selectedValue,
           selectorDecoration: widget.selectorDecoration,
-          dropdownData: provider.suggestionsExpanded ? provider.initData : [],
+          dropdownData:
+              provider.suggestionsExpanded ? provider.dropdownData : [],
           dropdownHeight: provider.dropdownHeight,
           onSelectSuggestion: provider.onSelectSuggestion,
         ),
