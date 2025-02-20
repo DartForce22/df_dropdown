@@ -74,3 +74,7 @@
 ## 1.1.6
 - Bug fixes
 
+## 1.2.0
+- Added async init data parameter, when data is loading the CircularProgressIndicator will be displayed if not provided in decoration
+- This version may have issues
+
