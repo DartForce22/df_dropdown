@@ -40,6 +40,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.disabled = false,
     this.closeOnTapOutside = true,
     this.rememberSelectedValue = true,
+    this.asyncInitData,
   });
 
   ///Default value is `DropdownType.expandable`, and it's used to switch between the expandable, and
@@ -48,6 +49,9 @@ class DfSearchableDropdown<T> extends StatelessWidget {
 
   /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
+
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownModel<T>>>? asyncInitData;
 
   /// Decoration for customizing the simple dropdown selector (e.g., background color, height, etc.).
   final SimpleSelectorDecoration? selectorDecoration;
@@ -101,6 +105,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         onSearch: onSearch,
         selectorMaxHeight: selectorDecoration?.maxHeight,
         context: context,
+        asyncInitData: asyncInitData,
       ),
       child: _Dropdown<T>(
         decoration: decoration,
@@ -164,6 +169,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
       },
       child: Consumer<SearchableDropdownProvider<T>>(
         builder: (_, provider, __) => SimpleDropdownSelector<T>(
+          asyncInitData: provider.asyncInitDataValue,
           selectorDecoration: widget.selectorDecoration,
           selectedOption: provider.selectedValue,
           dropdownData:

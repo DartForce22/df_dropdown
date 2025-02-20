@@ -12,6 +12,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
     required this.dropdownHeight,
     required this.onSelectSuggestion,
     required this.selectedOption,
+    required this.asyncInitData,
     this.selectorDecoration,
     this.expanded = true,
   });
@@ -22,6 +23,9 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
   final Function(DropDownModel<T>) onSelectSuggestion;
   final bool expanded;
   final DropDownModel<T>? selectedOption;
+
+  /// Future that provides the initial list of dropdown options.
+  final Future<void> asyncInitData;
 
   @override
   Widget build(BuildContext context) {
@@ -39,46 +43,57 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
         ),
         width: expanded ? double.infinity : null,
         height: dropdownHeight,
-        child: dropdownData.isNotEmpty
-            ? SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ...dropdownData.map(
-                      (suggestion) => _DropdownSuggestion(
-                        prefixWidget: suggestion.prefixWidget,
-                        expanded: expanded,
-                        selectorDecoration: selectorDecoration,
-                        text: suggestion.text,
-                        selected: suggestion == selectedOption,
-                        onTap: () {
-                          onSelectSuggestion(suggestion);
-                        },
-                      ),
+        child: FutureBuilder(
+          future: asyncInitData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                dropdownData.isEmpty) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return dropdownData.isNotEmpty
+                ? SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ...dropdownData.map(
+                          (suggestion) => _DropdownSuggestion(
+                            prefixWidget: suggestion.prefixWidget,
+                            expanded: expanded,
+                            selectorDecoration: selectorDecoration,
+                            text: suggestion.text,
+                            selected: suggestion == selectedOption,
+                            onTap: () {
+                              onSelectSuggestion(suggestion);
+                            },
+                          ),
+                        ),
+                        if (selectorDecoration?.footerWidget != null)
+                          InkWell(
+                            onTap: () {
+                              onSelectSuggestion(
+                                DropDownModel(
+                                  key: footerTapEvent,
+                                  text: "",
+                                ),
+                              );
+                            },
+                            child: selectorDecoration!.footerWidget!,
+                          ),
+                      ],
                     ),
-                    if (selectorDecoration?.footerWidget != null)
-                      InkWell(
-                        onTap: () {
-                          onSelectSuggestion(
-                            DropDownModel(
-                              key: footerTapEvent,
-                              text: "",
-                            ),
-                          );
-                        },
-                        child: selectorDecoration!.footerWidget!,
-                      ),
-                  ],
-                ),
-              )
-            : Center(
-                child: selectorDecoration?.noAvailableDataWidget ??
-                    Text(
-                      selectorDecoration?.noAvailableDataText ??
-                          "No available options",
-                    ),
-              ),
+                  )
+                : Center(
+                    child: selectorDecoration?.noAvailableDataWidget ??
+                        Text(
+                          selectorDecoration?.noAvailableDataText ??
+                              "No available options",
+                        ),
+                  );
+          },
+        ),
       ),
     );
   }

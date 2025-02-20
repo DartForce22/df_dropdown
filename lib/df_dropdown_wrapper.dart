@@ -137,6 +137,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             : null,
         child: SimpleDropdownSelector<T>(
           expanded: false,
+          asyncInitData: provider.asyncInitDataValue,
           selectedOption: provider.selectedValue,
           selectorDecoration: widget.selectorDecoration,
           dropdownData: provider.suggestionsExpanded ? provider.initData : [],
