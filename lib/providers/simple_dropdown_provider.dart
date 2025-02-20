@@ -33,8 +33,8 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
   double get dropdownMaxHeight {
     double height = 0;
 
-    if (initData.length < 5) {
-      height = initData.length * 40;
+    if (dropdownData.length < 5) {
+      height = dropdownData.length * 40;
     } else {
       height = maxHeight ?? 200;
     }
@@ -51,6 +51,11 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
       onOptionSelected!(value);
     }
     notifyListeners();
+  }
+
+  List<DropDownModel<T>> get dropdownData {
+    if (initData.isNotEmpty) return initData;
+    return baseSearchResults;
   }
 
   @override

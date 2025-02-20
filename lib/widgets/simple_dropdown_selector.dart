@@ -34,29 +34,30 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
       borderRadius:
           selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       elevation: selectorDecoration?.elevation ?? 4,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          borderRadius:
-              selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
-          color: selectorDecoration?.selectorColor ?? Colors.white,
-        ),
-        width: expanded ? double.infinity : null,
-        height: dropdownHeight,
-        child: FutureBuilder(
-          future: asyncInitData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting &&
-                dropdownData.isEmpty) {
-              return selectorDecoration?.loadingIndicator ??
-                  const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-            }
-            return dropdownData.isNotEmpty
+      child: FutureBuilder(
+        future: asyncInitData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              dropdownData.isEmpty) {
+            return selectorDecoration?.loadingIndicator ??
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+          }
+
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              borderRadius:
+                  selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+              color: selectorDecoration?.selectorColor ?? Colors.white,
+            ),
+            width: expanded ? double.infinity : null,
+            height: dropdownHeight,
+            child: dropdownData.isNotEmpty
                 ? SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,9 +96,9 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
                           selectorDecoration?.noAvailableDataText ??
                               "No available options",
                         ),
-                  );
-          },
-        ),
+                  ),
+          );
+        },
       ),
     );
   }
