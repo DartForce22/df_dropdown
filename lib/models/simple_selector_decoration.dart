@@ -54,6 +54,9 @@ class SimpleSelectorDecoration {
   ///as the last item
   final Widget? footerWidget;
 
+  /// A widget that will be displayed when the selector is loading data.
+  final Widget? loadingIndicator;
+
   /// Creates a new [SimpleSelectorDecoration] instance with optional customization.
   ///
   /// - [borderRadius]: Sets the border radius for the selector.
@@ -64,6 +67,10 @@ class SimpleSelectorDecoration {
   /// - [optionTextStyle]: Specifies the text style for the dropdown options.
   /// - [selectedItemIcon]: Customizes the icon displayed next to the selected option.
   /// - [selectedItemColor]: Sets the background color for selected items.
+  /// - [noAvailableDataWidget]: Widget to display when there is no data available.
+  /// - [noAvailableDataText]: Text to display when there is no data available.
+  /// - [footerWidget]: Widget to display at the bottom of the selector.
+  /// - [loadingIndicator]: Widget to display when the selector is loading data.
   const SimpleSelectorDecoration({
     this.borderRadius,
     this.elevation,
@@ -77,5 +84,6 @@ class SimpleSelectorDecoration {
     this.noAvailableDataWidget,
     this.noAvailableDataText,
     this.footerWidget,
+    this.loadingIndicator,
   });
 }

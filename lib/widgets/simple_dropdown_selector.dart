@@ -48,9 +48,13 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting &&
                 dropdownData.isEmpty) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return selectorDecoration?.loadingIndicator ??
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
             }
             return dropdownData.isNotEmpty
                 ? SingleChildScrollView(
