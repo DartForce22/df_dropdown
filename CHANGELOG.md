@@ -78,3 +78,7 @@
 - Added async init data parameter, when data is loading the CircularProgressIndicator will be displayed if not provided in decoration
 - This version may have issues
 
+## 1.2.1
+- Added async init data parameter, when data is loading the CircularProgressIndicator will be displayed if not provided in decoration
+- This version may have issues
+

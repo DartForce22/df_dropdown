@@ -114,7 +114,7 @@ class MyApp extends StatelessWidget {
                             : "This is a really long validation error, an this is how it will be displayed...";
                       },
                       dropdownType: DropdownType.overlay,
-                      hintText: "Start typing..",
+                      hintText: "Start typing...",
                       labelText: "Searchable Dropdown",
                       onOptionSelected: (value) {
                         log("SELECTED VALUE IS FOOTER ${value?.key == footerTapEvent}");
@@ -135,7 +135,7 @@ class MyApp extends StatelessWidget {
                         ),
                       ),
                       asyncInitData: () async {
-                        await Future.delayed(const Duration(seconds: 5));
+                        await Future.delayed(const Duration(seconds: 20));
                         return [
                           DropDownModel<String>(
                             key: "1",

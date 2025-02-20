@@ -38,7 +38,8 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
         future: asyncInitData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting &&
-              dropdownData.isEmpty) {
+              dropdownData.isEmpty &&
+              dropdownHeight > 0) {
             return selectorDecoration?.loadingIndicator ??
                 const Center(
                   child: Padding(
