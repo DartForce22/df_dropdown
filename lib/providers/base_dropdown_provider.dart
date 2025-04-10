@@ -126,12 +126,10 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   late Future<void> asyncInitDataValue;
 
   Future<void> getAsyncInitData() async {
-    print("getAsyncInitData");
     if (asyncInitData != null) {
       var res = await asyncInitData!;
       baseSearchResults.addAll(res);
       this.initData.addAll(res);
-      print("baseSearchResults $baseSearchResults");
       notifyListeners();
     }
   }

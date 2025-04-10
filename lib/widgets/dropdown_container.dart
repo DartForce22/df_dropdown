@@ -91,35 +91,37 @@ class DropdownContainer<T extends BaseDropdownProvider>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: TapRegion(
-                        onTapOutside: (_) {
-                          if (onTapOutside != null &&
-                              provider.textFieldFocusNode.hasFocus) {
-                            onTapOutside!();
-                          }
-                        },
-                        onTapInside: (_) {
+                      child: GestureDetector(
+                        onTap: () {
                           if (onTapInside != null) onTapInside!();
                         },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (labelText != null &&
-                                provider.searchTextController.text.isNotEmpty)
-                              Flexible(
-                                child: FittedBox(
-                                  child: Text(
-                                    labelText!,
-                                    style: decoration?.labelTextStyle ??
-                                        TextStyle(
-                                          color: Colors.grey.shade600,
-                                        ),
+                        child: TapRegion(
+                          onTapOutside: (_) {
+                            if (onTapOutside != null &&
+                                provider.textFieldFocusNode.hasFocus) {
+                              onTapOutside!();
+                            }
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (labelText != null &&
+                                  provider.searchTextController.text.isNotEmpty)
+                                Flexible(
+                                  child: FittedBox(
+                                    child: Text(
+                                      labelText!,
+                                      style: decoration?.labelTextStyle ??
+                                          TextStyle(
+                                            color: Colors.grey.shade600,
+                                          ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            if (child != null) child,
-                          ],
+                              if (child != null) child,
+                            ],
+                          ),
                         ),
                       ),
                     ),
