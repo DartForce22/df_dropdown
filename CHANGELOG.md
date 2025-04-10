@@ -90,3 +90,6 @@
 - Fixed reported issues with searchable dropdown UI
 - This version may have issues
 
+## 1.2.4
+- Fixed reported issues when scrolling parent content
+
