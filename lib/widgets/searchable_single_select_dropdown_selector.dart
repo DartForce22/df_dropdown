@@ -135,6 +135,7 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                                         selected: suggestion ==
                                             provider.selectedValue,
                                         onTap: () {
+                                          if (suggestion.disabled) return;
                                           provider
                                               .onSelectSuggestion(suggestion);
                                         },

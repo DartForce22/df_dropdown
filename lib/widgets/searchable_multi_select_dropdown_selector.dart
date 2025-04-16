@@ -149,6 +149,7 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                                             text: suggestion.text,
                                             selected: true,
                                             onTap: () {
+                                              if (suggestion.disabled) return;
                                               provider.onSelectSuggestion(
                                                   suggestion);
                                             },
@@ -180,6 +181,7 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                                               suggestion.key,
                                             ),
                                         onTap: () {
+                                          if (suggestion.disabled) return;
                                           provider
                                               .onSelectSuggestion(suggestion);
                                         },
