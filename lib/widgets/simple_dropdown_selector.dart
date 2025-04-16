@@ -66,14 +66,13 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
                       children: [
                         ...dropdownData.map(
                           (suggestion) => _DropdownSuggestion(
-                            prefixWidget: suggestion.prefixWidget,
                             expanded: expanded,
                             selectorDecoration: selectorDecoration,
-                            text: suggestion.text,
                             selected: suggestion == selectedOption,
                             onTap: () {
                               onSelectSuggestion(suggestion);
                             },
+                            suggestion: suggestion,
                           ),
                         ),
                         if (selectorDecoration?.footerWidget != null)
@@ -111,22 +110,39 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
 /// - `text` (String): The text to be displayed for the suggestion.
 /// - `onTap` (VoidCallback): The callback function that is triggered when the
 ///   suggestion item is tapped.
-class _DropdownSuggestion extends StatelessWidget {
+class _DropdownSuggestion<T> extends StatelessWidget {
   const _DropdownSuggestion({
-    required this.prefixWidget,
-    required this.text,
     required this.onTap,
     required this.selectorDecoration,
     required this.expanded,
     required this.selected,
+    required this.suggestion,
   });
 
-  final Widget? prefixWidget;
-  final String text;
   final VoidCallback onTap;
   final SimpleSelectorDecoration? selectorDecoration;
   final bool expanded;
   final bool selected;
+  final DropDownModel<T> suggestion;
+
+  TextStyle? get optionTextStyle {
+    if (suggestion.disabled && selectorDecoration?.disabledTextStyle != null) {
+      return selectorDecoration!.disabledTextStyle;
+    } else if (selected && selectorDecoration?.optionTextStyle != null) {
+      return selectorDecoration!.optionTextStyle;
+    }
+
+    return null;
+  }
+
+  TextStyle? get suffixTextStyle {
+    if (suggestion.disabled &&
+        selectorDecoration?.disabledSuffixTextStyle != null) {
+      return selectorDecoration!.disabledSuffixTextStyle;
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +154,7 @@ class _DropdownSuggestion extends StatelessWidget {
       borderRadius:
           selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       child: InkWell(
-        onTap: onTap,
+        onTap: suggestion.disabled ? null : onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -154,21 +170,36 @@ class _DropdownSuggestion extends StatelessWidget {
               : selectorDecoration?.selectorWidth ?? 164,
           child: Row(
             children: [
-              if (prefixWidget != null) prefixWidget!,
+              if (suggestion.prefixWidget != null) suggestion.prefixWidget!,
               Expanded(
                 child: Text(
-                  text,
-                  style: selectorDecoration?.optionTextStyle ??
-                      textTheme.labelMedium,
+                  suggestion.text,
+                  style: optionTextStyle ?? textTheme.labelMedium,
                   textAlign: TextAlign.start,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              if (selectorDecoration?.selectedItemIcon != null && selected) ...[
+              if (selectorDecoration?.selectedItemIcon != null &&
+                  selected &&
+                  !suggestion.disabled) ...[
                 const SizedBox(
                   width: 4,
                 ),
                 selectorDecoration!.selectedItemIcon!,
+              ],
+              if (suggestion.disabled) ...[
+                const SizedBox(
+                  width: 4,
+                ),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Text(
+                    suggestion.disabledText ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: suffixTextStyle ?? textTheme.labelMedium,
+                  ),
+                ),
               ]
             ],
           ),
