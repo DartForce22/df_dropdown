@@ -15,6 +15,8 @@ class DropDownModel<T> {
     this.value,
     required this.text,
     this.prefixWidget,
+    this.disabled = false,
+    this.disabledText,
   });
 
   /// A unique identifier for the dropdown item.
@@ -28,6 +30,12 @@ class DropDownModel<T> {
 
   /// A widget that will be displayed before the text in the dropdown
   final Widget? prefixWidget;
+
+  /// A boolean indicating whether the dropdown item is disabled.
+  final bool disabled;
+
+  /// A string that will be displayed when the dropdown item is disabled.
+  final String? disabledText;
 
   /// Returns the [text] representation of the item.
   ///

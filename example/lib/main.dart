@@ -142,8 +142,13 @@ class MyApp extends StatelessWidget {
                             value: "1",
                             text: "New York City",
                           ),
-                          // DropDownModel<String>(
-                          //     key: "2", value: "2", text: "Los Angeles"),
+                          DropDownModel<String>(
+                            key: "2",
+                            value: "2",
+                            text: "Los Angeles",
+                            disabled: true,
+                            disabledText: "Sold out",
+                          ),
                           // DropDownModel<String>(
                           //     key: "3", value: "3", text: "Chicago"),
                           // DropDownModel<String>(

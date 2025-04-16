@@ -35,6 +35,14 @@ class SimpleSelectorDecoration {
   /// This defines the appearance of the text in each dropdown option.
   final TextStyle? optionTextStyle;
 
+  /// The text style for disabled options within the selector.
+  ///
+  /// This defines the appearance of the disabled text in each dropdown option.
+  final TextStyle? disabledTextStyle;
+
+  /// The text style for disabled option suffix.
+  final TextStyle? disabledSuffixTextStyle;
+
   ///This is applied only when the [DfDropdownWrapper] widget is used
   final double? selectorWidth;
 
@@ -85,5 +93,7 @@ class SimpleSelectorDecoration {
     this.noAvailableDataText,
     this.footerWidget,
     this.loadingIndicator,
+    this.disabledTextStyle,
+    this.disabledSuffixTextStyle,
   });
 }
