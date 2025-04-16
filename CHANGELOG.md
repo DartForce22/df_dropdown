@@ -93,3 +93,6 @@
 ## 1.2.4
 - Fixed reported issues when scrolling parent content
 
+## 1.2.5
+- Added option to disable selecting a suggestion
+
