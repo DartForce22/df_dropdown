@@ -43,6 +43,7 @@ class DropdownContainer<T extends BaseDropdownProvider>
 
   @override
   Widget build(BuildContext context) {
+    Offset? tapStartPosition;
     final textTheme = Theme.of(context).textTheme;
     return IgnorePointer(
       ignoring: disabled,
@@ -91,37 +92,43 @@ class DropdownContainer<T extends BaseDropdownProvider>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          if (onTapInside != null) onTapInside!();
+                      child: TapRegion(
+                        onTapOutside: (_) {
+                          if (onTapOutside != null &&
+                              provider.textFieldFocusNode.hasFocus) {
+                            onTapOutside!();
+                          }
                         },
-                        child: TapRegion(
-                          onTapOutside: (_) {
-                            if (onTapOutside != null &&
-                                provider.textFieldFocusNode.hasFocus) {
-                              onTapOutside!();
-                            }
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (labelText != null &&
-                                  provider.searchTextController.text.isNotEmpty)
-                                Flexible(
-                                  child: FittedBox(
-                                    child: Text(
-                                      labelText!,
-                                      style: decoration?.labelTextStyle ??
-                                          TextStyle(
-                                            color: Colors.grey.shade600,
-                                          ),
-                                    ),
+                        onTapInside: (event) {
+                          tapStartPosition = event.position;
+                        },
+                        onTapUpInside: (event) {
+                          if (onTapInside != null &&
+                              tapStartPosition != null &&
+                              (event.position - tapStartPosition!).distance <
+                                  10) {
+                            onTapInside!();
+                          }
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (labelText != null &&
+                                provider.searchTextController.text.isNotEmpty)
+                              Flexible(
+                                child: FittedBox(
+                                  child: Text(
+                                    labelText!,
+                                    style: decoration?.labelTextStyle ??
+                                        TextStyle(
+                                          color: Colors.grey.shade600,
+                                        ),
                                   ),
                                 ),
-                              if (child != null) child,
-                            ],
-                          ),
+                              ),
+                            if (child != null) child,
+                          ],
                         ),
                       ),
                     ),
