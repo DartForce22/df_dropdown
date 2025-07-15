@@ -96,3 +96,6 @@
 ## 1.2.5
 - Added option to disable selecting a suggestion
 
+## 1.2.6
+- Fixed searchable dropdown auto-suggestions expanding bug
+
