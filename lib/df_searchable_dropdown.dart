@@ -133,6 +133,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.disabled,
     required this.closeOnTapOutside,
   });
+
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
@@ -194,6 +195,24 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         );
       });
     }
+
+    selectorProvider.textFieldFocusNode.addListener(() {
+      if (selectorProvider.textFieldFocusNode.hasFocus &&
+          !selectorProvider.suggestionsExpanded) {
+        expandCloseSelector(context);
+      }
+    });
+  }
+
+  void expandCloseSelector(BuildContext context) {
+    context.read<SearchableDropdownProvider<T>>().toggleSuggestionsExpanded(
+          selectorWidget: widget.dropdownType == DropdownType.expandable
+              ? null
+              : ChangeNotifierProvider.value(
+                  value: context.read<SearchableDropdownProvider<T>>(),
+                  child: selectorWidget,
+                ),
+        );
   }
 
   @override
@@ -237,28 +256,13 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             labelText: widget.labelText,
             outlineBorderVisible: provider.suggestionsExpanded ||
                 provider.textFieldFocusNode.hasFocus,
-            onTapInside: () => provider.expandSuggestions(
-              selectorWidget: widget.dropdownType == DropdownType.expandable
-                  ? null
-                  : ChangeNotifierProvider.value(
-                      value: provider,
-                      child: selectorWidget,
-                    ),
-            ),
             onTapOutside: () {
               provider.onTapOutside(context);
             },
             suffixTapEnabled: false,
             suffixWidget: GestureDetector(
               onTap: () {
-                provider.toggleSuggestionsExpanded(
-                  selectorWidget: widget.dropdownType == DropdownType.expandable
-                      ? null
-                      : ChangeNotifierProvider.value(
-                          value: provider,
-                          child: selectorWidget,
-                        ),
-                );
+                expandCloseSelector(context);
               },
               child: SizedBox(
                 height: 48,
