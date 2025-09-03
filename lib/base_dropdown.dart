@@ -34,6 +34,8 @@ abstract class BaseDropdown<T> extends StatelessWidget {
     this.disabled = false,
     this.asyncInitData,
     this.closeOnTapOutside = true,
+    this.nestedInitData,
+    this.asyncNestedInitData,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
 
@@ -43,6 +45,9 @@ abstract class BaseDropdown<T> extends StatelessWidget {
 
   /// Initial list of dropdown options.
   final List<DropDownModel<T>> initData;
+
+  /// Initial list of dropdown options.
+  final List<DropDownNestedModel<T>>? nestedInitData;
 
   /// The currently selected dropdown value.
   final DropDownModel<T>? selectedValue;
@@ -73,6 +78,9 @@ abstract class BaseDropdown<T> extends StatelessWidget {
 
   /// Future that provides the initial list of dropdown options.
   final Future<List<DropDownModel<T>>>? asyncInitData;
+
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownNestedModel<T>>>? asyncNestedInitData;
 
   @override
   Widget build(BuildContext context) {
