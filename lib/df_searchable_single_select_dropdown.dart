@@ -27,6 +27,8 @@ class DfSearchableSingleSelectDropdown<T> extends BaseDropdown<T> {
     super.dropdownType = DropdownType.expandable,
     super.disabled = false,
     this.closeDropdownOnSelection = true,
+    super.nestedInitData,
+    super.asyncNestedInitData,
     super.asyncInitData,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
