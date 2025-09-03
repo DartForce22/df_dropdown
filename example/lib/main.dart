@@ -193,7 +193,31 @@ class MyApp extends StatelessWidget {
                             DropDownModel<int>(
                                 key: "key", text: "Some test option", value: 1),
                           ])
-                        ])
+                        ]),
+                        DropDownNestedModel(title: "TEST", children: [
+                          DropDownNestedModel(values: [
+                            DropDownModel<int>(
+                                key: "key", text: "Some test option", value: 1),
+                          ])
+                        ]),
+                        DropDownNestedModel(title: "TEST", children: [
+                          DropDownNestedModel(values: [
+                            DropDownModel<int>(
+                                key: "key", text: "Some test option", value: 1),
+                          ])
+                        ]),
+                        DropDownNestedModel(title: "TEST", children: [
+                          DropDownNestedModel(values: [
+                            DropDownModel<int>(
+                                key: "key", text: "Some test option", value: 1),
+                          ])
+                        ]),
+                        DropDownNestedModel(title: "TEST", children: [
+                          DropDownNestedModel(values: [
+                            DropDownModel<int>(
+                                key: "key", text: "Some test option", value: 1),
+                          ])
+                        ]),
                       ],
                       // selectedValue: DropDownModel<String>(
                       //     key: "3", value: "3", text: "Chicago"),

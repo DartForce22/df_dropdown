@@ -8,6 +8,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.maxHeight,
     super.initData,
     super.asyncNestedInitData,
+    super.nestedInitData,
     super.validator,
     required super.asyncInitData,
     required super.context,

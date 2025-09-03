@@ -1,3 +1,4 @@
+import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -12,6 +13,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectorMaxHeight,
     super.initData,
     super.validator,
+    super.nestedInitData,
     super.asyncNestedInitData,
     required super.asyncInitData,
     required this.closeDropdownOnSelection,
@@ -34,10 +36,19 @@ class SearchableSingleSelectDropdownProvider<T>
   double get dropdownHeight {
     double height = 0;
 
-    int dataLength = baseSearchResults.isNotEmpty ||
-            selectorTextEditingController.text.isNotEmpty
-        ? baseSearchResults.length
-        : initData.length;
+    int dataLength = 0;
+
+    if (nestedInitData.isEmpty) {
+      dataLength = baseSearchResults.isNotEmpty ||
+              selectorTextEditingController.text.isNotEmpty
+          ? baseSearchResults.length
+          : initData.length;
+    } else {
+      dataLength = baseSearchResults.isNotEmpty ||
+              selectorTextEditingController.text.isNotEmpty
+          ? baseSearchResults.length
+          : nestedInitData.length;
+    }
 
     if (suggestionsExpanded) {
       if (dataLength < 5) {
@@ -118,5 +129,9 @@ class SearchableSingleSelectDropdownProvider<T>
       return baseSearchResults;
     }
     return initData;
+  }
+
+  List<DropDownNestedModel<T>> get getNestedDropdownData {
+    return nestedInitData;
   }
 }

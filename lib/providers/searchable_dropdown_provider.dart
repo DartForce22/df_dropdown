@@ -12,6 +12,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.onSearch,
     this.selectorMaxHeight,
     super.asyncNestedInitData,
+    super.nestedInitData,
     super.initData,
     super.validator,
     required super.context,
