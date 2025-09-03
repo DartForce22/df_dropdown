@@ -50,6 +50,7 @@ class DfSearchableSingleSelectDropdown<T> extends BaseDropdown<T> {
         onOptionSelected: onOptionSelected,
         validator: validator,
         onSearch: onSearch,
+        asyncNestedInitData: asyncNestedInitData,
         selectorMaxHeight: selectorDecoration?.maxHeight,
         closeDropdownOnSelection: closeDropdownOnSelection,
         context: context,

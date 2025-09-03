@@ -9,6 +9,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
     this.onOptionSelected,
     this.onSearch,
     super.initData,
+    super.asyncNestedInitData,
     this.multiSelectValidator,
     this.selectorMaxHeight,
     this.displayResultsCount,

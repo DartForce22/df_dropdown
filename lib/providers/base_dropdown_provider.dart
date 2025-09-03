@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -18,6 +19,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     List<DropDownModel<T>> initData = const [],
     this.asyncInitData,
     this.validator,
+    required this.asyncNestedInitData,
     required this.context,
   }) {
     this.initData.addAll(initData);
@@ -75,6 +77,9 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   final List<DropDownModel<T>> baseSearchResults = [];
 
+  /// Initial list of dropdown options.
+  final List<DropDownNestedModel<T>> nestedInitData = [];
+
   Widget? _selectorWidget;
 
   /// Whether the suggestions list is expanded or collapsed.
@@ -86,11 +91,15 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Future that provides the initial list of dropdown options.
   final Future<List<DropDownModel<T>>>? asyncInitData;
 
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownNestedModel<T>>>? asyncNestedInitData;
+
   /// A controller to manage the search input text for filtering the dropdown.
   final TextEditingController searchTextController = TextEditingController();
 
   /// Stores any validation error that might occur.
   String? _validationError;
+
   String? get validationError => _validationError;
 
   /// FocusNode for managing the text field's focus state.
@@ -130,6 +139,12 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
       var res = await asyncInitData!;
       baseSearchResults.addAll(res);
       this.initData.addAll(res);
+      notifyListeners();
+    }
+    if (asyncNestedInitData != null) {
+      var res = await asyncNestedInitData!;
+      nestedInitData.addAll(res);
+      this.nestedInitData.addAll(res);
       notifyListeners();
     }
   }

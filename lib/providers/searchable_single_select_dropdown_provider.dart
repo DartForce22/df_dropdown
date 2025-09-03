@@ -12,6 +12,7 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectorMaxHeight,
     super.initData,
     super.validator,
+    super.asyncNestedInitData,
     required super.asyncInitData,
     required this.closeDropdownOnSelection,
     required super.context,
