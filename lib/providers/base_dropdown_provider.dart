@@ -17,12 +17,14 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// - [validator]: An optional validation function to validate the selected dropdown item.
   BaseDropdownProvider({
     List<DropDownModel<T>> initData = const [],
+    List<DropDownNestedModel<T>> nestedInitData = const [],
     this.asyncInitData,
     this.validator,
     required this.asyncNestedInitData,
     required this.context,
   }) {
     this.initData.addAll(initData);
+    this.nestedInitData.addAll(nestedInitData);
     asyncInitDataValue = getAsyncInitData();
   }
 

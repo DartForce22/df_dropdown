@@ -1,3 +1,4 @@
+import 'package:df_dropdown/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -125,25 +126,43 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Column(
-                            children: provider.suggestionsExpanded
-                                ? provider.getDropdownData.map(
-                                    (suggestion) {
-                                      return SingleSelect(
-                                        selectorDecoration: selectorDecoration,
-                                        text: suggestion.text,
-                                        selected: suggestion ==
-                                            provider.selectedValue,
-                                        onTap: () {
-                                          if (suggestion.disabled) return;
-                                          provider
-                                              .onSelectSuggestion(suggestion);
-                                        },
-                                      );
-                                    },
-                                  ).toList()
-                                : [],
-                          )
+                          if (provider.getNestedDropdownData.isNotEmpty)
+                            Container(
+                              width: double.infinity,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: provider.getNestedDropdownData
+                                    .map(
+                                      (element) => NestedListWidget(
+                                        data: element,
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          if (provider.getNestedDropdownData.isEmpty)
+                            Column(
+                              children: provider.suggestionsExpanded
+                                  ? provider.getDropdownData.map(
+                                      (suggestion) {
+                                        return SingleSelect(
+                                          selectorDecoration:
+                                              selectorDecoration,
+                                          text: suggestion.text,
+                                          selected: suggestion ==
+                                              provider.selectedValue,
+                                          onTap: () {
+                                            if (suggestion.disabled) return;
+                                            provider
+                                                .onSelectSuggestion(suggestion);
+                                          },
+                                        );
+                                      },
+                                    ).toList()
+                                  : [],
+                            )
                         ],
                       ),
                     ),
@@ -155,5 +174,38 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class NestedListWidget extends StatelessWidget {
+  const NestedListWidget({super.key, required this.data});
+
+  final DropDownNestedModel data;
+
+  @override
+  Widget build(BuildContext context) {
+    if (data.title != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(data.title!),
+        ],
+      );
+    }
+    if (data.children != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [Text(data.title!)],
+      );
+    }
+
+    if (data.values != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [],
+      );
+    }
+
+    return SizedBox.shrink();
   }
 }
