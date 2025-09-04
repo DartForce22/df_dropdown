@@ -146,24 +146,6 @@ class MyApp extends StatelessWidget {
                             disabled: true,
                             disabledText: "Sold out",
                           ),
-                          // DropDownModel<String>(
-                          //     key: "3", value: "3", text: "Chicago"),
-                          // DropDownModel<String>(
-                          //     key: "4", value: "4", text: "Houston"),
-                          // DropDownModel<String>(
-                          //     key: "5", value: "5", text: "Phoenix"),
-                          // DropDownModel<String>(
-                          //     key: "3", value: "3", text: "Philadelphia"),
-                          // DropDownModel<String>(
-                          //     key: "4", value: "4", text: "San Antonio"),
-                          // DropDownModel<String>(
-                          //     key: "5", value: "5", text: "San Diego"),
-                          // DropDownModel<String>(
-                          //     key: "3", value: "3", text: "Dallas"),
-                          // DropDownModel<String>(
-                          //     key: "4", value: "4", text: "Austin"),
-                          // DropDownModel<String>(
-                          //     key: "5", value: "5", text: "Texas"),
                         ];
                       }(),
                     ),
@@ -179,6 +161,7 @@ class MyApp extends StatelessWidget {
                       labelText: "Single Select",
                       selectorDecoration: const SingleSelectorDecoration(
                         selectedItemIcon: Icon(Icons.circle),
+                        searchTextStyle: TextStyle(fontSize: 14)
                       ),
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value?.value}");

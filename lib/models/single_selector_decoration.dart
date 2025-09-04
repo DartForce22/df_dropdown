@@ -49,6 +49,7 @@ class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
     super.clearSelectionTextStyle,
     super.showSearchIcon = true,
     super.selectedItemColor,
+    super.nestedOptionTitleTextStyle,
     this.selectedItemIconVisible = true,
     this.selectedItemIcon,
     this.loadingIndicator,

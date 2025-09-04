@@ -131,6 +131,12 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                                     .map(
                                       (element) => NestedListWidget(
                                         data: element,
+                                        selectorDecoration: selectorDecoration,
+                                        selectedValue: provider.selectedValue,
+                                        onSelectSuggestion: (suggestion) {
+                                          if (suggestion.disabled) return;
+                                          provider.onSelectSuggestion(suggestion);
+                                        },
                                       ),
                                     )
                                     .toList(),
@@ -168,37 +174,61 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
   }
 }
 
-class NestedListWidget extends StatelessWidget {
+class NestedListWidget<T> extends StatelessWidget {
   const NestedListWidget({
     super.key,
     required this.data,
+    required this.selectorDecoration,
+    required this.onSelectSuggestion,
+    required this.selectedValue,
     this.level = 0,
   });
 
-  final DropDownNestedModel data;
+  final DropDownNestedModel<T> data;
   final int level;
+  final SingleSelectorDecoration? selectorDecoration;
+  final void Function(DropDownModel<T>) onSelectSuggestion;
+  final DropDownModel<T>? selectedValue;
 
   @override
   Widget build(BuildContext context) {
+    String getTitle() {
+      if (level == 0) {
+        return (data.title ?? "").toUpperCase();
+      }
+      return data.title ?? "";
+    }
+
     if (data.title != null) {
       return Padding(
         padding: EdgeInsets.only(left: level * 2, bottom: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(data.title!),
+            Text(
+              getTitle(),
+              style: selectorDecoration?.nestedOptionTitleTextStyle,
+            ),
+            const SizedBox(
+              height: 8,
+            ),
             if (data.children?.isNotEmpty == true)
               ...data.children!.map(
                 (element) => NestedListWidget(
                   data: element,
                   level: level + 1,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
                 ),
               ),
             if (data.values?.isNotEmpty == true)
               ...data.values!.map(
-                (value) => Padding(
-                  padding: EdgeInsets.only(left: (level + 1) * 2),
-                  child: Text(value.text),
+                (value) => NestedSelectableOption<T>(
+                  option: value,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
                 ),
               ),
           ],
@@ -211,10 +241,21 @@ class NestedListWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(data.title!),
+            Text(
+              getTitle(),
+              style: selectorDecoration?.nestedOptionTitleTextStyle,
+            ),
+            const SizedBox(
+              height: 4,
+            ),
             if (data.children?.isNotEmpty == true)
               ...data.children!.map(
-                (element) => NestedListWidget(data: element),
+                (element) => NestedListWidget<T>(
+                  data: element,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
+                ),
               ),
           ],
         ),
@@ -226,11 +267,49 @@ class NestedListWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: level * 2, bottom: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: data.values!.map((el) => Text(el.text)).toList(),
+          children: data.values!
+              .map(
+                (el) => NestedSelectableOption<T>(
+                  option: el,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
+                ),
+              )
+              .toList(),
         ),
       );
     }
 
     return const SizedBox.shrink();
+  }
+}
+
+class NestedSelectableOption<T> extends StatelessWidget {
+  const NestedSelectableOption({
+    required this.option,
+    required this.selectorDecoration,
+    required this.onSelectSuggestion,
+    required this.selectedValue,
+    super.key,
+  });
+
+  final DropDownModel<T> option;
+  final SingleSelectorDecoration? selectorDecoration;
+  final void Function(DropDownModel<T>) onSelectSuggestion;
+  final DropDownModel<T>? selectedValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleSelect(
+      selectorDecoration: selectorDecoration,
+      text: option.text,
+      verticalPadding: 4,
+      selected: selectedValue == option,
+      onTap: () {
+        if (option.disabled) return;
+        onSelectSuggestion(option);
+      },
+    );
   }
 }
