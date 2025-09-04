@@ -170,7 +170,7 @@ class MyApp extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
-                    DfSearchableSingleSelectDropdown<String>(
+                    DfSearchableSingleSelectDropdown<int>(
                       validator: (obj) {
                         return "This is a really long validation error, an this is how it will be displayed...";
                       },

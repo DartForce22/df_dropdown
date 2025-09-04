@@ -8,6 +8,6 @@ class DropDownNestedModel<T> {
   });
 
   final String? title;
-  final List<DropDownNestedModel>? children;
-  final List<DropDownModel>? values;
+  final List<DropDownNestedModel<T>>? children;
+  final List<DropDownModel<T>>? values;
 }

@@ -45,7 +45,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     _selectorWidget = selectorWidget;
     // Find the position of the child widget using the GlobalKey
     final RenderBox renderBox =
-        dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    dropdownKey.currentContext!.findRenderObject() as RenderBox;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size size = renderBox.size;
 
@@ -53,18 +53,22 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
     // Create an OverlayEntry and position it based on the child's position
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        // Position the overlay under the child widget
-        left: expanded ? offset.dx : null,
-        right: !expanded
-            ? MediaQuery.of(context).size.width - offset.dx - size.width
-            : null,
-        top: offset.dy + size.height + topOffset,
-        child: SizedBox(
-          width: expanded ? size.width : null,
-          child: selectorWidget,
-        ),
-      ),
+      builder: (context) =>
+          Positioned(
+            // Position the overlay under the child widget
+            left: expanded ? offset.dx : null,
+            right: !expanded
+                ? MediaQuery
+                .of(context)
+                .size
+                .width - offset.dx - size.width
+                : null,
+            top: offset.dy + size.height + topOffset,
+            child: SizedBox(
+              width: expanded ? size.width : null,
+              child: selectorWidget,
+            ),
+          ),
     );
 
     // Insert the OverlayEntry into the Overlay
@@ -121,8 +125,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Toggles the state of the suggestions list between expanded and collapsed.
   ///
   /// Expands the dropdown if it's collapsed, and collapses it if it's already expanded.
-  void toggleSuggestionsExpanded(
-      {Widget? selectorWidget, bool expanded = true}) {
+  void toggleSuggestionsExpanded({Widget? selectorWidget, bool expanded = true}) {
     suggestionsExpanded = !suggestionsExpanded;
     if (suggestionsExpanded) {
       expandSuggestions(
@@ -147,8 +150,22 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
       var res = await asyncNestedInitData!;
       nestedInitData.addAll(res);
       this.nestedInitData.addAll(res);
+      this.initData.addAll(nestedInitDataToFlatInitData(nestedInitData));
       notifyListeners();
     }
+  }
+
+  List<DropDownModel<T>> nestedInitDataToFlatInitData(List<DropDownNestedModel<T>> nestedDataList) {
+    List<DropDownModel<T>> flattenData = [];
+    for (DropDownNestedModel<T> nestedData in nestedDataList) {
+      if (nestedData.children?.isNotEmpty == true) {
+        flattenData.addAll(nestedInitDataToFlatInitData(nestedData.children as List<DropDownNestedModel<T>>));
+      }
+      if (nestedData.values != null) {
+        flattenData.addAll(nestedData.values as List<DropDownModel<T>>);
+      }
+    }
+    return flattenData;
   }
 
   /// Expands the suggestions list in the dropdown.
@@ -241,7 +258,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     if ((this.suggestionsExpanded || _suggestionClosedOnMove) &&
         dropdownKey.currentContext != null) {
       final RenderBox renderBox =
-          dropdownKey.currentContext!.findRenderObject() as RenderBox;
+      dropdownKey.currentContext!.findRenderObject() as RenderBox;
       final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
 
       _previousOffset ??= currentOffset;

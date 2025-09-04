@@ -1,7 +1,6 @@
 import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
-import '/models/drop_down_model.dart';
 import '/providers/base_dropdown_provider.dart';
 
 class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
@@ -18,6 +17,9 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
     required this.closeDropdownOnSelection,
     required super.context,
   }) {
+    if (nestedInitData.isNotEmpty) {
+      initData.addAll(nestedInitDataToFlatInitData(nestedInitData));
+    }
     if (selectedValue != null) {
       searchTextController.text = selectedValue!.text;
     }
@@ -93,13 +95,15 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
     } else {
       baseSearchResults.clear();
 
-      baseSearchResults.addAll(
-        initData.where(
-          (el) => el.text.toLowerCase().startsWith(
-                text.toLowerCase(),
-              ),
-        ),
-      );
+      if(text.isNotEmpty) {
+        baseSearchResults.addAll(
+          initData.where(
+            (el) => el.text.toLowerCase().startsWith(
+                  text.toLowerCase(),
+                ),
+          ),
+        );
+      }
       super.onInputChanged(text);
     }
   }
@@ -111,6 +115,7 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
     if (onOptionSelected != null) {
       onOptionSelected!(null);
     }
+    baseSearchResults.clear();
     notifyListeners();
   }
 
