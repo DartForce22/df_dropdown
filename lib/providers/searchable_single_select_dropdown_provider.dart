@@ -1,10 +1,9 @@
+import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
-import '/models/drop_down_model.dart';
 import '/providers/base_dropdown_provider.dart';
 
-class SearchableSingleSelectDropdownProvider<T>
-    extends BaseDropdownProvider<T> {
+class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   SearchableSingleSelectDropdownProvider({
     this.selectedValue,
     this.onOptionSelected,
@@ -12,10 +11,15 @@ class SearchableSingleSelectDropdownProvider<T>
     this.selectorMaxHeight,
     super.initData,
     super.validator,
+    super.nestedInitData,
+    super.asyncNestedInitData,
     required super.asyncInitData,
     required this.closeDropdownOnSelection,
     required super.context,
   }) {
+    if (nestedInitData.isNotEmpty) {
+      initData.addAll(nestedInitDataToFlatInitData(nestedInitData));
+    }
     if (selectedValue != null) {
       searchTextController.text = selectedValue!.text;
     }
@@ -24,8 +28,7 @@ class SearchableSingleSelectDropdownProvider<T>
   DropDownModel<T>? selectedValue;
   final Function(DropDownModel<T>?)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
-  final TextEditingController selectorTextEditingController =
-      TextEditingController();
+  final TextEditingController selectorTextEditingController = TextEditingController();
   final double? selectorMaxHeight;
   final bool closeDropdownOnSelection;
 
@@ -33,10 +36,17 @@ class SearchableSingleSelectDropdownProvider<T>
   double get dropdownHeight {
     double height = 0;
 
-    int dataLength = baseSearchResults.isNotEmpty ||
-            selectorTextEditingController.text.isNotEmpty
-        ? baseSearchResults.length
-        : initData.length;
+    int dataLength = 0;
+
+    if (nestedInitData.isEmpty && (baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty)) {
+      dataLength = baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty
+          ? baseSearchResults.length
+          : initData.length;
+    } else if (baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty) {
+      dataLength = baseSearchResults.length;
+    } else if (suggestionsExpanded) {
+      return 200;
+    }
 
     if (suggestionsExpanded) {
       if (dataLength < 5) {
@@ -85,13 +95,15 @@ class SearchableSingleSelectDropdownProvider<T>
     } else {
       baseSearchResults.clear();
 
-      baseSearchResults.addAll(
-        initData.where(
-          (el) => el.text.toLowerCase().startsWith(
-                text.toLowerCase(),
-              ),
-        ),
-      );
+      if(text.isNotEmpty) {
+        baseSearchResults.addAll(
+          initData.where(
+            (el) => el.text.toLowerCase().startsWith(
+                  text.toLowerCase(),
+                ),
+          ),
+        );
+      }
       super.onInputChanged(text);
     }
   }
@@ -103,6 +115,7 @@ class SearchableSingleSelectDropdownProvider<T>
     if (onOptionSelected != null) {
       onOptionSelected!(null);
     }
+    baseSearchResults.clear();
     notifyListeners();
   }
 
@@ -112,10 +125,16 @@ class SearchableSingleSelectDropdownProvider<T>
   }
 
   List<DropDownModel<T>> get getDropdownData {
-    if (selectorTextEditingController.text.isNotEmpty ||
-        baseSearchResults.isNotEmpty) {
+    if (selectorTextEditingController.text.isNotEmpty || baseSearchResults.isNotEmpty) {
       return baseSearchResults;
     }
     return initData;
+  }
+
+  List<DropDownNestedModel<T>> get getNestedDropdownData {
+    if (selectorTextEditingController.text.isNotEmpty || baseSearchResults.isNotEmpty) {
+      return [];
+    }
+    return nestedInitData;
   }
 }

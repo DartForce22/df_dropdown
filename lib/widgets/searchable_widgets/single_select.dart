@@ -8,12 +8,14 @@ class SingleSelect extends StatelessWidget {
     required this.onTap,
     required this.selected,
     required this.selectorDecoration,
+    this.verticalPadding,
   });
 
   final String text;
   final VoidCallback onTap;
   final bool selected;
   final SingleSelectorDecoration? selectorDecoration;
+  final double? verticalPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +26,9 @@ class SingleSelect extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: 16,
-            vertical: 10,
+            vertical: verticalPadding??10,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),

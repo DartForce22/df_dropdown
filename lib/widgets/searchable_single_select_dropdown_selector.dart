@@ -1,7 +1,7 @@
+import 'package:df_dropdown/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/models/single_selector_decoration.dart';
 import '/widgets/searchable_widgets/single_select.dart';
 import '../providers/searchable_single_select_dropdown_provider.dart';
 
@@ -34,13 +34,11 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
     );
     return Material(
       clipBehavior: Clip.hardEdge,
-      borderRadius:
-          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+      borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       elevation: selectorDecoration?.elevation ?? 4,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius:
-              selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+          borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
           color: selectorDecoration?.selectorColor ?? Colors.white,
         ),
         child: FutureBuilder(
@@ -112,38 +110,56 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                                 InkWell(
                                   onTap: provider.clearSelection,
                                   child: Text(
-                                    selectorDecoration?.clearSelectionText ??
-                                        "Clear selection",
-                                    style:
-                                        selectorDecoration?.searchTextStyle ??
-                                            TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.teal.shade400,
-                                            ),
+                                    selectorDecoration?.clearSelectionText ?? "Clear selection",
+                                    style: selectorDecoration?.clearSelectionTextStyle ??
+                                        TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.teal.shade400,
+                                        ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Column(
-                            children: provider.suggestionsExpanded
-                                ? provider.getDropdownData.map(
-                                    (suggestion) {
-                                      return SingleSelect(
+                          if (provider.getNestedDropdownData.isNotEmpty)
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: provider.getNestedDropdownData
+                                    .map(
+                                      (element) => NestedListWidget(
+                                        data: element,
                                         selectorDecoration: selectorDecoration,
-                                        text: suggestion.text,
-                                        selected: suggestion ==
-                                            provider.selectedValue,
-                                        onTap: () {
+                                        selectedValue: provider.selectedValue,
+                                        onSelectSuggestion: (suggestion) {
                                           if (suggestion.disabled) return;
-                                          provider
-                                              .onSelectSuggestion(suggestion);
+                                          provider.onSelectSuggestion(suggestion);
                                         },
-                                      );
-                                    },
-                                  ).toList()
-                                : [],
-                          )
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          if (provider.getNestedDropdownData.isEmpty)
+                            Column(
+                              children: provider.suggestionsExpanded
+                                  ? provider.getDropdownData.map(
+                                      (suggestion) {
+                                        return SingleSelect(
+                                          selectorDecoration: selectorDecoration,
+                                          text: suggestion.text,
+                                          selected: suggestion == provider.selectedValue,
+                                          onTap: () {
+                                            if (suggestion.disabled) return;
+                                            provider.onSelectSuggestion(suggestion);
+                                          },
+                                        );
+                                      },
+                                    ).toList()
+                                  : [],
+                            )
                         ],
                       ),
                     ),
@@ -154,6 +170,146 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class NestedListWidget<T> extends StatelessWidget {
+  const NestedListWidget({
+    super.key,
+    required this.data,
+    required this.selectorDecoration,
+    required this.onSelectSuggestion,
+    required this.selectedValue,
+    this.level = 0,
+  });
+
+  final DropDownNestedModel<T> data;
+  final int level;
+  final SingleSelectorDecoration? selectorDecoration;
+  final void Function(DropDownModel<T>) onSelectSuggestion;
+  final DropDownModel<T>? selectedValue;
+
+  @override
+  Widget build(BuildContext context) {
+    String getTitle() {
+      if (level == 0) {
+        return (data.title ?? "").toUpperCase();
+      }
+      return data.title ?? "";
+    }
+
+    if (data.title != null) {
+      return Padding(
+        padding: EdgeInsets.only(left: level * 2, bottom: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              getTitle(),
+              style: selectorDecoration?.nestedOptionTitleTextStyle,
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            if (data.children?.isNotEmpty == true)
+              ...data.children!.map(
+                (element) => NestedListWidget(
+                  data: element,
+                  level: level + 1,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
+                ),
+              ),
+            if (data.values?.isNotEmpty == true)
+              ...data.values!.map(
+                (value) => NestedSelectableOption<T>(
+                  option: value,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
+                ),
+              ),
+          ],
+        ),
+      );
+    }
+    if (data.children != null) {
+      return Padding(
+        padding: EdgeInsets.only(left: level * 2, bottom: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              getTitle(),
+              style: selectorDecoration?.nestedOptionTitleTextStyle,
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            if (data.children?.isNotEmpty == true)
+              ...data.children!.map(
+                (element) => NestedListWidget<T>(
+                  data: element,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
+                ),
+              ),
+          ],
+        ),
+      );
+    }
+
+    if (data.values != null) {
+      return Padding(
+        padding: EdgeInsets.only(left: level * 2, bottom: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: data.values!
+              .map(
+                (el) => NestedSelectableOption<T>(
+                  option: el,
+                  selectorDecoration: selectorDecoration,
+                  onSelectSuggestion: onSelectSuggestion,
+                  selectedValue: selectedValue,
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
+
+    return const SizedBox.shrink();
+  }
+}
+
+class NestedSelectableOption<T> extends StatelessWidget {
+  const NestedSelectableOption({
+    required this.option,
+    required this.selectorDecoration,
+    required this.onSelectSuggestion,
+    required this.selectedValue,
+    super.key,
+  });
+
+  final DropDownModel<T> option;
+  final SingleSelectorDecoration? selectorDecoration;
+  final void Function(DropDownModel<T>) onSelectSuggestion;
+  final DropDownModel<T>? selectedValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleSelect(
+      selectorDecoration: selectorDecoration,
+      text: option.text,
+      verticalPadding: 4,
+      selected: selectedValue == option,
+      onTap: () {
+        if (option.disabled) return;
+        onSelectSuggestion(option);
+      },
     );
   }
 }

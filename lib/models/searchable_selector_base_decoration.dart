@@ -36,6 +36,11 @@ class SearchableSelectorBaseDecoration {
   /// This style defines how the text of the dropdown items will appear.
   final TextStyle? optionTextStyle;
 
+  /// The text style of each nested option title
+  ///
+  /// This style defines how the title of the dropdown items will appear.
+  final TextStyle nestedOptionTitleTextStyle;
+
   /// A custom icon for the search field in the multi-selector.
   ///
   /// This icon appears in the search field when the user wants to filter options.
@@ -96,5 +101,9 @@ class SearchableSelectorBaseDecoration {
     this.clearSelectionTextStyle,
     this.selectedItemColor,
     this.showSearchIcon = true,
+    this.nestedOptionTitleTextStyle = const TextStyle(
+      fontSize: 12,
+      color: Color(0xFF868C98),
+    ),
   });
 }

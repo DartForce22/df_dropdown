@@ -99,3 +99,7 @@
 ## 1.2.6
 - Fixed searchable dropdown auto-suggestions expanding bug
 
+## 1.2.7
+- Fixed reported clear text styling issue
+- Introduced nested dropdown options to Searchable Single Select dropdown variation
+

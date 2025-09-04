@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -16,11 +17,14 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// - [validator]: An optional validation function to validate the selected dropdown item.
   BaseDropdownProvider({
     List<DropDownModel<T>> initData = const [],
+    List<DropDownNestedModel<T>> nestedInitData = const [],
     this.asyncInitData,
     this.validator,
+    required this.asyncNestedInitData,
     required this.context,
   }) {
     this.initData.addAll(initData);
+    this.nestedInitData.addAll(nestedInitData);
     asyncInitDataValue = getAsyncInitData();
   }
 
@@ -41,7 +45,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     _selectorWidget = selectorWidget;
     // Find the position of the child widget using the GlobalKey
     final RenderBox renderBox =
-        dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    dropdownKey.currentContext!.findRenderObject() as RenderBox;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size size = renderBox.size;
 
@@ -49,18 +53,22 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
     // Create an OverlayEntry and position it based on the child's position
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        // Position the overlay under the child widget
-        left: expanded ? offset.dx : null,
-        right: !expanded
-            ? MediaQuery.of(context).size.width - offset.dx - size.width
-            : null,
-        top: offset.dy + size.height + topOffset,
-        child: SizedBox(
-          width: expanded ? size.width : null,
-          child: selectorWidget,
-        ),
-      ),
+      builder: (context) =>
+          Positioned(
+            // Position the overlay under the child widget
+            left: expanded ? offset.dx : null,
+            right: !expanded
+                ? MediaQuery
+                .of(context)
+                .size
+                .width - offset.dx - size.width
+                : null,
+            top: offset.dy + size.height + topOffset,
+            child: SizedBox(
+              width: expanded ? size.width : null,
+              child: selectorWidget,
+            ),
+          ),
     );
 
     // Insert the OverlayEntry into the Overlay
@@ -75,6 +83,9 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
   final List<DropDownModel<T>> baseSearchResults = [];
 
+  /// Initial list of dropdown options.
+  final List<DropDownNestedModel<T>> nestedInitData = [];
+
   Widget? _selectorWidget;
 
   /// Whether the suggestions list is expanded or collapsed.
@@ -86,11 +97,15 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Future that provides the initial list of dropdown options.
   final Future<List<DropDownModel<T>>>? asyncInitData;
 
+  /// Future that provides the initial list of dropdown options.
+  final Future<List<DropDownNestedModel<T>>>? asyncNestedInitData;
+
   /// A controller to manage the search input text for filtering the dropdown.
   final TextEditingController searchTextController = TextEditingController();
 
   /// Stores any validation error that might occur.
   String? _validationError;
+
   String? get validationError => _validationError;
 
   /// FocusNode for managing the text field's focus state.
@@ -110,8 +125,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
   /// Toggles the state of the suggestions list between expanded and collapsed.
   ///
   /// Expands the dropdown if it's collapsed, and collapses it if it's already expanded.
-  void toggleSuggestionsExpanded(
-      {Widget? selectorWidget, bool expanded = true}) {
+  void toggleSuggestionsExpanded({Widget? selectorWidget, bool expanded = true}) {
     suggestionsExpanded = !suggestionsExpanded;
     if (suggestionsExpanded) {
       expandSuggestions(
@@ -132,6 +146,26 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
       this.initData.addAll(res);
       notifyListeners();
     }
+    if (asyncNestedInitData != null) {
+      var res = await asyncNestedInitData!;
+      nestedInitData.addAll(res);
+      this.nestedInitData.addAll(res);
+      this.initData.addAll(nestedInitDataToFlatInitData(nestedInitData));
+      notifyListeners();
+    }
+  }
+
+  List<DropDownModel<T>> nestedInitDataToFlatInitData(List<DropDownNestedModel<T>> nestedDataList) {
+    List<DropDownModel<T>> flattenData = [];
+    for (DropDownNestedModel<T> nestedData in nestedDataList) {
+      if (nestedData.children?.isNotEmpty == true) {
+        flattenData.addAll(nestedInitDataToFlatInitData(nestedData.children as List<DropDownNestedModel<T>>));
+      }
+      if (nestedData.values != null) {
+        flattenData.addAll(nestedData.values as List<DropDownModel<T>>);
+      }
+    }
+    return flattenData;
   }
 
   /// Expands the suggestions list in the dropdown.
@@ -224,7 +258,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     if ((this.suggestionsExpanded || _suggestionClosedOnMove) &&
         dropdownKey.currentContext != null) {
       final RenderBox renderBox =
-          dropdownKey.currentContext!.findRenderObject() as RenderBox;
+      dropdownKey.currentContext!.findRenderObject() as RenderBox;
       final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
 
       _previousOffset ??= currentOffset;
