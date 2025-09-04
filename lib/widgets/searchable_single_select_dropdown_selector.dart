@@ -116,7 +116,7 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                                     selectorDecoration?.clearSelectionText ??
                                         "Clear selection",
                                     style:
-                                        selectorDecoration?.searchTextStyle ??
+                                        selectorDecoration?.clearSelectionTextStyle ??
                                             TextStyle(
                                               fontWeight: FontWeight.w500,
                                               color: Colors.teal.shade400,
