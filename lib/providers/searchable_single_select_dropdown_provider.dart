@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import '/models/drop_down_model.dart';
 import '/providers/base_dropdown_provider.dart';
 
-class SearchableSingleSelectDropdownProvider<T>
-    extends BaseDropdownProvider<T> {
+class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   SearchableSingleSelectDropdownProvider({
     this.selectedValue,
     this.onOptionSelected,
@@ -27,8 +26,7 @@ class SearchableSingleSelectDropdownProvider<T>
   DropDownModel<T>? selectedValue;
   final Function(DropDownModel<T>?)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
-  final TextEditingController selectorTextEditingController =
-      TextEditingController();
+  final TextEditingController selectorTextEditingController = TextEditingController();
   final double? selectorMaxHeight;
   final bool closeDropdownOnSelection;
 
@@ -38,16 +36,14 @@ class SearchableSingleSelectDropdownProvider<T>
 
     int dataLength = 0;
 
-    if (nestedInitData.isEmpty) {
-      dataLength = baseSearchResults.isNotEmpty ||
-              selectorTextEditingController.text.isNotEmpty
+    if (nestedInitData.isEmpty && (baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty)) {
+      dataLength = baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty
           ? baseSearchResults.length
           : initData.length;
-    } else {
-      dataLength = baseSearchResults.isNotEmpty ||
-              selectorTextEditingController.text.isNotEmpty
-          ? baseSearchResults.length
-          : nestedInitData.length;
+    } else if (baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty) {
+      dataLength = baseSearchResults.length;
+    } else if (suggestionsExpanded) {
+      return 200;
     }
 
     if (suggestionsExpanded) {
@@ -124,14 +120,16 @@ class SearchableSingleSelectDropdownProvider<T>
   }
 
   List<DropDownModel<T>> get getDropdownData {
-    if (selectorTextEditingController.text.isNotEmpty ||
-        baseSearchResults.isNotEmpty) {
+    if (selectorTextEditingController.text.isNotEmpty || baseSearchResults.isNotEmpty) {
       return baseSearchResults;
     }
     return initData;
   }
 
   List<DropDownNestedModel<T>> get getNestedDropdownData {
+    if (selectorTextEditingController.text.isNotEmpty || baseSearchResults.isNotEmpty) {
+      return [];
+    }
     return nestedInitData;
   }
 }
