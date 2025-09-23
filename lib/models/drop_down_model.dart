@@ -14,6 +14,7 @@ class DropDownModel<T> {
     required this.key,
     this.value,
     required this.text,
+    this.subtext,
     this.prefixWidget,
     this.disabled = false,
     this.disabledText,
@@ -27,6 +28,9 @@ class DropDownModel<T> {
 
   /// The text that is displayed in the dropdown for this item.
   final String text;
+
+  /// The optional text that is displayed in the dropdown next to the main item text
+  final String? subtext;
 
   /// A widget that will be displayed before the text in the dropdown
   final Widget? prefixWidget;

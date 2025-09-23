@@ -150,6 +150,7 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                                         return SingleSelect(
                                           selectorDecoration: selectorDecoration,
                                           text: suggestion.text,
+                                          subtext: suggestion.subtext,
                                           selected: suggestion == provider.selectedValue,
                                           onTap: () {
                                             if (suggestion.disabled) return;
@@ -304,6 +305,7 @@ class NestedSelectableOption<T> extends StatelessWidget {
     return SingleSelect(
       selectorDecoration: selectorDecoration,
       text: option.text,
+      subtext: option.subtext,
       verticalPadding: 4,
       selected: selectedValue == option,
       onTap: () {

@@ -36,6 +36,11 @@ class SearchableSelectorBaseDecoration {
   /// This style defines how the text of the dropdown items will appear.
   final TextStyle? optionTextStyle;
 
+  /// The subtext style for the options within the selector.
+  ///
+  /// This defines the appearance of the subtext in each dropdown option.
+  final TextStyle? optionSubtextStyle;
+
   /// The text style of each nested option title
   ///
   /// This style defines how the title of the dropdown items will appear.
@@ -95,6 +100,7 @@ class SearchableSelectorBaseDecoration {
     this.itemColor,
     this.dividerColor,
     this.optionTextStyle,
+    this.optionSubtextStyle,
     this.searchIcon,
     this.searchTextStyle,
     this.clearSelectionText,
