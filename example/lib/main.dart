@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
                       validator: (obj) {
                         return obj == null ? "No selected option..." : null;
                       },
-                      dropdownType: DropdownType.overlay,
+                      dropdownType: DropdownType.expandable,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
@@ -90,6 +90,7 @@ class MyApp extends StatelessWidget {
                       selectorDecoration: SimpleSelectorDecoration(
                         selectorColor: Colors.amber.shade300,
                         borderRadius: BorderRadius.circular(2),
+                        optionSubtextStyle: TextStyle(color: Colors.red),
                       ),
                       hintText: "Select an option...",
                       labelText: "Simple Dropdown",
@@ -97,12 +98,13 @@ class MyApp extends StatelessWidget {
                         log("SELECTED VALUE ${value?.value}");
                       },
                       initData: [
-                        DropDownModel<String>(key: "1", value: "1", text: "New York City"),
+                        DropDownModel<String>(
+                            key: "1",
+                            value: "1",
+                            text: "New York City",
+                            subtext: "This is a really long subtext 1 for testing overflow"),
                         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 8,
                     ),
                     DfSearchableDropdown<String>(
                       validator: (obj) {
@@ -117,6 +119,7 @@ class MyApp extends StatelessWidget {
                         log("SELECTED VALUE IS FOOTER ${value?.key == footerTapEvent}");
                       },
                       selectorDecoration: SimpleSelectorDecoration(
+                        optionSubtextStyle: TextStyle(color: Colors.red),
                         footerWidget: Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
@@ -138,6 +141,7 @@ class MyApp extends StatelessWidget {
                             key: "1",
                             value: "1",
                             text: "New York City",
+                            subtext: "Subtext 2",
                           ),
                           DropDownModel<String>(
                             key: "2",
@@ -160,9 +164,9 @@ class MyApp extends StatelessWidget {
                       hintText: "Select...",
                       labelText: "Single Select",
                       selectorDecoration: const SingleSelectorDecoration(
-                        selectedItemIcon: Icon(Icons.circle),
-                        searchTextStyle: TextStyle(fontSize: 14)
-                      ),
+                          optionSubtextStyle: TextStyle(color: Colors.red),
+                          selectedItemIcon: Icon(Icons.circle),
+                          searchTextStyle: TextStyle(fontSize: 14)),
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value?.value}");
                       },
@@ -176,7 +180,7 @@ class MyApp extends StatelessWidget {
                                 DropDownNestedModel(
                                   title: "Sarajevsko-Zenička regija",
                                   values: [
-                                    DropDownModel(key: "sarajevo", text: "Sarajevo", value: 1),
+                                    DropDownModel(key: "sarajevo", text: "Sarajevo", value: 1, subtext: "Subtext 3"),
                                     DropDownModel(key: "zenica", text: "Zenica", value: 2),
                                   ],
                                 ),
@@ -308,12 +312,20 @@ class MyApp extends StatelessWidget {
                         borderColor: Colors.amber,
                         outlineBorderColor: Colors.blue,
                       ),
-                      selectorDecoration: const MultiSelectorDecoration(selectedItemColor: Colors.orange),
+                      selectorDecoration: const MultiSelectorDecoration(
+                        selectedItemColor: Colors.orange,
+                        optionSubtextStyle: TextStyle(color: Colors.red),
+                      ),
                       onOptionSelected: (value) {
                         log("SELECTED VALUE ${value.length}");
                       },
                       selectedValues: [
-                        DropDownModel<String>(key: "1", value: "1", text: "New York City"),
+                        DropDownModel<String>(
+                          key: "1",
+                          value: "1",
+                          text: "New York City",
+                          subtext: "Subtext 4",
+                        ),
                         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
                       ],
                       initData: [

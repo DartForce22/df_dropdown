@@ -1,16 +1,20 @@
-import '/models/multi_selector_decoration.dart';
+import 'package:df_dropdown/widgets/suggestion_title.dart';
 import 'package:flutter/material.dart';
+
+import '/models/multi_selector_decoration.dart';
 
 class MultiSelect extends StatelessWidget {
   const MultiSelect({
     super.key,
     required this.text,
+    required this.subtext,
     required this.onTap,
     required this.selected,
     required this.selectorDecoration,
   });
 
   final String text;
+  final String? subtext;
   final VoidCallback onTap;
   final bool selected;
   final MultiSelectorDecoration? selectorDecoration;
@@ -29,8 +33,7 @@ class MultiSelect extends StatelessWidget {
             vertical: 10,
           ),
           decoration: BoxDecoration(
-            borderRadius:
-                selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+            borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
             color: Colors.transparent,
           ),
           width: double.infinity,
@@ -42,8 +45,7 @@ class MultiSelect extends StatelessWidget {
                 child: Checkbox(
                   visualDensity: VisualDensity.compact,
                   value: selected,
-                  activeColor: selectorDecoration?.selectedItemColor ??
-                      Colors.teal.shade400,
+                  activeColor: selectorDecoration?.selectedItemColor ?? Colors.teal.shade400,
                   side: BorderSide(
                     color: Colors.grey.shade400,
                   ),
@@ -58,14 +60,11 @@ class MultiSelect extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              Expanded(
-                child: Text(
-                  text,
-                  style: selectorDecoration?.optionTextStyle ??
-                      textTheme.labelMedium,
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              SuggestionTitle(
+                text: text,
+                textStyle: selectorDecoration?.optionTextStyle,
+                subtext: subtext,
+                subTextStyle: selectorDecoration?.optionSubtextStyle,
               ),
             ],
           ),

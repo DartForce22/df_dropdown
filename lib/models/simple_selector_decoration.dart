@@ -35,6 +35,11 @@ class SimpleSelectorDecoration {
   /// This defines the appearance of the text in each dropdown option.
   final TextStyle? optionTextStyle;
 
+  /// The subtext style for the options within the selector.
+  ///
+  /// This defines the appearance of the subtext in each dropdown option.
+  final TextStyle? optionSubtextStyle;
+
   /// The text style for disabled options within the selector.
   ///
   /// This defines the appearance of the disabled text in each dropdown option.
@@ -95,5 +100,6 @@ class SimpleSelectorDecoration {
     this.loadingIndicator,
     this.disabledTextStyle,
     this.disabledSuffixTextStyle,
+    this.optionSubtextStyle,
   });
 }

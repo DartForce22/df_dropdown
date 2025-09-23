@@ -147,6 +147,7 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                                             selectorDecoration:
                                                 selectorDecoration,
                                             text: suggestion.text,
+                                            subtext: suggestion.subtext,
                                             selected: true,
                                             onTap: () {
                                               if (suggestion.disabled) return;
@@ -175,6 +176,7 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                                       return MultiSelect(
                                         selectorDecoration: selectorDecoration,
                                         text: suggestion.text,
+                                        subtext: suggestion.subtext,
                                         selected: provider.selectedValues
                                             .map((el) => el.key)
                                             .contains(

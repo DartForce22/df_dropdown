@@ -63,6 +63,7 @@ class MultiSelectorDecoration extends SearchableSelectorBaseDecoration {
     super.clearSelectionTextStyle,
     super.showSearchIcon = true,
     super.nestedOptionTitleTextStyle,
+    super.optionSubtextStyle,
     this.selectedItemColor,
     this.selectedItemsTitle,
     this.selectedItemsTitleStyle,

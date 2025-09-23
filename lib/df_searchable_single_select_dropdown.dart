@@ -30,6 +30,7 @@ class DfSearchableSingleSelectDropdown<T> extends BaseDropdown<T> {
     super.nestedInitData,
     super.asyncNestedInitData,
     super.asyncInitData,
+    super.expandableSelectorBottomMargin,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
 
@@ -55,7 +56,7 @@ class DfSearchableSingleSelectDropdown<T> extends BaseDropdown<T> {
         asyncNestedInitData: asyncNestedInitData,
         selectorMaxHeight: selectorDecoration?.maxHeight,
         closeDropdownOnSelection: closeDropdownOnSelection,
-        nestedInitData: nestedInitData??[],
+        nestedInitData: nestedInitData ?? [],
         context: context,
       ),
       child: _Dropdown<T>(
@@ -66,6 +67,7 @@ class DfSearchableSingleSelectDropdown<T> extends BaseDropdown<T> {
         arrowWidget: arrowWidget,
         dropdownType: dropdownType,
         disabled: disabled,
+        expandableSelectorBottomMargin: expandableSelectorBottomMargin,
       ),
     );
   }
@@ -80,7 +82,9 @@ class _Dropdown<T> extends StatefulWidget {
     required this.arrowWidget,
     required this.dropdownType,
     required this.disabled,
+    required this.expandableSelectorBottomMargin,
   });
+
   final DropdownDecoration? decoration;
   final SingleSelectorDecoration? selectorDecoration;
   final String? labelText;
@@ -88,6 +92,7 @@ class _Dropdown<T> extends StatefulWidget {
   final Widget? arrowWidget;
   final DropdownType dropdownType;
   final bool disabled;
+  final double expandableSelectorBottomMargin;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -107,12 +112,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     super.initState();
     if (widget.dropdownType == DropdownType.overlay) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context
-            .read<SearchableSingleSelectDropdownProvider<T>>()
-            .updateSelectorPositionIfNeeded(
+        context.read<SearchableSingleSelectDropdownProvider<T>>().updateSelectorPositionIfNeeded(
               selectorWidget: ChangeNotifierProvider.value(
-                value:
-                    context.read<SearchableSingleSelectDropdownProvider<T>>(),
+                value: context.read<SearchableSingleSelectDropdownProvider<T>>(),
                 child: selectorWidget,
               ),
             );
@@ -122,9 +124,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchableSingleSelectDropdownProvider<T>>(
-        context,
-        listen: false);
+    final provider = Provider.of<SearchableSingleSelectDropdownProvider<T>>(context, listen: false);
 
     return Column(
       children: [
@@ -135,8 +135,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
           hintText: widget.hintText,
           labelText: widget.labelText,
           disableInput: true,
-          outlineBorderVisible: provider.suggestionsExpanded ||
-              provider.textFieldFocusNode.hasFocus,
+          outlineBorderVisible: provider.suggestionsExpanded || provider.textFieldFocusNode.hasFocus,
           onTapInside: () => provider.toggleSuggestionsExpanded(
             selectorWidget: widget.dropdownType == DropdownType.expandable
                 ? null
@@ -153,9 +152,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             height: 48,
             child: widget.arrowWidget ??
                 Icon(
-                  context
-                          .watch<SearchableSingleSelectDropdownProvider<T>>()
-                          .suggestionsExpanded
+                  context.watch<SearchableSingleSelectDropdownProvider<T>>().suggestionsExpanded
                       ? Icons.keyboard_arrow_up_outlined
                       : Icons.keyboard_arrow_down_outlined,
                 ),
@@ -166,6 +163,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             height: 4,
           ),
           selectorWidget,
+          SizedBox(
+            height: widget.expandableSelectorBottomMargin,
+          ),
         ],
       ],
     );

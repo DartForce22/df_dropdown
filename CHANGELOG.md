@@ -103,3 +103,7 @@
 - Fixed reported clear text styling issue
 - Introduced nested dropdown options to Searchable Single Select dropdown variation
 
+## 1.2.8
+- Introduced the expandableSelectorBottomMargin parameter in order to "separate" the dropdown content from the widgets below when the dropdown is expanded (https://github.com/DartForce22/df_dropdown/issues/9)
+- Added the "subtext" parameter to the DropdownModel, in order to be able to display the additional text for the element in the dropdowns (https://github.com/DartForce22/df_dropdown/issues/10)
+

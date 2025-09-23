@@ -1,10 +1,13 @@
-import '/models/single_selector_decoration.dart';
+import 'package:df_dropdown/widgets/suggestion_title.dart';
 import 'package:flutter/material.dart';
+
+import '/models/single_selector_decoration.dart';
 
 class SingleSelect extends StatelessWidget {
   const SingleSelect({
     super.key,
     required this.text,
+    required this.subtext,
     required this.onTap,
     required this.selected,
     required this.selectorDecoration,
@@ -12,6 +15,7 @@ class SingleSelect extends StatelessWidget {
   });
 
   final String text;
+  final String? subtext;
   final VoidCallback onTap;
   final bool selected;
   final SingleSelectorDecoration? selectorDecoration;
@@ -28,36 +32,27 @@ class SingleSelect extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(
             horizontal: 16,
-            vertical: verticalPadding??10,
+            vertical: verticalPadding ?? 10,
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: selected
-                ? (selectorDecoration?.selectedItemColor ?? Colors.teal[400])
-                    ?.withValues(alpha: 0.04)
+                ? (selectorDecoration?.selectedItemColor ?? Colors.teal[400])?.withValues(alpha: 0.04)
                 : Colors.transparent,
           ),
           width: double.infinity,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(
-                  text,
-                  style: (selectorDecoration?.optionTextStyle ??
-                          textTheme.labelMedium)
-                      ?.copyWith(
-                    color: selected
-                        ? (selectorDecoration?.selectedItemColor ??
-                            Colors.teal[400])
-                        : null,
-                  ),
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.ellipsis,
+              SuggestionTitle(
+                text: text,
+                textStyle: (selectorDecoration?.optionTextStyle ?? textTheme.labelMedium)?.copyWith(
+                  color: selected ? (selectorDecoration?.selectedItemColor ?? Colors.teal[400]) : null,
                 ),
+                subtext: subtext,
+                subTextStyle: selectorDecoration?.optionSubtextStyle,
               ),
-              if (selected &&
-                  selectorDecoration?.selectedItemIconVisible != false)
+              if (selected && selectorDecoration?.selectedItemIconVisible != false)
                 selectorDecoration?.selectedItemIcon ??
                     Icon(
                       Icons.check,
