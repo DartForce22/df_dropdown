@@ -41,6 +41,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
     this.closeOnTapOutside = true,
     this.rememberSelectedValue = true,
     this.asyncInitData,
+    this.expandableSelectorBottomMargin = 4,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
 
@@ -94,6 +95,10 @@ class DfSearchableDropdown<T> extends StatelessWidget {
   ///when the dropdown is closed and reopened
   final bool rememberSelectedValue;
 
+  /// Bottom margin when the [DropdownType] is set to [DropdownType.expandable]
+  /// Default is set to `4`
+  final double expandableSelectorBottomMargin;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -117,6 +122,7 @@ class DfSearchableDropdown<T> extends StatelessWidget {
         dropdownType: dropdownType,
         disabled: disabled,
         closeOnTapOutside: closeOnTapOutside,
+        expandableSelectorBottomMargin: expandableSelectorBottomMargin,
       ),
     );
   }
@@ -132,6 +138,7 @@ class _Dropdown<T> extends StatefulWidget {
     required this.dropdownType,
     required this.disabled,
     required this.closeOnTapOutside,
+    required this.expandableSelectorBottomMargin,
   });
 
   final SimpleSelectorDecoration? selectorDecoration;
@@ -142,6 +149,7 @@ class _Dropdown<T> extends StatefulWidget {
   final DropdownType dropdownType;
   final bool disabled;
   final bool closeOnTapOutside;
+  final double expandableSelectorBottomMargin;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -168,16 +176,12 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
       child: Consumer<SearchableDropdownProvider<T>>(
         builder: (_, provider, __) {
           final footerWidgetHeight =
-              widget.selectorDecoration?.footerWidget != null &&
-                      provider.suggestionsExpanded
-                  ? 40
-                  : 0;
+              widget.selectorDecoration?.footerWidget != null && provider.suggestionsExpanded ? 40 : 0;
           return SimpleDropdownSelector<T>(
             asyncInitData: provider.asyncInitDataValue,
             selectorDecoration: widget.selectorDecoration,
             selectedOption: provider.selectedValue,
-            dropdownData:
-                provider.suggestionsExpanded ? provider.getDropdownData : [],
+            dropdownData: provider.suggestionsExpanded ? provider.getDropdownData : [],
             dropdownHeight: provider.dropdownHeight + footerWidgetHeight,
             onSelectSuggestion: provider.onSelectSuggestion,
           );
@@ -197,8 +201,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     }
 
     selectorProvider.textFieldFocusNode.addListener(() {
-      if (selectorProvider.textFieldFocusNode.hasFocus &&
-          !selectorProvider.suggestionsExpanded) {
+      if (selectorProvider.textFieldFocusNode.hasFocus && !selectorProvider.suggestionsExpanded) {
         expandCloseSelector(context);
       }
     });
@@ -217,8 +220,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final provider =
-        Provider.of<SearchableDropdownProvider<T>>(context, listen: false);
+    final provider = Provider.of<SearchableDropdownProvider<T>>(context, listen: false);
 
     return TapRegion(
       onTapOutside: (_) {
@@ -241,10 +243,8 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
               if (provider.searchTextController.text.isEmpty) {
                 provider.onSelectSuggestion(null);
               } else if (provider.selectedValue != null &&
-                  provider.selectedValue?.text !=
-                      provider.searchTextController.text) {
-                provider.searchTextController.text =
-                    provider.selectedValue!.text;
+                  provider.selectedValue?.text != provider.searchTextController.text) {
+                provider.searchTextController.text = provider.selectedValue!.text;
               }
 
               FocusScope.of(context).requestFocus(FocusNode());
@@ -254,8 +254,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             decoration: widget.decoration,
             hintText: widget.hintText,
             labelText: widget.labelText,
-            outlineBorderVisible: provider.suggestionsExpanded ||
-                provider.textFieldFocusNode.hasFocus,
+            outlineBorderVisible: provider.suggestionsExpanded || provider.textFieldFocusNode.hasFocus,
             onTapOutside: () {
               provider.onTapOutside(context);
             },
@@ -268,9 +267,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
                 height: 48,
                 child: widget.arrowWidget ??
                     Icon(
-                      context
-                              .watch<SearchableDropdownProvider<T>>()
-                              .suggestionsExpanded
+                      context.watch<SearchableDropdownProvider<T>>().suggestionsExpanded
                           ? Icons.keyboard_arrow_up_outlined
                           : Icons.keyboard_arrow_down_outlined,
                     ),
@@ -282,6 +279,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
               height: 4,
             ),
             selectorWidget,
+            SizedBox(
+              height: widget.expandableSelectorBottomMargin,
+            ),
           ],
         ],
       ),

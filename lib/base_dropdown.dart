@@ -36,6 +36,7 @@ abstract class BaseDropdown<T> extends StatelessWidget {
     this.closeOnTapOutside = true,
     this.nestedInitData,
     this.asyncNestedInitData,
+    this.expandableSelectorBottomMargin = 4,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
 
@@ -81,6 +82,10 @@ abstract class BaseDropdown<T> extends StatelessWidget {
 
   /// Future that provides the initial list of dropdown options.
   final Future<List<DropDownNestedModel<T>>>? asyncNestedInitData;
+
+  /// Bottom margin when the [DropdownType] is set to [DropdownType.expandable]
+  /// Default is set to `4`
+  final double expandableSelectorBottomMargin;
 
   @override
   Widget build(BuildContext context) {

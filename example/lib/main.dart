@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
                       validator: (obj) {
                         return obj == null ? "No selected option..." : null;
                       },
-                      dropdownType: DropdownType.overlay,
+                      dropdownType: DropdownType.expandable,
                       decoration: DropdownDecoration(
                         borderRadius: BorderRadius.circular(999),
                         borderColor: Colors.blue,
@@ -100,9 +100,6 @@ class MyApp extends StatelessWidget {
                         DropDownModel<String>(key: "1", value: "1", text: "New York City"),
                         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 8,
                     ),
                     DfSearchableDropdown<String>(
                       validator: (obj) {

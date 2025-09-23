@@ -23,6 +23,7 @@ class DfSimpleDropdown<T> extends BaseDropdown<T> {
     super.dropdownType = DropdownType.expandable,
     super.disabled = false,
     super.asyncInitData,
+    super.expandableSelectorBottomMargin,
     this.selectorDecoration,
   }) : assert(initData.length == 0 || asyncInitData == null,
             "initData and asyncInitData cannot be provided at the same time");
@@ -50,6 +51,7 @@ class DfSimpleDropdown<T> extends BaseDropdown<T> {
         labelText: labelText,
         dropdownType: dropdownType,
         disabled: disabled,
+        expandableSelectorBottomMargin: expandableSelectorBottomMargin,
       ),
     );
   }
@@ -64,7 +66,9 @@ class _Dropdown<T> extends StatefulWidget {
     required this.arrowWidget,
     required this.dropdownType,
     required this.disabled,
+    required this.expandableSelectorBottomMargin,
   });
+
   final SimpleSelectorDecoration? selectorDecoration;
   final DropdownDecoration? decoration;
   final String? labelText;
@@ -72,6 +76,7 @@ class _Dropdown<T> extends StatefulWidget {
   final Widget? arrowWidget;
   final DropdownType dropdownType;
   final bool disabled;
+  final double expandableSelectorBottomMargin;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -144,6 +149,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             height: 4,
           ),
           selectorWidget,
+          SizedBox(
+            height: widget.expandableSelectorBottomMargin,
+          ),
         ],
       ],
     );

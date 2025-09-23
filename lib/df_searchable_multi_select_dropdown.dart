@@ -32,6 +32,7 @@ class DfSearchableMultiSelectDropdown<T> extends BaseDropdown<T> {
     super.disabled = false,
     super.asyncInitData,
     super.closeOnTapOutside,
+    super.expandableSelectorBottomMargin,
     this.displayResultsCount,
   })  : onOptionsSelected = onOptionSelected,
         multiSelectValidator = validator,
@@ -85,6 +86,7 @@ class DfSearchableMultiSelectDropdown<T> extends BaseDropdown<T> {
         dropdownType: dropdownType,
         disabled: disabled,
         closeOnTapOutside: closeOnTapOutside,
+        expandableSelectorBottomMargin: expandableSelectorBottomMargin,
       ),
     );
   }
@@ -100,7 +102,9 @@ class _Dropdown<T> extends StatefulWidget {
     required this.dropdownType,
     required this.disabled,
     required this.closeOnTapOutside,
+    required this.expandableSelectorBottomMargin,
   });
+
   final DropdownType dropdownType;
   final DropdownDecoration? decoration;
   final String? labelText;
@@ -109,6 +113,7 @@ class _Dropdown<T> extends StatefulWidget {
   final Widget? arrowWidget;
   final bool disabled;
   final bool closeOnTapOutside;
+  final double expandableSelectorBottomMargin;
 
   @override
   State<_Dropdown<T>> createState() => _DropdownState<T>();
@@ -116,6 +121,7 @@ class _Dropdown<T> extends StatefulWidget {
 
 class _DropdownState<T> extends State<_Dropdown<T>> {
   late final Widget selectorWidget;
+
   @override
   void initState() {
     selectorWidget = Consumer<SearchableMultiSelectDropdownProvider<T>>(
@@ -139,9 +145,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
     super.initState();
     if (widget.dropdownType == DropdownType.overlay) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context
-            .read<SearchableMultiSelectDropdownProvider<T>>()
-            .updateSelectorPositionIfNeeded(
+        context.read<SearchableMultiSelectDropdownProvider<T>>().updateSelectorPositionIfNeeded(
               selectorWidget: ChangeNotifierProvider.value(
                 value: context.read<SearchableMultiSelectDropdownProvider<T>>(),
                 child: selectorWidget,
@@ -153,9 +157,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
-        context,
-        listen: false);
+    final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(context, listen: false);
 
     return TapRegion(
       onTapOutside: (_) {
@@ -179,11 +181,8 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             hintText: widget.hintText,
             labelText: widget.labelText,
             disableInput: true,
-            outlineBorderVisible: provider.suggestionsExpanded ||
-                provider.textFieldFocusNode.hasFocus,
-            onTapInside: () => context
-                .read<SearchableMultiSelectDropdownProvider<T>>()
-                .toggleSuggestionsExpanded(
+            outlineBorderVisible: provider.suggestionsExpanded || provider.textFieldFocusNode.hasFocus,
+            onTapInside: () => context.read<SearchableMultiSelectDropdownProvider<T>>().toggleSuggestionsExpanded(
                   selectorWidget: widget.dropdownType == DropdownType.expandable
                       ? null
                       : ChangeNotifierProvider.value(
@@ -199,9 +198,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
               height: 48,
               child: widget.arrowWidget ??
                   Icon(
-                    context
-                            .watch<SearchableMultiSelectDropdownProvider<T>>()
-                            .suggestionsExpanded
+                    context.watch<SearchableMultiSelectDropdownProvider<T>>().suggestionsExpanded
                         ? Icons.keyboard_arrow_up_outlined
                         : Icons.keyboard_arrow_down_outlined,
                   ),
@@ -212,6 +209,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
               height: 4,
             ),
             selectorWidget,
+            SizedBox(
+              height: widget.expandableSelectorBottomMargin,
+            ),
           ],
         ],
       ),
