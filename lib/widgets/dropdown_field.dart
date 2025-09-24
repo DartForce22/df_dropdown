@@ -75,6 +75,7 @@ class DropdownField<T extends BaseDropdownProvider> extends StatelessWidget {
         },
         onEditingComplete: onEditingComplete,
         decoration: fieldInputDecoration.copyWith(
+          contentPadding: decoration?.contentPadding,
           hintText: hintText,
           hintStyle: decoration?.hintTextStyle ??
               TextStyle(

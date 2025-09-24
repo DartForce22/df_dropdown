@@ -60,6 +60,8 @@ class DropdownDecoration {
   ///Default is `true`
   final bool reserveSpaceForValidationMessage;
 
+  final EdgeInsets? contentPadding;
+
   /// Creates a new [DropdownDecoration] instance with optional customization.
   ///
   /// - [labelTextStyle]: Style for the label text.
@@ -74,6 +76,7 @@ class DropdownDecoration {
   /// - [backgroundColor]: Color for the dropdown background.
   /// - [reserveSpaceForValidationMessage]: Indicator wether validation error container will be present
   /// even  there is no error to display
+  /// - [contentPadding]: Padding for the content displayed in the dropdown container e.g. hint, selected option...
   ///
   const DropdownDecoration({
     this.labelTextStyle,
@@ -86,6 +89,7 @@ class DropdownDecoration {
     this.borderRadius,
     this.backgroundColor,
     this.reserveSpaceForValidationMessage = true,
+    this.contentPadding,
     this.dropdownTextStyle = const TextStyle(
       fontSize: 14,
     ),
