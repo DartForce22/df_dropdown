@@ -18,7 +18,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     required super.context,
   }) {
     if (selectedValue != null) {
-      searchTextController.text = selectedValue!.text;
+      searchTextController.text = selectedValue!.displayText;
     }
   }
 
@@ -72,7 +72,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
     setValidationError = null;
     closeSuggestions();
     if (value != null && rememberSelectedValue) {
-      searchTextController.text = value.text;
+      searchTextController.text = value.displayText;
     }
     if (onOptionSelected != null) {
       onOptionSelected!(value);
@@ -95,7 +95,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   void closeSuggestions() {
     if (selectedValue != null &&
         selectedValue?.text != searchTextController.text) {
-      searchTextController.text = selectedValue!.text;
+      searchTextController.text = selectedValue!.displayText;
     }
     super.closeSuggestions();
   }

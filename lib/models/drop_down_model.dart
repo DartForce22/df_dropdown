@@ -18,6 +18,7 @@ class DropDownModel<T> {
     this.prefixWidget,
     this.disabled = false,
     this.disabledText,
+    this.displayTextFormatter,
   });
 
   /// A unique identifier for the dropdown item.
@@ -41,6 +42,13 @@ class DropDownModel<T> {
   /// A string that will be displayed when the dropdown item is disabled.
   final String? disabledText;
 
+  String get displayText {
+    if (displayTextFormatter != null) {
+      return displayTextFormatter!();
+    }
+    return text;
+  }
+
   /// Returns the [text] representation of the item.
   ///
   /// This is used when the object is printed or displayed.
@@ -59,6 +67,9 @@ class DropDownModel<T> {
     }
     return other is DropDownModel && key == other.key;
   }
+
+  // If provided, this this value will be in the dropdown container when an item is selected
+  final String Function()? displayTextFormatter;
 
   /// Returns a hash code based on the [key].
   ///

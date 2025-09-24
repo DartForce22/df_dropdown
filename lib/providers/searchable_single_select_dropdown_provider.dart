@@ -21,7 +21,7 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
       initData.addAll(nestedInitDataToFlatInitData(nestedInitData));
     }
     if (selectedValue != null) {
-      searchTextController.text = selectedValue!.text;
+      searchTextController.text = selectedValue!.displayText;
     }
   }
 
@@ -65,7 +65,7 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
       searchTextController.text = "";
     } else {
       selectedValue = value;
-      searchTextController.text = value.text;
+      searchTextController.text = value.displayText;
     }
     if (closeDropdownOnSelection) closeSuggestions();
     setValidationError = null;
