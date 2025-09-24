@@ -21,7 +21,6 @@ class MultiSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return Material(
       color: selectorDecoration?.itemColor ?? Colors.transparent,
       borderRadius: BorderRadius.circular(12),

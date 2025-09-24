@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:df_dropdown/df_dropdown.dart';
 import 'package:flutter/material.dart';
 
-import '/models/drop_down_model.dart';
-
 /// Abstract base class to manage the state and behavior of a dropdown widget.
 ///
 /// This class defines an interface for handling suggestions visibility, input validation,
@@ -44,8 +42,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
     _selectorWidget = selectorWidget;
     // Find the position of the child widget using the GlobalKey
-    final RenderBox renderBox =
-    dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox renderBox = dropdownKey.currentContext!.findRenderObject() as RenderBox;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size size = renderBox.size;
 
@@ -53,22 +50,16 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
 
     // Create an OverlayEntry and position it based on the child's position
     _overlayEntry = OverlayEntry(
-      builder: (context) =>
-          Positioned(
-            // Position the overlay under the child widget
-            left: expanded ? offset.dx : null,
-            right: !expanded
-                ? MediaQuery
-                .of(context)
-                .size
-                .width - offset.dx - size.width
-                : null,
-            top: offset.dy + size.height + topOffset,
-            child: SizedBox(
-              width: expanded ? size.width : null,
-              child: selectorWidget,
-            ),
-          ),
+      builder: (context) => Positioned(
+        // Position the overlay under the child widget
+        left: expanded ? offset.dx : null,
+        right: !expanded ? MediaQuery.of(context).size.width - offset.dx - size.width : null,
+        top: offset.dy + size.height + topOffset,
+        child: SizedBox(
+          width: expanded ? size.width : null,
+          child: selectorWidget,
+        ),
+      ),
     );
 
     // Insert the OverlayEntry into the Overlay
@@ -224,8 +215,7 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     Color? borderColor,
     Color? errorBorderColor,
   }) {
-    Color color = borderColor ??
-        (Colors.grey[950] ?? Colors.grey.shade900).withValues(alpha: 0.12);
+    Color color = borderColor ?? (Colors.grey[950] ?? Colors.grey.shade900).withValues(alpha: 0.12);
 
     if (_validationError != null) {
       color = errorBorderColor ?? Colors.red.shade500;
@@ -255,10 +245,8 @@ abstract class BaseDropdownProvider<T> with ChangeNotifier {
     required Widget selectorWidget,
     bool expanded = true,
   }) {
-    if ((this.suggestionsExpanded || _suggestionClosedOnMove) &&
-        dropdownKey.currentContext != null) {
-      final RenderBox renderBox =
-      dropdownKey.currentContext!.findRenderObject() as RenderBox;
+    if ((this.suggestionsExpanded || _suggestionClosedOnMove) && dropdownKey.currentContext != null) {
+      final RenderBox renderBox = dropdownKey.currentContext!.findRenderObject() as RenderBox;
       final Offset currentOffset = renderBox.localToGlobal(Offset.zero);
 
       _previousOffset ??= currentOffset;
