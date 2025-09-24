@@ -102,7 +102,10 @@ class MyApp extends StatelessWidget {
                             key: "1",
                             value: "1",
                             text: "New York City",
-                            subtext: "This is a really long subtext 1 for testing overflow"),
+                            subtext: "This is a really long subtext 1 for testing overflow",
+                            displayTextFormatter: () {
+                              return "TEST";
+                            }),
                         DropDownModel<String>(key: "2", value: "2", text: "Los Angeles"),
                       ],
                     ),
@@ -187,7 +190,13 @@ class MyApp extends StatelessWidget {
                                 DropDownNestedModel(
                                   title: "Banjalučka regija",
                                   values: [
-                                    DropDownModel(key: "banjaluka", text: "Banja Luka", value: 3),
+                                    DropDownModel(
+                                        key: "banjaluka",
+                                        text: "Banja Luka",
+                                        value: 3,
+                                        displayTextFormatter: () {
+                                          return "BiH, nesta, JAD";
+                                        }),
                                     DropDownModel(key: "prijedor", text: "Prijedor", value: 4),
                                   ],
                                 ),

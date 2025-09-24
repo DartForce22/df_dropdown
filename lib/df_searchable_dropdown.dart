@@ -244,7 +244,7 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
                 provider.onSelectSuggestion(null);
               } else if (provider.selectedValue != null &&
                   provider.selectedValue?.text != provider.searchTextController.text) {
-                provider.searchTextController.text = provider.selectedValue!.text;
+                provider.searchTextController.text = provider.selectedValue!.displayText;
               }
 
               FocusScope.of(context).requestFocus(FocusNode());

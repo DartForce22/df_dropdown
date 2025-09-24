@@ -20,7 +20,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   }) {
     this.selectedValues.addAll(selectedValues ?? []);
     if (selectedValues != null && selectedValues.isNotEmpty) {
-      searchTextController.text = selectedValues.first.text;
+      searchTextController.text = selectedValues.first.displayText;
       if (selectedValues.length > 1) {
         searchTextController.text += " (+${selectedValues.length - 1})";
       }
@@ -73,7 +73,7 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
     }
 
     if (selectedValues.isNotEmpty) {
-      searchTextController.text = selectedValues.first.text;
+      searchTextController.text = selectedValues.first.displayText;
       if (selectedValues.length > 1) {
         searchTextController.text += " (+${selectedValues.length - 1})";
       }

@@ -14,7 +14,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
     required super.context,
   }) {
     if (selectedValue != null) {
-      searchTextController.text = selectedValue!.text;
+      searchTextController.text = selectedValue!.displayText;
     }
   }
 
@@ -48,7 +48,7 @@ class SimpleDropdownProvider<T> extends BaseDropdownProvider<T> {
     selectedValue = value;
     setValidationError = null;
     closeSuggestions();
-    searchTextController.text = value.text;
+    searchTextController.text = value.displayText;
     if (onOptionSelected != null) {
       onOptionSelected!(value);
     }
