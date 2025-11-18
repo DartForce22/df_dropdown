@@ -1,9 +1,11 @@
 import 'package:df_dropdown/df_dropdown.dart';
+import 'package:df_dropdown/models/searchable_dropdown_selector_model.dart';
 import 'package:flutter/material.dart';
 
 import '/providers/base_dropdown_provider.dart';
 
-class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
+class SearchableSingleSelectDropdownProvider<T>
+    extends BaseDropdownProvider<T> {
   SearchableSingleSelectDropdownProvider({
     this.selectedValue,
     this.onOptionSelected,
@@ -28,7 +30,8 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
   DropDownModel<T>? selectedValue;
   final Function(DropDownModel<T>?)? onOptionSelected;
   final Future<List<DropDownModel<T>>> Function(String searchText)? onSearch;
-  final TextEditingController selectorTextEditingController = TextEditingController();
+  final TextEditingController selectorTextEditingController =
+      TextEditingController();
   final double? selectorMaxHeight;
   final bool closeDropdownOnSelection;
 
@@ -38,11 +41,15 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
 
     int dataLength = 0;
 
-    if (nestedInitData.isEmpty && (baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty)) {
-      dataLength = baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty
+    if (nestedInitData.isEmpty &&
+        (baseSearchResults.isNotEmpty ||
+            selectorTextEditingController.text.isNotEmpty)) {
+      dataLength = baseSearchResults.isNotEmpty ||
+              selectorTextEditingController.text.isNotEmpty
           ? baseSearchResults.length
           : initData.length;
-    } else if (baseSearchResults.isNotEmpty || selectorTextEditingController.text.isNotEmpty) {
+    } else if (baseSearchResults.isNotEmpty ||
+        selectorTextEditingController.text.isNotEmpty) {
       dataLength = baseSearchResults.length;
     } else if (suggestionsExpanded) {
       return 200;
@@ -95,7 +102,7 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
     } else {
       baseSearchResults.clear();
 
-      if(text.isNotEmpty) {
+      if (text.isNotEmpty) {
         baseSearchResults.addAll(
           initData.where(
             (el) => el.text.toLowerCase().startsWith(
@@ -124,15 +131,28 @@ class SearchableSingleSelectDropdownProvider<T> extends BaseDropdownProvider<T> 
     notifyListeners();
   }
 
+  SearchableDropdownSelectorModel<T> getSearchableDropdownSelectorModel() {
+    return SearchableDropdownSelectorModel(
+      dropdownHeight: dropdownHeight,
+      dropdownData: getDropdownData,
+      nestedDropdownData: getNestedDropdownData,
+      selectedValue: selectedValue,
+      //This list is used only for multiselect, so it is set as empty in single select component
+      selectedValues: [],
+    );
+  }
+
   List<DropDownModel<T>> get getDropdownData {
-    if (selectorTextEditingController.text.isNotEmpty || baseSearchResults.isNotEmpty) {
+    if (selectorTextEditingController.text.isNotEmpty ||
+        baseSearchResults.isNotEmpty) {
       return baseSearchResults;
     }
     return initData;
   }
 
   List<DropDownNestedModel<T>> get getNestedDropdownData {
-    if (selectorTextEditingController.text.isNotEmpty || baseSearchResults.isNotEmpty) {
+    if (selectorTextEditingController.text.isNotEmpty ||
+        baseSearchResults.isNotEmpty) {
       return [];
     }
     return nestedInitData;

@@ -19,7 +19,7 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
   });
 
   final List<DropDownModel<T>> dropdownData;
-  final double dropdownHeight;
+  final double? dropdownHeight;
   final SimpleSelectorDecoration? selectorDecoration;
   final Function(DropDownModel<T>) onSelectSuggestion;
   final bool expanded;
@@ -32,12 +32,15 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       clipBehavior: Clip.hardEdge,
-      borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+      borderRadius:
+          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       elevation: selectorDecoration?.elevation ?? 4,
       child: FutureBuilder(
         future: asyncInitData,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting && dropdownData.isEmpty && dropdownHeight > 0) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              dropdownData.isEmpty &&
+              (dropdownHeight ?? 0) > 0) {
             return selectorDecoration?.loadingIndicator ??
                 const Center(
                   child: Padding(
@@ -50,7 +53,8 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
-              borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+              borderRadius:
+                  selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
               color: selectorDecoration?.selectorColor ?? Colors.white,
             ),
             width: expanded ? double.infinity : null,
@@ -90,7 +94,8 @@ class SimpleDropdownSelector<T> extends StatelessWidget {
                 : Center(
                     child: selectorDecoration?.noAvailableDataWidget ??
                         Text(
-                          selectorDecoration?.noAvailableDataText ?? "No available options",
+                          selectorDecoration?.noAvailableDataText ??
+                              "No available options",
                         ),
                   ),
           );
@@ -132,7 +137,8 @@ class _DropdownSuggestion<T> extends StatelessWidget {
   }
 
   TextStyle? get suffixTextStyle {
-    if (suggestion.disabled && selectorDecoration?.disabledSuffixTextStyle != null) {
+    if (suggestion.disabled &&
+        selectorDecoration?.disabledSuffixTextStyle != null) {
       return selectorDecoration!.disabledSuffixTextStyle;
     }
 
@@ -143,8 +149,11 @@ class _DropdownSuggestion<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Material(
-      color: selected ? selectorDecoration?.selectedItemColor ?? Colors.transparent : Colors.transparent,
-      borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+      color: selected
+          ? selectorDecoration?.selectedItemColor ?? Colors.transparent
+          : Colors.transparent,
+      borderRadius:
+          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       child: InkWell(
         onTap: suggestion.disabled ? null : onTap,
         child: Container(
@@ -153,10 +162,13 @@ class _DropdownSuggestion<T> extends StatelessWidget {
             vertical: 10,
           ),
           decoration: BoxDecoration(
-            borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+            borderRadius:
+                selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
             color: selectorDecoration?.itemColor ?? Colors.transparent,
           ),
-          width: expanded ? double.infinity : selectorDecoration?.selectorWidth ?? 164,
+          width: expanded
+              ? double.infinity
+              : selectorDecoration?.selectorWidth ?? 164,
           child: Row(
             children: [
               if (suggestion.prefixWidget != null) suggestion.prefixWidget!,
@@ -166,7 +178,9 @@ class _DropdownSuggestion<T> extends StatelessWidget {
                 subTextStyle: selectorDecoration?.optionSubtextStyle,
                 textStyle: optionTextStyle,
               ),
-              if (selectorDecoration?.selectedItemIcon != null && selected && !suggestion.disabled) ...[
+              if (selectorDecoration?.selectedItemIcon != null &&
+                  selected &&
+                  !suggestion.disabled) ...[
                 const SizedBox(
                   width: 4,
                 ),

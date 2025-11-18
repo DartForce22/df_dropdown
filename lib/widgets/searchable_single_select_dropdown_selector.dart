@@ -1,15 +1,20 @@
 import 'package:df_dropdown/models/models.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '/widgets/searchable_widgets/single_select.dart';
-import '../providers/searchable_single_select_dropdown_provider.dart';
+import '../models/searchable_dropdown_selector_model.dart';
 
 class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
   const SearchableSingleSelectDropdownSelector({
     super.key,
     required this.selectorDecoration,
     required this.asyncInitData,
+    required this.selectorModel,
+    required this.selectorTextEditingController,
+    required this.suggestionsExpanded,
+    required this.onInputChanged,
+    required this.clearSelection,
+    required this.onSelectSuggestion,
   });
 
   /// Future that provides the initial list of dropdown options.
@@ -25,28 +30,32 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
   );
 
   final SingleSelectorDecoration? selectorDecoration;
+  final SearchableDropdownSelectorModel<T> selectorModel;
+  final TextEditingController selectorTextEditingController;
+  final bool suggestionsExpanded;
+  final void Function(String) onInputChanged;
+  final void Function() clearSelection;
+  final void Function(DropDownModel<T>) onSelectSuggestion;
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchableSingleSelectDropdownProvider<T>>(
-      context,
-      listen: false,
-    );
     return Material(
       clipBehavior: Clip.hardEdge,
-      borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+      borderRadius:
+          selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
       elevation: selectorDecoration?.elevation ?? 4,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+          borderRadius:
+              selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
           color: selectorDecoration?.selectorColor ?? Colors.white,
         ),
         child: FutureBuilder(
           future: asyncInitData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting &&
-                provider.getDropdownData.isEmpty &&
-                provider.suggestionsExpanded) {
+                selectorModel.dropdownData.isEmpty &&
+                suggestionsExpanded) {
               return selectorDecoration?.loadingIndicator ??
                   const Center(
                     child: Padding(
@@ -57,8 +66,9 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
             }
 
             return Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                if (provider.suggestionsExpanded)
+                if (suggestionsExpanded)
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -76,8 +86,8 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                         ),
                         Expanded(
                           child: TextField(
-                            controller: provider.selectorTextEditingController,
-                            onChanged: provider.onInputChanged,
+                            controller: selectorTextEditingController,
+                            onChanged: onInputChanged,
                             decoration: fieldInputDecoration,
                             style: selectorDecoration?.searchTextStyle,
                           ),
@@ -85,83 +95,97 @@ class SearchableSingleSelectDropdownSelector<T> extends StatelessWidget {
                       ],
                     ),
                   ),
-                if (provider.suggestionsExpanded)
+                if (suggestionsExpanded)
                   Divider(
                     height: 1,
                     color: selectorDecoration?.dividerColor,
                   ),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: double.infinity,
-                  height: provider.dropdownHeight,
-                  child: Scrollbar(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: provider.clearSelection,
-                                  child: Text(
-                                    selectorDecoration?.clearSelectionText ?? "Clear selection",
-                                    style: selectorDecoration?.clearSelectionTextStyle ??
-                                        TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.teal.shade400,
-                                        ),
+                Flexible(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: double.infinity,
+                    height: selectorModel.dropdownHeight,
+                    child: Scrollbar(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 8,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: clearSelection,
+                                    child: Text(
+                                      selectorDecoration?.clearSelectionText ??
+                                          "Clear selection",
+                                      style: selectorDecoration
+                                              ?.clearSelectionTextStyle ??
+                                          const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            //Primary color TANGERINE shade 400
+                                            color: Color(0xffF38C0D),
+                                          ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (provider.getNestedDropdownData.isNotEmpty)
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: provider.getNestedDropdownData
-                                    .map(
-                                      (element) => NestedListWidget(
-                                        data: element,
-                                        selectorDecoration: selectorDecoration,
-                                        selectedValue: provider.selectedValue,
-                                        onSelectSuggestion: (suggestion) {
-                                          if (suggestion.disabled) return;
-                                          provider.onSelectSuggestion(suggestion);
-                                        },
-                                      ),
-                                    )
-                                    .toList(),
+                                ],
                               ),
                             ),
-                          if (provider.getNestedDropdownData.isEmpty)
-                            Column(
-                              children: provider.suggestionsExpanded
-                                  ? provider.getDropdownData.map(
-                                      (suggestion) {
-                                        return SingleSelect(
-                                          selectorDecoration: selectorDecoration,
-                                          text: suggestion.text,
-                                          subtext: suggestion.subtext,
-                                          selected: suggestion == provider.selectedValue,
-                                          onTap: () {
+                            if (selectorModel.nestedDropdownData?.isNotEmpty ==
+                                true)
+                              Container(
+                                width: double.infinity,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: selectorModel.nestedDropdownData!
+                                      .map(
+                                        (element) => NestedListWidget(
+                                          data: element,
+                                          selectorDecoration:
+                                              selectorDecoration,
+                                          selectedValue:
+                                              selectorModel.selectedValue,
+                                          onSelectSuggestion: (suggestion) {
                                             if (suggestion.disabled) return;
-                                            provider.onSelectSuggestion(suggestion);
+
+                                            onSelectSuggestion(suggestion);
                                           },
-                                        );
-                                      },
-                                    ).toList()
-                                  : [],
-                            )
-                        ],
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            if (selectorModel.nestedDropdownData?.isEmpty ==
+                                true)
+                              Column(
+                                children: suggestionsExpanded
+                                    ? selectorModel.dropdownData.map(
+                                        (suggestion) {
+                                          return SingleSelect(
+                                            selectorDecoration:
+                                                selectorDecoration,
+                                            text: suggestion.text,
+                                            subtext: suggestion.subtext,
+                                            selected: suggestion ==
+                                                selectorModel.selectedValue,
+                                            onTap: () {
+                                              if (suggestion.disabled) return;
+                                              onSelectSuggestion(suggestion);
+                                            },
+                                          );
+                                        },
+                                      ).toList()
+                                    : [],
+                              )
+                          ],
+                        ),
                       ),
                     ),
                   ),
