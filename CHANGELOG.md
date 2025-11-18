@@ -107,7 +107,11 @@
 - Introduced the expandableSelectorBottomMargin parameter in order to "separate" the dropdown content from the widgets below when the dropdown is expanded (https://github.com/DartForce22/df_dropdown/issues/9)
 - Added the "subtext" parameter to the DropdownModel, in order to be able to display the additional text for the element in the dropdowns (https://github.com/DartForce22/df_dropdown/issues/10)
 
-## 1.2.9 - Ćofa (https://github.com/DartForce22/df_dropdown/issues/11)
+## 1.2.9 - Ćofa
 - Added content padding for the dropdown content
 - Added display formatter property to the dropdown model
+
+## 1.2.10
+- Changed default package color
+- Extracted provider reference from the selector widget
 
