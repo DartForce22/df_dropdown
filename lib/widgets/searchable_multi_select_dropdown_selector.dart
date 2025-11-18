@@ -1,8 +1,7 @@
+import 'package:df_dropdown/df_dropdown.dart';
+import 'package:df_dropdown/models/searchable_dropdown_selector_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '/models/multi_selector_decoration.dart';
-import '/providers/searchable_multi_select_dropdown_provider.dart';
 import '/widgets/searchable_widgets/multi_select.dart';
 
 class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
@@ -10,6 +9,12 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
     super.key,
     required this.selectorDecoration,
     required this.asyncInitData,
+    required this.selectorModel,
+    required this.selectorTextEditingController,
+    required this.suggestionsExpanded,
+    required this.onInputChanged,
+    required this.clearSelection,
+    required this.onSelectSuggestion,
   });
 
   /// Future that provides the initial list of dropdown options.
@@ -24,13 +29,15 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
     disabledBorder: InputBorder.none,
   );
   final MultiSelectorDecoration? selectorDecoration;
+  final SearchableDropdownSelectorModel<T> selectorModel;
+  final TextEditingController selectorTextEditingController;
+  final bool suggestionsExpanded;
+  final void Function(String) onInputChanged;
+  final void Function() clearSelection;
+  final void Function(DropDownModel<T>) onSelectSuggestion;
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
-      context,
-      listen: false,
-    );
     return Material(
       clipBehavior: Clip.hardEdge,
       borderRadius:
@@ -46,8 +53,8 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
           future: asyncInitData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting &&
-                provider.getDropdownData.isEmpty &&
-                provider.suggestionsExpanded) {
+                selectorModel.dropdownData.isEmpty &&
+                suggestionsExpanded) {
               return selectorDecoration?.loadingIndicator ??
                   const Center(
                     child: Padding(
@@ -58,8 +65,9 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
             }
 
             return Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                if (provider.suggestionsExpanded)
+                if (suggestionsExpanded)
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -77,8 +85,8 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                         ),
                         Expanded(
                           child: TextField(
-                            controller: provider.selectorTextEditingController,
-                            onChanged: provider.onInputChanged,
+                            controller: selectorTextEditingController,
+                            onChanged: onInputChanged,
                             decoration: fieldInputDecoration,
                             style: selectorDecoration?.searchTextStyle,
                           ),
@@ -86,113 +94,117 @@ class SearchableMultiSelectDropdownSelector<T> extends StatelessWidget {
                       ],
                     ),
                   ),
-                if (provider.suggestionsExpanded)
+                if (suggestionsExpanded)
                   Divider(
                     height: 1,
                     color: selectorDecoration?.dividerColor,
                   ),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: double.infinity,
-                  height: provider.dropdownHeight,
-                  child: Scrollbar(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                if (provider.selectedValues.isNotEmpty &&
-                                    selectorDecoration?.showSelectedItems !=
-                                        false)
-                                  Text(
-                                    selectorDecoration?.selectedItemsTitle ??
-                                        "Selected",
-                                    style: selectorDecoration
-                                            ?.selectedItemsTitleStyle ??
-                                        const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                Flexible(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: double.infinity,
+                    height: selectorModel.dropdownHeight,
+                    child: Scrollbar(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 8,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  if (selectorModel.selectedValues.isNotEmpty &&
+                                      selectorDecoration?.showSelectedItems !=
+                                          false)
+                                    Text(
+                                      selectorDecoration?.selectedItemsTitle ??
+                                          "Selected",
+                                      style: selectorDecoration
+                                              ?.selectedItemsTitleStyle ??
+                                          const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                  InkWell(
+                                    onTap: clearSelection,
+                                    child: Text(
+                                      selectorDecoration?.clearSelectionText ??
+                                          "Clear selection",
+                                      style: selectorDecoration
+                                              ?.clearSelectionTextStyle ??
+                                          const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            //Primary color TANGERINE shade 400
+                                            color: Color(0xffF38C0D),
+                                          ),
+                                    ),
                                   ),
-                                InkWell(
-                                  onTap: provider.clearSelection,
-                                  child: Text(
-                                    selectorDecoration?.clearSelectionText ??
-                                        "Clear selection",
-                                    style: selectorDecoration
-                                            ?.clearSelectionTextStyle ??
-                                        TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.teal.shade400,
-                                        ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          if (provider.selectedValues.isNotEmpty &&
-                              selectorDecoration?.showSelectedItems != false)
+                            if (selectorModel.selectedValues.isNotEmpty &&
+                                selectorDecoration?.showSelectedItems != false)
+                              Column(
+                                children: suggestionsExpanded
+                                    ? [
+                                        ...selectorModel.selectedValues.map(
+                                          (suggestion) {
+                                            return MultiSelect(
+                                              selectorDecoration:
+                                                  selectorDecoration,
+                                              text: suggestion.text,
+                                              subtext: suggestion.subtext,
+                                              selected: true,
+                                              onTap: () {
+                                                if (suggestion.disabled) return;
+                                                onSelectSuggestion(suggestion);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: Divider(
+                                            height: 1,
+                                            color: selectorDecoration
+                                                ?.dividerColor,
+                                          ),
+                                        )
+                                      ]
+                                    : [],
+                              ),
                             Column(
-                              children: provider.suggestionsExpanded
-                                  ? [
-                                      ...provider.selectedValues.map(
-                                        (suggestion) {
-                                          return MultiSelect(
-                                            selectorDecoration:
-                                                selectorDecoration,
-                                            text: suggestion.text,
-                                            subtext: suggestion.subtext,
-                                            selected: true,
-                                            onTap: () {
-                                              if (suggestion.disabled) return;
-                                              provider.onSelectSuggestion(
-                                                  suggestion);
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Divider(
-                                          height: 1,
-                                          color:
-                                              selectorDecoration?.dividerColor,
-                                        ),
-                                      )
-                                    ]
+                              children: suggestionsExpanded
+                                  ? selectorModel.dropdownData.map(
+                                      (suggestion) {
+                                        return MultiSelect(
+                                          selectorDecoration:
+                                              selectorDecoration,
+                                          text: suggestion.text,
+                                          subtext: suggestion.subtext,
+                                          selected: selectorModel.selectedValues
+                                              .map((el) => el.key)
+                                              .contains(
+                                                suggestion.key,
+                                              ),
+                                          onTap: () {
+                                            if (suggestion.disabled) return;
+
+                                            onSelectSuggestion(suggestion);
+                                          },
+                                        );
+                                      },
+                                    ).toList()
                                   : [],
-                            ),
-                          Column(
-                            children: provider.suggestionsExpanded
-                                ? provider.getDropdownData.map(
-                                    (suggestion) {
-                                      return MultiSelect(
-                                        selectorDecoration: selectorDecoration,
-                                        text: suggestion.text,
-                                        subtext: suggestion.subtext,
-                                        selected: provider.selectedValues
-                                            .map((el) => el.key)
-                                            .contains(
-                                              suggestion.key,
-                                            ),
-                                        onTap: () {
-                                          if (suggestion.disabled) return;
-                                          provider
-                                              .onSelectSuggestion(suggestion);
-                                        },
-                                      );
-                                    },
-                                  ).toList()
-                                : [],
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

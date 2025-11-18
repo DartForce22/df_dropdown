@@ -1,3 +1,4 @@
+import 'package:df_dropdown/models/searchable_dropdown_selector_model.dart';
 import 'package:flutter/material.dart';
 
 import '/models/drop_down_model.dart';
@@ -132,6 +133,14 @@ class SearchableMultiSelectDropdownProvider<T> extends BaseDropdownProvider<T> {
   void onTapOutside(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
     notifyListeners();
+  }
+
+  SearchableDropdownSelectorModel<T> getSearchableDropdownSelectorModel() {
+    return SearchableDropdownSelectorModel(
+      dropdownHeight: dropdownHeight,
+      dropdownData: getDropdownData,
+      selectedValues: selectedValues,
+    );
   }
 
   List<DropDownModel<T>> get getDropdownData {

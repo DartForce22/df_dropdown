@@ -74,7 +74,8 @@ class DropdownContainer<T extends BaseDropdownProvider>
                         provider.validationError == null)
                       BoxShadow(
                         color: (decoration?.outlineBorderColor ??
-                            (Colors.teal[450] ?? Colors.teal)),
+                            //OrangePrimary - shade[400]
+                            const Color(0xffff914d)),
                         spreadRadius: 4,
                       ),
                     if (outlineBorderVisible &&

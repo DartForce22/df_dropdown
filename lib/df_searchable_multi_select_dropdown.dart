@@ -139,13 +139,21 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
         child: SearchableMultiSelectDropdownSelector<T>(
           selectorDecoration: widget.selectorDecoration,
           asyncInitData: provider.asyncInitDataValue,
+          selectorModel: provider.getSearchableDropdownSelectorModel(),
+          selectorTextEditingController: provider.selectorTextEditingController,
+          suggestionsExpanded: provider.suggestionsExpanded,
+          onInputChanged: provider.onInputChanged,
+          clearSelection: provider.clearSelection,
+          onSelectSuggestion: provider.onSelectSuggestion,
         ),
       ),
     );
     super.initState();
     if (widget.dropdownType == DropdownType.overlay) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.read<SearchableMultiSelectDropdownProvider<T>>().updateSelectorPositionIfNeeded(
+        context
+            .read<SearchableMultiSelectDropdownProvider<T>>()
+            .updateSelectorPositionIfNeeded(
               selectorWidget: ChangeNotifierProvider.value(
                 value: context.read<SearchableMultiSelectDropdownProvider<T>>(),
                 child: selectorWidget,
@@ -157,7 +165,10 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(context, listen: false);
+    final provider = Provider.of<SearchableMultiSelectDropdownProvider<T>>(
+      context,
+      listen: false,
+    );
 
     return TapRegion(
       onTapOutside: (_) {
@@ -181,8 +192,11 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
             hintText: widget.hintText,
             labelText: widget.labelText,
             disableInput: true,
-            outlineBorderVisible: provider.suggestionsExpanded || provider.textFieldFocusNode.hasFocus,
-            onTapInside: () => context.read<SearchableMultiSelectDropdownProvider<T>>().toggleSuggestionsExpanded(
+            outlineBorderVisible: provider.suggestionsExpanded ||
+                provider.textFieldFocusNode.hasFocus,
+            onTapInside: () => context
+                .read<SearchableMultiSelectDropdownProvider<T>>()
+                .toggleSuggestionsExpanded(
                   selectorWidget: widget.dropdownType == DropdownType.expandable
                       ? null
                       : ChangeNotifierProvider.value(
@@ -198,7 +212,9 @@ class _DropdownState<T> extends State<_Dropdown<T>> {
               height: 48,
               child: widget.arrowWidget ??
                   Icon(
-                    context.watch<SearchableMultiSelectDropdownProvider<T>>().suggestionsExpanded
+                    context
+                            .watch<SearchableMultiSelectDropdownProvider<T>>()
+                            .suggestionsExpanded
                         ? Icons.keyboard_arrow_up_outlined
                         : Icons.keyboard_arrow_down_outlined,
                   ),

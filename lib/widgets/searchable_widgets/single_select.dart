@@ -23,6 +23,7 @@ class SingleSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const orangePrimaryShade500 = Color(0xffff7621);
     final textTheme = Theme.of(context).textTheme;
     return Material(
       color: Colors.transparent,
@@ -37,7 +38,9 @@ class SingleSelect extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: selected
-                ? (selectorDecoration?.selectedItemColor ?? Colors.teal[400])?.withValues(alpha: 0.04)
+                ? (selectorDecoration?.selectedItemColor ??
+                        orangePrimaryShade500)
+                    .withValues(alpha: 0.04)
                 : Colors.transparent,
           ),
           width: double.infinity,
@@ -46,18 +49,24 @@ class SingleSelect extends StatelessWidget {
             children: [
               SuggestionTitle(
                 text: text,
-                textStyle: (selectorDecoration?.optionTextStyle ?? textTheme.labelMedium)?.copyWith(
-                  color: selected ? (selectorDecoration?.selectedItemColor ?? Colors.teal[400]) : null,
+                textStyle: (selectorDecoration?.optionTextStyle ??
+                        textTheme.labelMedium)
+                    ?.copyWith(
+                  color: selected
+                      ? (selectorDecoration?.selectedItemColor ??
+                          orangePrimaryShade500)
+                      : null,
                 ),
                 subtext: subtext,
                 subTextStyle: selectorDecoration?.optionSubtextStyle,
               ),
-              if (selected && selectorDecoration?.selectedItemIconVisible != false)
+              if (selected &&
+                  selectorDecoration?.selectedItemIconVisible != false)
                 selectorDecoration?.selectedItemIcon ??
-                    Icon(
+                    const Icon(
                       Icons.check,
                       size: 15,
-                      color: Colors.teal[400],
+                      color: orangePrimaryShade500,
                     )
             ],
           ),
