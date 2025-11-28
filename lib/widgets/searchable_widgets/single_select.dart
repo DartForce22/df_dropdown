@@ -38,9 +38,10 @@ class SingleSelect extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: selected
-                ? (selectorDecoration?.selectedItemColor ??
-                        orangePrimaryShade500)
-                    .withValues(alpha: 0.04)
+                ? selectorDecoration?.singleSelectedItemBgColor ??
+                    (selectorDecoration?.selectedItemColor ??
+                            orangePrimaryShade500)
+                        .withValues(alpha: 0.04)
                 : Colors.transparent,
           ),
           width: double.infinity,

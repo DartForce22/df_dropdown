@@ -32,7 +32,8 @@ class MultiSelect extends StatelessWidget {
             vertical: 10,
           ),
           decoration: BoxDecoration(
-            borderRadius: selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
+            borderRadius:
+                selectorDecoration?.borderRadius ?? BorderRadius.circular(12),
             color: Colors.transparent,
           ),
           width: double.infinity,
@@ -44,7 +45,9 @@ class MultiSelect extends StatelessWidget {
                 child: Checkbox(
                   visualDensity: VisualDensity.compact,
                   value: selected,
-                  activeColor: selectorDecoration?.selectedItemColor ?? Colors.teal.shade400,
+                  activeColor: selectorDecoration?.selectedItemColor ??
+                      // orangePrimaryShade500
+                      const Color(0xffff7621),
                   side: BorderSide(
                     color: Colors.grey.shade400,
                   ),

@@ -16,6 +16,9 @@ class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
   ///A widget that will be displayed when the selector is loading data.
   final Widget? loadingIndicator;
 
+  /// This color is applied as background color to items that are currently selected in the dropdown (only for single selection).
+  final Color? singleSelectedItemBgColor;
+
   /// Creates a new [SingleSelectorDecoration] instance with optional customization.
   ///
   /// - [borderRadius]: Sets the corner radius of the multi-selector.
@@ -34,6 +37,7 @@ class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
   /// - [selectedItemIconVisible]: Controls whether selected item icon indicator is visible (default is `true`).
   /// - [showSearchIcon]: Controls whether the search icon is visible (default is `true`).
   /// - [loadingIndicator]: Widget to display when the selector is loading data.
+  /// - [singleSelectedItemBgColor]: Sets the background color for selected items for single selection.
 
   const SingleSelectorDecoration({
     super.borderRadius,
@@ -54,5 +58,6 @@ class SingleSelectorDecoration extends SearchableSelectorBaseDecoration {
     this.selectedItemIconVisible = true,
     this.selectedItemIcon,
     this.loadingIndicator,
+    this.singleSelectedItemBgColor,
   });
 }
