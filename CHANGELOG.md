@@ -115,6 +115,6 @@
 - Changed default package color
 - Extracted provider reference from the selector widget
 
-## 1.2.2
+## 1.3.0
 - Added property for bg color of the selected item
 
