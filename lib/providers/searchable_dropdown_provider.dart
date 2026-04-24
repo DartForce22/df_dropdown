@@ -30,8 +30,7 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
   bool fieldTapOutside = false;
   final bool rememberSelectedValue;
 
-  List<DropDownModel<T>> get searchResults =>
-      [if (selectedValue != null) selectedValue!, ...baseSearchResults];
+  List<DropDownModel<T>> get searchResults => [...baseSearchResults];
 
   @override
   double get dropdownHeight {
@@ -132,7 +131,10 @@ class SearchableDropdownProvider<T> extends BaseDropdownProvider<T> {
       if (baseSearchResults.isEmpty) {
         baseSearchResults.addAll(initData);
       }
-      baseSearchResults.removeWhere((el) => el == selectedValue);
+      if (selectedValue != null) {
+        baseSearchResults.removeWhere((el) => el == selectedValue);
+        baseSearchResults.insert(0, selectedValue!);
+      }
       return searchResults;
     }
     return initData;
