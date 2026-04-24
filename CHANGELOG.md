@@ -118,3 +118,6 @@
 ## 1.3.0
 - Added property for bg color of the selected item
 
+## 1.3.1
+- Fixed problem with missing values after selection in DfSearchableDropdown
+
